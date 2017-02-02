@@ -40,10 +40,6 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver,
         renderer.attachWorld(world);
     }
 
-    void setMainPlayer(int characterId) {
-        this.renderer.setMainPlayer(characterId);
-    }
-
     void showGameWindow() {
         this.setTitle("Game");
         this.setResizable(false);

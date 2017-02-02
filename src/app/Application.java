@@ -3,8 +3,9 @@ package app;
 import ui.gfx.Resources;
 import util.option.Options;
 
-import javax.swing.*;
 import java.io.IOException;
+
+import static javax.swing.JOptionPane.*;
 
 public class Application {
     public final static String VERSION = "0.019.0";
@@ -19,13 +20,17 @@ public class Application {
             new GameServer();
             new GameClient().openUserInterface();
         } else {
-            switch (JOptionPane.showConfirmDialog(null,
-                    "Would you like to run the server? \n Yes - Server \n No - Client", "Are you server?", JOptionPane.YES_NO_OPTION)) {
-                case JOptionPane.YES_OPTION:
+            int option = showOptionDialog(null,
+                    "Would you like to run the server?", "Are you server?",
+                    YES_NO_OPTION, QUESTION_MESSAGE, null,
+                    new Object[]{"Server", "Client"}, "Server");
+
+            switch (option) {
+                case YES_OPTION:
                     new GameServer();
                     break;
 
-                case JOptionPane.NO_OPTION:
+                case NO_OPTION:
                     Resources.load();
                     new GameClient().openUserInterface();
                     break;

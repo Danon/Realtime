@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-
 public class GameServer implements ServerConnectionListener {
     private ServerConnectionManager server;
 
@@ -46,7 +45,7 @@ public class GameServer implements ServerConnectionListener {
         }
     }
 
-    private void tryLoginAccomodator(ServerAccommodationConnection conn, Accommodator accom) {
+    private void tryLoginAccomodator(ServerAccommodationConnection conn, Accommodator accommodator) {
         if (loggedIn.size() >= GameServer.maxPlayers) {
             conn.sendTCP(new Command.LoginRejected(String.format(
                     "Max capability of players logged at a time (%d) reached. Try again later.",
@@ -55,13 +54,13 @@ public class GameServer implements ServerConnectionListener {
         }
 
         // Apply a ServerAccomodator to the connection.
-        conn.setAccomodator(accom);
+        conn.setAccomodator(accommodator);
 
         // Add accomodator to the room
-        loggedIn.add(accom);
+        loggedIn.add(accommodator);
 
-        // Inform the player that login was successfull.
-        conn.sendTCP(new Command.LoggedIn(accom.user.getId(), accom.user.getUsername()));
+        // Inform the player that login was successful.
+        conn.sendTCP(new Command.LoggedIn(accommodator.user.getId(), accommodator.user.getUsername()));
 
         if (!matchStarted) // check if game already is running
         {
@@ -70,14 +69,14 @@ public class GameServer implements ServerConnectionListener {
             conn.sendTCP(new Command.MatchAlreadyStarted()); // if the match is running, inform the player
         }
 
-        System.out.println("Logged: " + accom.user);
+        System.out.println("Logged: " + accommodator.user);
     }
 
-    boolean matchStartCondition(CountedCharacters charsTable) {
+    private boolean matchStartCondition(CountedCharacters charsTable) {
         return (charsTable.inTeams == charsTable.ready && charsTable.inTeams > 0);
     }
 
-    void recheckGameStart() {
+    private void recheckGameStart() {
         // See how many players are willing to play
         CountedCharacters counted = Accommodator.countedCharacters(loggedIn);
 
@@ -87,7 +86,7 @@ public class GameServer implements ServerConnectionListener {
         }
     }
 
-    void informAboutMatchStart(CountedCharacters counted) {
+    private void informAboutMatchStart(CountedCharacters counted) {
         // Prepare match start Command
         Command.MatchStarted matchStartMsg = new Command.MatchStarted();
 
@@ -95,16 +94,16 @@ public class GameServer implements ServerConnectionListener {
         // which will inform players about each other
         int loggedInIndex = 0;
         List<PlayerCharacter> characters = new ArrayList<>(counted.ready);
-        for (Accommodator accomod : loggedIn) {
-            if (accomod.lobbyEntry.isReadyForGame()) {
+        for (Accommodator accommodator : loggedIn) {
+            if (accommodator.lobbyEntry.isReadyForGame()) {
                 PlayerCharacter playerCharacter = new PlayerCharacter(
-                        accomod.user.getId(),
-                        accomod.user.getUsername(),
-                        accomod.lobbyEntry.getChosenTeamId(),
+                        accommodator.user.getId(),
+                        accommodator.user.getUsername(),
+                        accommodator.lobbyEntry.getChosenTeamId(),
                         loggedInIndex
                 );
 
-                accomod.setPlayerCharacter(playerCharacter);
+                accommodator.setPlayerCharacter(playerCharacter);
                 world.addCharacter(playerCharacter);
                 characters.add(playerCharacter);
             }
@@ -125,25 +124,23 @@ public class GameServer implements ServerConnectionListener {
     }
 
     @Override
-    public void disconnected(Accommodator accomod) {
-
+    public void disconnected(Accommodator accommodator) {
         if (matchStarted) {
-            if (accomod != null) {
-                loggedIn.remove(accomod);
+            if (accommodator != null) {
+                loggedIn.remove(accommodator);
                 Command.UserLeft removeCharacter = new Command.UserLeft(
-                        accomod.user.getUsername(),
-                        accomod.user.getId(),
-                        accomod.getPlayerCharacter().getCharacterId()
+                        accommodator.user.getUsername(),
+                        accommodator.user.getId(),
+                        accommodator.getPlayerCharacter().getCharacterId()
                 );
                 server.sendToAllTCP(removeCharacter);
-                world.messageArrived(accomod.user.getId(), removeCharacter);
+                world.messageArrived(accommodator.user.getId(), removeCharacter);
             }
         }
     }
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.WantsLogin loginRequest, boolean isLoggedIn) {
-
         // Ignore if already logged in.
         if (isLoggedIn) return;
 
@@ -237,7 +234,6 @@ public class GameServer implements ServerConnectionListener {
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.JoinTeam command) {
-
         if (matchStarted) return;
 
         Command.JoinTeam joinTeamRequest = command;
@@ -248,7 +244,6 @@ public class GameServer implements ServerConnectionListener {
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.ReadyForGame command) {
-
         if (matchStarted) return;
 
         Command.ReadyForGame readyMsg = command;
@@ -258,7 +253,6 @@ public class GameServer implements ServerConnectionListener {
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.ChangePlayerControls command) {
-
         if (!matchStarted) return;
 
         Command.ChangePlayerControls controlsChanged = command;
@@ -271,7 +265,6 @@ public class GameServer implements ServerConnectionListener {
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.ChatMessage command) {
-
         Command.ChatMessage chatMessage = command;
         chatMessage.senderId = conn.getAccomodator().user.getId();
         server.sendToAllTCP(chatMessage);

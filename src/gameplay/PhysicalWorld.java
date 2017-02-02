@@ -5,58 +5,25 @@ import network.Network.Command;
 import ui.gfx.FrameAnimation;
 
 import java.awt.*;
-import java.util.HashMap;
-
-/**
- * PhysicalWorld.java
- * <p>
- * Base class with physics world for game, used by both Client-Part and
- * Server-Part. Contains physical boundries and physics symulation, like
- * blocking the movement outside the map and jumps.
- * <p>
- * Invokes <code>update();</code> exactly <code>TPS</code> times a second. In
- * spare time between updates invokes <code>whenPossible();</code>.
- * <p>
- * <code>HasMap characters;</code> is not Thread-Safe
- * <p>
- * API:
- * Constructor(Integer);
- * startLoop();
- * addCharacter(Character);
- * moveCharacter(Character);
- * moveCharacter(Integer, Command.MoveCharacter)
- * removeCharacter(Character);
- *
- * @author Danio
- * @version 1.0 03/04/2015
- */
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 abstract public class PhysicalWorld extends PhysicSimulation implements Runnable {
-    public final static int TPS = 100;
-    final static double MS_PER_UPDATE = 1000 / TPS;
-    public final Insets boundries = new Insets(480, 0, 0, 640);
-    final protected HashMap<Integer, Character> characters = new HashMap<>();
-    final protected Thread loopThread;
+    private final static int TPS = 100;
+    private final static double MS_PER_UPDATE = 1000 / TPS;
 
-    /**
-     * Constructor
-     */
-    public PhysicalWorld() {
+    public final Insets boundries = new Insets(480, 0, 0, 640);
+    final protected Map<Integer, Character> characters = new ConcurrentHashMap<>();
+    private final Thread loopThread;
+
+    PhysicalWorld() {
         loopThread = new Thread(this, "LoopThread");
     }
 
-    /**
-     * Start physics simulation engine.
-     */
     final public void startLoop() {
         loopThread.start();
     }
 
-    /**
-     * Physics loop. Invokes <code>update();</code> exactly <code>TPS</code> times
-     * a second. <code>whenPossible</code> in spare time
-     * between updates.
-     */
     @Override
     final public void run() {
 
@@ -82,11 +49,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         }
     }
 
-    /**
-     * Thread-safe addition of character to the simulation.
-     *
-     * @param character Character to be added to the simulation.
-     */
     public void addCharacter(Character character) {
         synchronized (characters) {
             character.shared.hp = 500;
@@ -96,12 +58,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         }
     }
 
-    /**
-     * Thread-safe moving a character on the same machine.
-     *
-     * @param characterId Id of a character to be moved
-     * @param keysState   keysState to be updated.
-     */
     void moveCharacter(int characterId, KeysState keysState) {
         synchronized (characters) {
             Character cha = characters.get(characterId);
@@ -109,12 +65,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         }
     }
 
-    /**
-     * Thread-safe moving a character.
-     *
-     * @param characterId Id of a character to be moved
-     * @param message     Command containing move information.
-     */
     void moveCharacter(int characterId, Command.ChangePlayerControls message) {
         synchronized (characters) {
             Character cha = characters.get(characterId);
@@ -124,11 +74,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         }
     }
 
-    /**
-     * Thread-safe moving a character.
-     *
-     * @param updateRequest Command containing move information.
-     */
     public void updateCharacter(Command.UpdateSharedState updateRequest) {
         synchronized (characters) {
             int charId = updateRequest.state.getCharacterId();
@@ -136,23 +81,12 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         }
     }
 
-    /**
-     * Thread-safe deleting of a character.
-     *
-     * @param characterId Id of a character to delete.
-     */
     public void removeCharacterById(int characterId) {
         synchronized (characters) {
             characters.remove(characterId);
         }
     }
 
-    /**
-     * Thread-safe deep copy characters.
-     *
-     * @return Array of characters. Containing deep copy of all characters in
-     * game, cause of thread-safety.
-     */
     Character[] charactersCopy() {
         Character[] result;
         synchronized (characters) {
@@ -169,7 +103,7 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
     private void updateGameState() {
         for (Character character : characters.values()) {
             this.step(character);
-            if (character.common.basicFrame == 6 * FrameAnimation.FrameAnimationSpeed.Basic) {
+            if (character.common.basicFrame == 6 * FrameAnimation.Speed.Basic) {
                 Rectangle hitZone;
                 if (character.isTurnedRight()) {
                     hitZone = new Rectangle(

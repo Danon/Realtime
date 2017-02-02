@@ -75,14 +75,15 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
         }
     }
 
-    boolean loadObject(String folderName, String fileName, Savable item) {
+    boolean loadObject(String folderName, String fileName, Savable savable) {
         File file = new File(folderName, fileName.toLowerCase());
-        if (!file.exists()) throw new RuntimeException("No such file found " + fileName);
+        if (!file.exists()) {
+            throw new RuntimeException("No such file found " + fileName);
+        }
 
         try {
             inpStream = new DataInputStream(new FileInputStream(file));
-            item.restoreState(this);
-            inpStream.close();
+            savable.restoreState(this);
             return true;
         } catch (IOException couldNotLoadState) {
             return false;

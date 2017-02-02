@@ -9,26 +9,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * @author Danio
- * @since 1.0
- */
-public class ShadowGeometry
-{
-
-
-    static class Points
-    {
-        /**
-         * Creates a comparator that compares points by the
-         * angle of the line between the point and the given
-         * center
-         *
-         * @param center The center
-         * @return The comparator
-         */
-        public static Comparator<Point2D> byAngleComparator(final Point2D center) {
-
+class ShadowGeometry {
+    static class Points {
+        static Comparator<Point2D> byAngleComparator(final Point2D center) {
             return (p0, p1) -> {
                 double dx0 = p0.getX() - center.getX(),
                         dy0 = p0.getY() - center.getY(),
@@ -43,20 +26,8 @@ public class ShadowGeometry
     }
 
 
-    static class Lines
-    {
-        /**
-         * Rotate the given line around its starting point, by
-         * the given angle, and stores the result in the given
-         * result line. If the result line is <code>null</code>,
-         * then a new line will be created and returned.
-         *
-         * @param line     The line
-         * @param angleRad The rotation angle
-         * @param result   The result line
-         * @return The result line
-         */
-        static Line2D rotate(Line2D line, double angleRad, Line2D result) {
+    static class Lines {
+        static Line2D rotate(Line2D line, double angleRad) {
             double x0 = line.getX1();
             double y0 = line.getY1();
             double x1 = line.getX2();
@@ -68,20 +39,12 @@ public class ShadowGeometry
             double ca = Math.cos(angleRad);
             double nx = ca * dx - sa * dy;
             double ny = sa * dx + ca * dy;
-            if (result == null) {
-                result = new Line2D.Double();
-            }
-            result.setLine(x0, y0, x0 + nx, y0 + ny);
-            return result;
-        }
 
+            return new Line2D.Double(x0, y0, x0 + nx, y0 + ny);
+        }
     }
 
-    static class Intersection
-    {
-        /**
-         * Epsilon for floating point computations
-         */
+    static class Intersection {
         private static final double EPSILON = 1e-6;
 
 
@@ -97,7 +60,7 @@ public class ShadowGeometry
          *                         absolute location of the intersection point
          * @return Whether the lines intersect
          */
-        public static boolean intersectLineLine(
+        static boolean intersectLineLine(
                 Line2D line0, Line2D line1,
                 Point2D relativeLocation,
                 Point2D absoluteLocation) {
@@ -131,14 +94,13 @@ public class ShadowGeometry
          *                         absolute location of the intersection point
          * @return Whether the lines intersect
          */
-        public static boolean intersectLineLine(
+        static boolean intersectLineLine(
                 double s0x0, double s0y0,
                 double s0x1, double s0y1,
                 double s1x0, double s1y0,
                 double s1x1, double s1y1,
                 Point2D relativeLocation,
-                Point2D absoluteLocation)
-        {
+                Point2D absoluteLocation) {
             double dx0 = s0x1 - s0x0;
             double dy0 = s0y1 - s0y0;
             double dx1 = s1x1 - s1x0;
@@ -160,11 +122,11 @@ public class ShadowGeometry
             double cdx = c1x - c0x;
             double cdy = c1y - c0y;
 
-            double dot = dotPerp(dir0x, dir0y, dir1x, dir1y);
+            double dot = perpendicularDotProduct(dir0x, dir0y, dir1x, dir1y);
             if (Math.abs(dot) > EPSILON) {
                 if (relativeLocation != null || absoluteLocation != null) {
-                    double dot0 = dotPerp(cdx, cdy, dir0x, dir0y);
-                    double dot1 = dotPerp(cdx, cdy, dir1x, dir1y);
+                    double dot0 = perpendicularDotProduct(cdx, cdy, dir0x, dir0y);
+                    double dot1 = perpendicularDotProduct(cdx, cdy, dir1x, dir1y);
                     double invDot = 1.0 / dot;
                     double s0 = dot1 * invDot;
                     double s1 = dot0 * invDot;
@@ -184,47 +146,26 @@ public class ShadowGeometry
             return false;
         }
 
-        /**
-         * Returns the perpendicular dot product, i.e. the length
-         * of the vector (x0,y0,0)x(x1,y1,0).
-         *
-         * @param x0 Coordinate x0
-         * @param y0 Coordinate y0
-         * @param x1 Coordinate x1
-         * @param y1 Coordinate y1
-         * @return The length of the cross product vector
-         */
-        private static double dotPerp(double x0, double y0, double x1, double y1) {
+        private static double perpendicularDotProduct(double x0, double y0, double x1, double y1) {
             return x0 * y1 - y0 * x1;
         }
-
     }
 
-
     static class Shapes {
-        /**
-         * Create a list containing line segments that approximate the given
-         * shape.
-         *
-         * @param shape    The shape
-         * @param flatness The allowed flatness
-         * @return The list of line segments
-         */
-        static List<Line2D> computeLineSegments(Shape shape, double flatness)
-        {
+        static List<Line2D> computeLineSegments(Shape shape, double flatness) {
             List<Line2D> result = new ArrayList<>();
             PathIterator pi = new FlatteningPathIterator(shape.getPathIterator(null), flatness);
-            double[] coords = new double[6];
+            double[] coordinates = new double[6];
             double previous[] = new double[2];
             double first[] = new double[2];
             while (!pi.isDone()) {
-                int segment = pi.currentSegment(coords);
+                int segment = pi.currentSegment(coordinates);
                 switch (segment) {
                     case PathIterator.SEG_MOVETO:
-                        previous[0] = coords[0];
-                        previous[1] = coords[1];
-                        first[0] = coords[0];
-                        first[1] = coords[1];
+                        previous[0] = coordinates[0];
+                        previous[1] = coordinates[1];
+                        first[0] = coordinates[0];
+                        first[1] = coordinates[1];
                         break;
 
                     case PathIterator.SEG_CLOSE:
@@ -236,9 +177,9 @@ public class ShadowGeometry
                         break;
 
                     case PathIterator.SEG_LINETO:
-                        result.add(new Line2D.Double(previous[0], previous[1], coords[0], coords[1]));
-                        previous[0] = coords[0];
-                        previous[1] = coords[1];
+                        result.add(new Line2D.Double(previous[0], previous[1], coordinates[0], coordinates[1]));
+                        previous[0] = coordinates[0];
+                        previous[1] = coordinates[1];
                         break;
 
                     case PathIterator.SEG_QUADTO:  // Should never occur

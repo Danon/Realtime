@@ -10,30 +10,17 @@ public class FrameAnimation {
         this.name = name;
         this.animationSpeed = animationSpeed;
         this.frames = frames;
+    }
+
+    public void setSpritesheet(Spritesheet spritesheet) {
+        parentSpritesheet = spritesheet;
         for (Frame frame : this.frames) {
-            frame.parentAnimation = this;
+            frame.setSpritesheet(spritesheet);
         }
-    }
-
-    public FrameAnimation(String name, Frame... frames) {
-        this(name, FrameAnimationSpeed.Default, frames);
-    }
-
-    public int getFramesCount() {
-        return frames.length;
-    }
-
-    public int getAnimationSpeed() {
-        return animationSpeed;
     }
 
     public String getName() {
         return this.name;
-    }
-
-    public Frame getFrame(int frameId) {
-        assert (0 <= frameId && frameId < frames.length);
-        return frames[frameId];
     }
 
     Frame getFrameIterate(int frameId) {
@@ -41,28 +28,23 @@ public class FrameAnimation {
         return frames[frameId / animationSpeed % frames.length];
     }
 
-    String getSpritesheetName() {
-        return parentSpritesheet.getName();
-    }
-
-    public static class FrameAnimationSpeed {
-        public final static int
-                Default = 10,
-                Materialization = Default,
-                Idle = Default,
-                MidAir = 10,
-                MidAirGun = 10,
-                RunStart = Default,
-                Run = 8,
-                RunGun = 8,
-                Pushed = Default,
-                Shooting = 11,
-                Basic = 6,
-                BasicStart = 6,
-                BasicAir = 8,
-                Goal = Default,
-                ClimbingStart = Default,
-                ClimbingEnd = Default,
-                Climbig = 13;
+    public static class Speed {
+        final static int Default = 10;
+        final static int Materialization = Default;
+        final static int Idle = Default;
+        public final static int MidAir = 10;
+        final static int MidAirGun = 10;
+        final static int RunStart = Default;
+        public final static int Run = 8;
+        final static int RunGun = 8;
+        final static int Pushed = Default;
+        public final static int Shooting = 11;
+        public final static int Basic = 6;
+        final static int BasicStart = 6;
+        final static int BasicAir = 8;
+        final static int Goal = Default;
+        final static int ClimbingStart = Default;
+        final static int ClimbingEnd = Default;
+        final static int Climbing = 13;
     }
 }

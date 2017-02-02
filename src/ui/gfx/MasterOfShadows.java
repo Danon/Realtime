@@ -4,41 +4,29 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static ui.gfx.ShadowGeometry.Intersection.intersectLineLine;
-
-
-//  zed.setBounds(0, 0, getWidth(), getHeight());
-
-// zed.getObstacles().forEach(g::draw);
-// Shape lightShape = zed.getFieldOfView(lightPosition);
+import static ui.gfx.ShadowGeometry.Points.byAngleComparator;
+import static ui.gfx.ShadowGeometry.Shapes.computeLineSegments;
 
 public class MasterOfShadows {
-    private final List<Shape> obstacles = new ArrayList<>();
-    private List<List<Line2D>> lineSegments = new ArrayList<>();
+    private final List<List<Line2D>> lineSegments = new ArrayList<>();
     private final List<Line2D> borders = new ArrayList<>();
-    //keeping references to borders so we can easily change the bounds size
 
     MasterOfShadows() {
         lineSegments.add(borders);
     }
 
-    public void addLineSegment(List<Line2D> lineSegments) {
+    void addObstacle(Shape shape) {
+        this.addLineSegment(computeLineSegments(shape, 1.0));
+    }
+
+    private void addLineSegment(List<Line2D> lineSegments) {
         this.lineSegments.add(lineSegments);
     }
 
-    public void addObstacle(Shape shape) {
-        obstacles.add(shape);
-        this.addLineSegment(ShadowGeometry.Shapes.computeLineSegments(shape, 1.0));
-    }
-
-    public List<Shape> getObstacles() {
-        return this.obstacles;
-    }
-
-    public void setBounds(int x, int y, int width, int height) {
+    void setBounds(int x, int y, int width, int height) {
         this.borders.clear();
         this.borders.add(new Line2D.Double(x, y, width, y));
         this.borders.add(new Line2D.Double(width, y, width, height));
@@ -62,11 +50,11 @@ public class MasterOfShadows {
         }
     }
 
-    public void getFieldOfView(gameplay.Point lightPosition, IntersectionIterable iterable) {
+    void getFieldOfView(gameplay.Point lightPosition, IntersectionIterable iterable) {
         java.awt.Point pos = new java.awt.Point(lightPosition.getX(), lightPosition.getY());
         List<Line2D> rays = this.createRays(pos);
         List<Point2D> closestIntersections = this.computeClosestIntersections(rays);
-        Collections.sort(closestIntersections, ShadowGeometry.Points.byAngleComparator(pos));
+        closestIntersections.sort(byAngleComparator(pos));
         MasterOfShadows.createLightShape(closestIntersections, iterable);
     }
 
@@ -92,10 +80,10 @@ public class MasterOfShadows {
                 rays.add(ray0);
                 rays.add(ray1);
 
-                rays.add(ShadowGeometry.Lines.rotate(ray0, +deltaRad, null));
-                rays.add(ShadowGeometry.Lines.rotate(ray0, -deltaRad, null));
-                rays.add(ShadowGeometry.Lines.rotate(ray1, +deltaRad, null));
-                rays.add(ShadowGeometry.Lines.rotate(ray1, -deltaRad, null));
+                rays.add(ShadowGeometry.Lines.rotate(ray0, +deltaRad));
+                rays.add(ShadowGeometry.Lines.rotate(ray0, -deltaRad));
+                rays.add(ShadowGeometry.Lines.rotate(ray1, +deltaRad));
+                rays.add(ShadowGeometry.Lines.rotate(ray1, -deltaRad));
             }
         }
         return rays;
@@ -124,5 +112,4 @@ public class MasterOfShadows {
         }
         return closestIntersection;
     }
-
 }

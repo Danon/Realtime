@@ -5,6 +5,10 @@ import java.util.Arrays;
 public class Password {
     private byte[] hashBytes;
 
+    public Password() {
+        hashBytes = new byte[0];
+    }
+
     public Password(String plain) {
         this(plain, "");
     }

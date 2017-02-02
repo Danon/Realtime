@@ -1,9 +1,8 @@
 package ui.gfx;
 
 class Frame {
-    FrameAnimation parentAnimation;
+    Spritesheet parentSpritesheet;
 
-    private final int id;
     final int x;
     final int y;
     final int width;
@@ -11,8 +10,7 @@ class Frame {
     final int offsetX;
     final int offsetY;
 
-    Frame(int id, int x, int y, int width, int height, int offset, int offsetY) {
-        this.id = id;
+    Frame(int x, int y, int width, int height, int offset, int offsetY) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -21,15 +19,19 @@ class Frame {
         this.offsetY = offsetY;
     }
 
-    Frame(int id, int x, int y, int width, int height, int offset) {
-        this(id, x, y, width, height, offset, 0);
+    Frame(int x, int y, int width, int height, int offset) {
+        this(x, y, width, height, offset, 0);
     }
 
-    Frame(int id, int x, int y, int width, int height) {
-        this(id, x, y, width, height, 0, 0);
+    Frame(int x, int y, int width, int height) {
+        this(x, y, width, height, 0, 0);
     }
 
     String getSpritesheetName() {
-        return parentAnimation.getSpritesheetName();
+        return parentSpritesheet.getName();
+    }
+
+    public void setSpritesheet(Spritesheet spritesheet) {
+        this.parentSpritesheet = spritesheet;
     }
 }

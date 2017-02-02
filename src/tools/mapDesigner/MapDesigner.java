@@ -19,6 +19,7 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public final class MapDesigner extends JFrame implements KeyListener, MouseListener, MouseMotionListener,
         MouseWheelListener, WindowListener {
@@ -30,13 +31,13 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
     private final BufferedImage image;
     private final Graphics2D canvas;
     private final Drawer draw;
-    private Operation operation = Operation.None;
     private final GameMap map;
+
+    private Operation operation = Operation.None;
 
     private Point mouse = new Point();
 
     private int panelWidth, panelHeight;
-
     private int floorTiles = 4, ladderTiles = 4;
 
     JPanel panel;
@@ -288,10 +289,10 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
 
         debugText = angle.toString();
 
-        ArrayList<Point> points = new ArrayList<>();
+        List<Point> points = new ArrayList<>();
 
         for (Floor floor : map.getFloors()) {
-            ArrayList<Point> corns = floor.getCorners();
+            List<Point> corns = floor.getCorners();
             for (Point pt : corns) {
                 canvas.setColor(Color.blue);
                 draw.borders(new Oval(pt.invertY(map.getHeight()), 8));
@@ -486,7 +487,7 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
             setLayout(new GridLayout(0, 1));
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-            final JList mapFilesList = new JList(SaveManager.Map.list());
+            final JList<String> mapFilesList = new JList<>(SaveManager.Map.list());
             mapFilesList.setSelectedIndex(1);
             mapFilesList.setPreferredSize(new Dimension(300, 400));
             add(new JScrollPane(mapFilesList));

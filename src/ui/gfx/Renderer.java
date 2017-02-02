@@ -24,11 +24,7 @@ public final class Renderer implements IRenderObserver {
     private Size windowSize;
     private ClientWorld world;
 
-    private int playerCharacterId;
-    Font defaultFont;
-    FontMetrics fontMetrics;
-
-    private static String debug = "Seen";
+    private FontMetrics fontMetrics;
 
     public static int
             CAMERA_SIDE_MARGIN = 0,
@@ -42,13 +38,12 @@ public final class Renderer implements IRenderObserver {
         this.viewSize = viewSize;
         this.draw = new Drawer(viewSize.getWidth(), viewSize.getHeight());
 
-        defaultFont = new Font("Arial", Font.PLAIN, 15);
+        Font defaultFont = new Font("Arial", Font.PLAIN, 15);
         canvas.setFont(defaultFont);
         fontMetrics = canvas.getFontMetrics(defaultFont);
         draw.setCanvas(canvas);
 
         zed = new MasterOfShadows();
-
     }
 
     public void setScalingTo(Size size) {
@@ -66,15 +61,10 @@ public final class Renderer implements IRenderObserver {
     }
 
     private void prepareMasterOfShadows() {
-
         zed.setBounds(0, 0, world.getMapWidth(), world.getMapHeight() + Floor.HEIGHT);
         for (Floor floor : world.getMap().getFloors()) {
             zed.addObstacle(floor.asShape());
         }
-    }
-
-    public void setMainPlayer(int characterId) {
-        this.playerCharacterId = characterId;
     }
 
     private Insets getDisplaySize() {
@@ -112,21 +102,12 @@ public final class Renderer implements IRenderObserver {
         );
     }
 
-    /**
-     * Flips image from back buffer onto the drawing canvas
-     */
-    public void flip() {
+    private void drawToWindow() {
         graphics.drawImage(backBuffer,
                 displaySize.left, displaySize.top, displaySize.right, displaySize.bottom,
                 0, 0, viewSize.getWidth(), viewSize.getHeight(), null);
     }
 
-    /**
-     * Render function. Displays characters in the windowSize. Is invoked by
-     * ClientWorld, passing characters on the arena to displaySize.
-     *
-     * @param characters Passed by ClientWorld, array of characters on the map.
-     */
     @Override
     public void render(gameplay.Character[] characters, int playerCharacterId) {
         draw.freeCamera();
@@ -212,7 +193,7 @@ public final class Renderer implements IRenderObserver {
                     frameI = character.common.shootFrame;
                 } else {
                     animationName = "midair";
-                    frameI = character.isJumping() ? character.common.jumpFrame : FrameAnimation.FrameAnimationSpeed.MidAir * 5;
+                    frameI = character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5;
                 }
             }
             draw.frame(
@@ -254,6 +235,7 @@ public final class Renderer implements IRenderObserver {
             );
         }
 
+        String debug = "Seen";
         draw.text(debug, new Point(50, 50));
 
         draw.useCamera();
@@ -264,33 +246,31 @@ public final class Renderer implements IRenderObserver {
         canvas.setColor(Color.blue);
         draw.fill(new Oval(new Point(100, 0), 10));
 
-        flip();
+        drawToWindow();
     }
 
     private Shape lightShape(Point player) {
 
-        Point cam = draw.getCamera();
-        int map = world.getMapHeight();
+        Point camera = draw.getCamera();
+        int mapHeight = world.getMapHeight();
 
         Path2D shadowShape = new Path2D.Double();
         zed.getFieldOfView(player, new IntersectionIterable() {
             @Override
             public void iterateFirst(double x, double y) {
-                shadowShape.moveTo(x - cam.getX(), map - y + cam.getY() - 108);
+                shadowShape.moveTo(x - camera.getX(), mapHeight - y + camera.getY() - 108);
             }
 
             @Override
             public void iterateNext(double x, double y) {
-                shadowShape.lineTo(x - cam.getX(), map - y + cam.getY() - 108);
+                shadowShape.lineTo(x - camera.getX(), mapHeight - y + camera.getY() - 108);
             }
         });
         shadowShape.closePath();
         return shadowShape;
     }
 
-    public void setRaycastingFieldClip(Point player) {
+    private void setRaycastingFieldClip(Point player) {
         canvas.setClip(lightShape(player));
     }
-
-
 }

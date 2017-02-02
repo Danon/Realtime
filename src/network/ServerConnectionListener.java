@@ -5,7 +5,7 @@ import network.Network.Command;
 public interface ServerConnectionListener {
     void connected();
 
-    void disconnected(Accommodator accomod);
+    void disconnected(Accommodator accommodator);
 
     void message(ServerAccommodationConnection conn, Command.WantsLogin command, boolean loggedIn);
 

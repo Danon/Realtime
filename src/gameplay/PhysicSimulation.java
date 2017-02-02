@@ -154,7 +154,7 @@ public class PhysicSimulation {
             character.common.jumpFrame = -1;
             if (character.common.walking && !attacking(character)) {
                 character.common.runFrame++;
-                character.common.runFrame %= 10 * FrameAnimation.FrameAnimationSpeed.Run;
+                character.common.runFrame %= 10 * FrameAnimation.Speed.Run;
             } else {
                 character.common.runFrame = -1;
             }
@@ -190,7 +190,7 @@ public class PhysicSimulation {
 
 
             if (character.isGoingUpByVelocity()) {
-                if (character.common.jumpFrame < 5 * FrameAnimation.FrameAnimationSpeed.MidAir)
+                if (character.common.jumpFrame < 5 * FrameAnimation.Speed.MidAir)
                     character.common.jumpFrame++;
 
                 double characterOffsetToCeiling = closestDistance(FloorIs.Above, character);
@@ -215,7 +215,7 @@ public class PhysicSimulation {
                 if (characterOffsetToGround == 0.0) {
                     character.common.onGround = true;
                 }
-                character.common.jumpFrame = 5 * FrameAnimation.FrameAnimationSpeed.MidAir;
+                character.common.jumpFrame = 5 * FrameAnimation.Speed.MidAir;
             }
 
             character.shared.velocityY = (character.common.onGround) ? 0 : character.shared.velocityY - FALL_ACCELERATION;
@@ -224,7 +224,7 @@ public class PhysicSimulation {
             if (character.shared.leftClick) {
                 character.common.runFrame = -1;
                 character.common.basicFrame++;
-                character.common.basicFrame %= 9 * FrameAnimation.FrameAnimationSpeed.Basic;
+                character.common.basicFrame %= 9 * FrameAnimation.Speed.Basic;
             } else {
                 character.common.basicFrame = -1;
             }
@@ -233,8 +233,8 @@ public class PhysicSimulation {
                     !(character.walking && character.onGround) || !character.onGround)
                */) {
                 character.common.shootFrame++;
-                if (character.common.shootFrame == 9 * FrameAnimation.FrameAnimationSpeed.Shooting) {  // loop animation without first
-                    character.common.shootFrame = 2 * FrameAnimation.FrameAnimationSpeed.Shooting;
+                if (character.common.shootFrame == 9 * FrameAnimation.Speed.Shooting) {  // loop animation without first
+                    character.common.shootFrame = 2 * FrameAnimation.Speed.Shooting;
                 }
             } else {
                 character.common.shootFrame = -1;

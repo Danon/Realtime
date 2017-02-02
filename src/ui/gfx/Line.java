@@ -1,23 +1,21 @@
 package ui.gfx;
 
 import gameplay.Point;
+import gameplay.Rectangle;
 
 import java.awt.geom.Line2D;
 
-/**
- * @author Danio
- * @since 1.0
- */
-public class Line
-{
-    public static boolean intersects(Point a, Point b, gameplay.Rectangle rect)
-    {
-        if (rect.contains(a)) { return true; }
-        if (rect.contains(b)) { return true; }
+public class Line {
+    public static boolean intersects(Point a, Point b, Rectangle rect) {
+        if (rect.contains(a)) {
+            return true;
+        }
+        if (rect.contains(b)) {
+            return true;
+        }
 
+        Line2D.Float line = new Line2D.Float(a.getX(), a.getY(), b.getX(), b.getY());
 
-        return new Line2D.Float(a.getX(), a.getY(), b.getX(), b.getY()).intersects(
-                rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()
-        );
+        return line.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 }

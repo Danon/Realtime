@@ -1,9 +1,11 @@
 package network;
 
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
 import network.Network.Command;
-import ui.*;
+import ui.IHostObserver;
+import ui.IHostOperator;
+import ui.IKeyStateNotifier;
+import ui.ILobbyOperator;
 import ui.window.ServerLoginForm;
 import util.Password;
 
@@ -11,83 +13,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
-abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
-    List<ClientConnectionListener> connectionListeners = new CopyOnWriteArrayList<>();
-
-    public void addConnectionListener(ClientConnectionListener listener) {
-        connectionListeners.add(listener);
-    }
-
-    private void forAll(Consumer<ClientConnectionListener> consumer) {
-        connectionListeners.forEach(consumer);
-    }
-
-    @Override
-    public void connected(Connection connection) {
-        connectionListeners.forEach(network.ClientConnectionListener::connected);
-    }
-
-    @Override
-    public void disconnected(Connection connection) {
-        connectionListeners.forEach(ClientConnectionListener::disconnected);
-    }
-
-    @Override
-    public void received(Connection connection, Object object) {
-        if (object instanceof Command.LoginRejected) {
-            forAll(list -> list.messageLoginRejected((Command.LoginRejected) object));
-            return;
-        }
-
-        if (object instanceof Command.LoggedIn) {
-            forAll(listener -> listener.messageLoggedIn((Command.LoggedIn) object));
-            return;
-        }
-
-        if (object instanceof Command.MatchStarted) {
-            forAll(listener -> listener.messageMatchStarted((Command.MatchStarted) object));
-            return;
-        }
-
-        if (object instanceof Command.MatchAlreadyStarted) {
-            forAll(listener -> listener.messageMatchAlreadyStarted((Command.MatchAlreadyStarted) object));
-            return;
-        }
-
-        if (object instanceof Command.LobbyTeamsChanged) {
-            forAll(listener -> listener.messageLobbyTeamsChanged((Command.LobbyTeamsChanged) object));
-            return;
-        }
-
-        if (object instanceof Command.UpdateSharedState) {
-            forAll(listener -> listener.messageUpdateSharedState((Command.UpdateSharedState) object));
-            return;
-        }
-
-        if (object instanceof Command.UserLeft) {
-            forAll(listener -> listener.messageUserLeft((Command.UserLeft) object));
-            return;
-        }
-
-        if (object instanceof Command.Registered) {
-            forAll(listener -> listener.messageRegistered((Command.Registered) object));
-            return;
-        }
-
-        if (object instanceof Command.ChatMessage) {
-            forAll(listener -> listener.messageChatMessage((Command.ChatMessage) object));
-        }
-    }
-
-}
-
-public class ClientConnectionManager extends KryonetListener
-        implements IHostOperator, ILobbyOperator, IKeyStateNotifier {
-    private Client kryoClient = new Client();
-
-    private List<IHostObserver> hostObservers = new CopyOnWriteArrayList<>();
+public class ClientConnectionManager extends KryonetListener implements IHostOperator, ILobbyOperator, IKeyStateNotifier {
+    private final Client kryoClient = new Client();
+    private final List<IHostObserver> hostObservers = new CopyOnWriteArrayList<>();
 
     public ClientConnectionManager() {
         kryoClient.addListener(new ThreadedListener(this));

@@ -14,32 +14,32 @@ import java.io.IOException;
 import java.util.List;
 
 public final class SkeletonDesigner extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
-    final static CustomUserInterface ui = new CustomUserInterface();
+    private final static CustomUserInterface ui = new CustomUserInterface();
 
-    final BufferedImage image;
-    final Graphics2D canvas;
-    final Drawer draw;
-    final SkeletonAnimation animation;
-    final SwingWorker<Integer, Integer> backgroundWork;
-    Graphics graphics;
-    int chosedFrame = 0;
-    boolean playing = false;
-    Skeleton choosedSkeleton;
-    JPanel pnlDrawable;
-    JSlider sldrProgress;
-    JPanel pnlButtonHolder;
-    JPanel pnlRightWrapper;
-    JPanel pnlTimeline;
-    JButton btnSave;
-    JButton btnCopy;
-    JButton btnPaste;
-    JButton btnRedraw;
-    JAntyaliasingCheckBox chckAntialiasing;
-    Skeleton copied;
-    Point mouse;
-    int pressedVectorId;
+    private final BufferedImage image;
+    private final Graphics2D canvas;
+    private final Drawer draw;
+    private final SkeletonAnimation animation;
+    private final SwingWorker<Integer, Integer> backgroundWork;
+    private Graphics graphics;
+    private int chosedFrame = 0;
+    private boolean playing = false;
+    private Skeleton choosedSkeleton;
+    private JPanel pnlDrawable;
+    private JSlider sldrProgress;
+    private JPanel pnlButtonHolder;
+    private JPanel pnlRightWrapper;
+    private JPanel pnlTimeline;
+    private JButton btnSave;
+    private JButton btnCopy;
+    private JButton btnPaste;
+    private JButton btnRedraw;
+    private JAntyaliasingCheckBox chckAntialiasing;
+    private Skeleton copied;
+    private Point mouse;
+    private int pressedVectorId;
 
-    public SkeletonDesigner(String animationName, int framesCount) throws IOException {
+    private SkeletonDesigner(String animationName, int framesCount) throws IOException {
         // checks if you have to load an existing animation
         // or create a new one
         if (SaveManager.Animation.exists(animationName)) {
@@ -166,7 +166,7 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         this.pack();
     }
 
-    public void showWindow() {
+    private void showWindow() {
         pnlDrawable.addMouseListener(this);
         pnlDrawable.addMouseMotionListener(this);
         setVisible(true);
@@ -175,29 +175,29 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         sldrProgress_OnChange();
     }
 
-    void displaySkeleton(Skeleton skeleton) {
+    private void displaySkeleton(Skeleton skeleton) {
         choosedSkeleton = new Skeleton(skeleton);
         draw();
     }
 
     // static double[] bonesIds = { -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10 };
 
-    void btnCopy_OnClick() {
+    private void btnCopy_OnClick() {
         copied = animation.getSkeleton(chosedFrame);
     }
 
-    void btnPaste_OnClick() {
+    private void btnPaste_OnClick() {
         animation.setSkeleton(chosedFrame, new Skeleton(copied));
         displaySkeleton(copied);
     }
 
-    void restoreKeyFrame(Object source) {
+    private void restoreKeyFrame(Object source) {
         int id = Integer.parseInt(((JButton) source).getName().substring(3));
         choosedSkeleton = new Skeleton(animation.getSkeleton(chosedFrame = id));
         draw();
     }
 
-    void sldrProgress_OnChange() {
+    private void sldrProgress_OnChange() {
         int animationStep = sldrProgress.getValue();
         int idCurrent = animationStep / 20;
         double transition = (animationStep % 20.0) / 20.0;
@@ -213,11 +213,11 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         draw();
     }
 
-    void drawVectorSkeleton(Skeleton skeleton) {
+    private void drawVectorSkeleton(Skeleton skeleton) {
         drawVectorSkeleton(skeleton, false);
     }
 
-    void drawVectorSkeleton(Skeleton skel, boolean grayScale) {
+    private void drawVectorSkeleton(Skeleton skel, boolean grayScale) {
         canvas.setColor(grayScale ? Color.black : Color.white);
 
         VectorSkeleton skeleton = skel.toVectorSkeleton();
@@ -289,7 +289,7 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         }
     }
 
-    void draw() {
+    private void draw() {
         draw.background(new Color(34, 34, 34));
         if (chosedFrame > 0) {
             drawVectorSkeleton(
@@ -313,7 +313,7 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         flip();
     }
 
-    void flip() {
+    private void flip() {
         graphics.drawImage(image, 0, 0, null);
     }
 
@@ -395,7 +395,7 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
     }
 
     public static class ListFiles extends JFrame {
-        public ListFiles() {
+        ListFiles() {
             super("Load previous animation");
             this.setLayout(new GridLayout(0, 1));
             this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

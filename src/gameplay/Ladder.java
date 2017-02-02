@@ -1,8 +1,9 @@
 package gameplay;
 
 public class Ladder {
+    private final static int WIDTH = 24;
+
     private final int left, bottom, tiles;
-    private final static int Width = 24;
 
     public Ladder(int left, int bottom, int tiles) {
         this.left = left;
@@ -15,11 +16,11 @@ public class Ladder {
     }
 
     int getCenter() {
-        return left + Width / 2;
+        return left + WIDTH / 2;
     }
 
     public int getRight() {
-        return left + Width;
+        return left + WIDTH;
     }
 
     public int getBottom() {
