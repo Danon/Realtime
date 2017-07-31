@@ -1,7 +1,7 @@
 package ui.gfx;
 
 class Frame {
-    Spritesheet parentSpritesheet;
+    private Spritesheet parentSpritesheet;
 
     final int x;
     final int y;
@@ -31,7 +31,7 @@ class Frame {
         return parentSpritesheet.getName();
     }
 
-    public void setSpritesheet(Spritesheet spritesheet) {
+    void setSpritesheet(Spritesheet spritesheet) {
         this.parentSpritesheet = spritesheet;
     }
 }

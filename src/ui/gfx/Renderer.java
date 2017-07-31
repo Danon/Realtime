@@ -1,6 +1,7 @@
 package ui.gfx;
 
 import app.Application;
+import gameplay.Character;
 import gameplay.*;
 import gameplay.Point;
 import gameplay.Rectangle;
@@ -114,14 +115,8 @@ public final class Renderer implements IRenderObserver {
         canvas.setColor(Color.black);
         draw.fill(new Rectangle(0, 0, viewSize.getWidth(), viewSize.getHeight()));
 
-        Point playerPos = null;
-        for (gameplay.Character character : characters) {
-            if (character.getCharacterId() == playerCharacterId) {
-                playerPos = character.getPosition();
-                break;
-            }
-        }
-        if (playerPos == null) throw new AssertionError("Index not contained in array.");
+        Point playerPos = getPlayerPosition(characters, playerCharacterId);
+
         setRaycastingFieldClip(playerPos.addY(60));
 
         canvas.setColor(Color.decode("#549CAE"));
@@ -140,82 +135,15 @@ public final class Renderer implements IRenderObserver {
 
         draw.getCamera().cap(borders, viewSize.getWidth(), viewSize.getHeight());
 
-        // background
-        for (int i = 0; i <= Math.ceil(borders.width / 167); i++) {
-            draw.image("background.png", new Point(
-                            CAMERA_SIDE_MARGIN + i * 167,
-                            viewSize.getHeight() - borders.height),
-                    DrawFrom.MiddleTop);
-        }
+        drawBackground(borders);
 
-        // canvas.fillRect(p.getX()-10,p.getY()-10,20,20);
+        canvas.setClip(0, 0, displaySize.right, displaySize.bottom);
 
-        canvas.setClip(0, 0,
-                displaySize.right, displaySize.bottom);
+        drawFloors(world.getMap());
+        drawLadders(world.getMap());
 
-        // floors
-        for (Floor floor : world.getMap().getFloors()) {
-            draw.floor(floor);
-        }
-
-        // ladders
-        for (Ladder ladder : world.getMap().getLadders()) {
-            draw.ladder(ladder);
-        }
-
-        // characters
         for (gameplay.Character character : characters) {
-            String animationName;
-            int frameI;
-            if (character.isOnTheGround()) {
-                if (character.isWalking()) {
-                    animationName = "run";
-                    frameI = character.common.runFrame;
-                } else if (character.isBasicAttack()) {
-                    animationName = "basic";
-                    frameI = character.common.basicFrame;
-                } else if (character.isShooting()) {
-                    animationName = "shooting";
-                    frameI = character.common.shootFrame;
-                } else {
-                    animationName = "idle";
-                    frameI = 0;
-                }
-            } else {
-                if (character.isClimbing()) {
-                    animationName = "climbig";
-                    frameI = character.common.climbFrame;
-                } else if (character.isBasicAttack()) {
-                    animationName = "basic-air";
-                    frameI = character.common.basicFrame;
-                } else if (character.isShooting()) {
-                    animationName = "midair-gun";
-                    frameI = character.common.shootFrame;
-                } else {
-                    animationName = "midair";
-                    frameI = character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5;
-                }
-            }
-            draw.frame(
-                    Resources.spritesheet
-                            .animation(animationName)
-                            .getFrameIterate(frameI),
-                    character.getPosition().invertY(viewSize.getHeight()),
-                    DrawFrom.RightBottom,
-                    character.isTurnedRight() ? Flip.None : Flip.Horizontally
-            );
-
-            //  canvas.setColor(character.userId == playerCharacterId ? Color.red : Color.blue);
-
-            draw.text(String.format("%s %d", character.getDisplayName(), character.shared.hp),
-                    character.getPosition().invertY(viewSize.getHeight()).sub(50, 60)
-            );
-            Rectangle hpBar = new Rectangle(character.getPosition().invertY(viewSize.getHeight()).sub(20, 80), 50, 6);
-            canvas.setColor(Color.red);
-            draw.borders(hpBar);
-            hpBar.width = (int) Math.round(hpBar.width * ((double) character.getHp() / 500.0));
-
-            draw.fill(hpBar);
+            drawCharacter(character);
         }
 
         draw.freeCamera();
@@ -235,18 +163,94 @@ public final class Renderer implements IRenderObserver {
             );
         }
 
-        String debug = "Seen";
-        draw.text(debug, new Point(50, 50));
-
         draw.useCamera();
 
         canvas.setColor(Color.red);
-        draw.fill(new Oval(characters[0].getPosition().invertY(viewSize.getHeight()), 10));
-
-        canvas.setColor(Color.blue);
-        draw.fill(new Oval(new Point(100, 0), 10));
 
         drawToWindow();
+    }
+
+    private void drawCharacter(Character character) {
+        String animationName;
+        int frameI;
+        if (character.isOnTheGround()) {
+            if (character.isWalking()) {
+                animationName = "run";
+                frameI = character.common.runFrame;
+            } else if (character.isBasicAttack()) {
+                animationName = "basic";
+                frameI = character.common.basicFrame;
+            } else if (character.isShooting()) {
+                animationName = "shooting";
+                frameI = character.common.shootFrame;
+            } else {
+                animationName = "idle";
+                frameI = 0;
+            }
+        } else {
+            if (character.isClimbing()) {
+                animationName = "climbig";
+                frameI = character.common.climbFrame;
+            } else if (character.isBasicAttack()) {
+                animationName = "basic-air";
+                frameI = character.common.basicFrame;
+            } else if (character.isShooting()) {
+                animationName = "midair-gun";
+                frameI = character.common.shootFrame;
+            } else {
+                animationName = "midair";
+                frameI = character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5;
+            }
+        }
+        draw.frame(
+                Resources.spritesheet.animation(animationName).getFrameIterate(frameI),
+                character.getPosition().invertY(viewSize.getHeight()),
+                DrawFrom.RightBottom,
+                character.isTurnedRight() ? Flip.None : Flip.Horizontally
+        );
+
+        draw.text(String.format("%s %d", character.getDisplayName(), character.shared.hp),
+                character.getPosition().invertY(viewSize.getHeight()).sub(50, 60)
+        );
+        Rectangle hpBar = new Rectangle(character.getPosition().invertY(viewSize.getHeight()).sub(20, 80), 50, 6);
+        canvas.setColor(Color.red);
+        draw.borders(hpBar);
+        hpBar.width = (int) Math.round(hpBar.width * ((double) character.getHp() / 500.0));
+
+        draw.fill(hpBar);
+    }
+
+    private void drawLadders(GameMap worldMap) {
+        for (Ladder ladder : worldMap.getLadders()) {
+            draw.ladder(ladder);
+        }
+    }
+
+    private void drawFloors(GameMap worldMap) {
+        for (Floor floor : worldMap.getFloors()) {
+            draw.floor(floor);
+        }
+    }
+
+    private void drawBackground(Rectangle borders) {
+        for (int i = 0; i <= Math.ceil(borders.width / 167); i++) {
+            draw.image("background.png", new Point(
+                            CAMERA_SIDE_MARGIN + i * 167,
+                            viewSize.getHeight() - borders.height),
+                    DrawFrom.MiddleTop);
+        }
+    }
+
+    private Point getPlayerPosition(Character[] characters, int playerCharacterId) {
+        Point playerPos = null;
+        for (Character character : characters) {
+            if (character.getCharacterId() == playerCharacterId) {
+                playerPos = character.getPosition();
+                break;
+            }
+        }
+        if (playerPos == null) throw new AssertionError("Index not contained in array.");
+        return playerPos;
     }
 
     private Shape lightShape(Point player) {

@@ -3,15 +3,13 @@ package gameplay;
 public class CharacterCommonState {
     final static int Width = 23, Height = 35;
 
-    boolean
-            walking = false;
+    boolean walking = false;
     boolean climbingLadder = false;
     private boolean onLadderTop = false;
     private boolean disableLadderTopCollision = false;
     boolean onGround = false;
 
-    int
-            timeInAir = 0;
+    int timeInAir = 0;
     public int jumpFrame = -1;
     public int basicFrame = -1;
     public int shootFrame = -1;

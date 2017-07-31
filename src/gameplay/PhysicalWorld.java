@@ -4,7 +4,6 @@ import network.KeysState;
 import network.Network.Command;
 import ui.gfx.FrameAnimation;
 
-import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +11,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
     private final static int TPS = 100;
     private final static double MS_PER_UPDATE = 1000 / TPS;
 
-    public final Insets boundries = new Insets(480, 0, 0, 640);
     final protected Map<Integer, Character> characters = new ConcurrentHashMap<>();
     private final Thread loopThread;
 

@@ -39,17 +39,6 @@ public class MasterOfShadows {
         this.borders.addAll(borders);
     }
 
-    private static void createLightShape(List<Point2D> closestIntersections, IntersectionIterable iterable) {
-        for (int i = 0; i < closestIntersections.size(); i++) {
-            Point2D p = closestIntersections.get(i);
-            if (i == 0) {
-                iterable.iterateFirst(p.getX(), p.getY());
-            } else {
-                iterable.iterateNext(p.getX(), p.getY());
-            }
-        }
-    }
-
     void getFieldOfView(gameplay.Point lightPosition, IntersectionIterable iterable) {
         java.awt.Point pos = new java.awt.Point(lightPosition.getX(), lightPosition.getY());
         List<Line2D> rays = this.createRays(pos);
@@ -57,18 +46,6 @@ public class MasterOfShadows {
         closestIntersections.sort(byAngleComparator(pos));
         MasterOfShadows.createLightShape(closestIntersections, iterable);
     }
-
-    private List<Point2D> computeClosestIntersections(List<Line2D> rays) {
-        List<Point2D> closestIntersections = new ArrayList<>();
-        for (Line2D ray : rays) {
-            Point2D closestIntersection = computeClosestIntersection(ray);
-            if (closestIntersection != null) {
-                closestIntersections.add(closestIntersection);
-            }
-        }
-        return closestIntersections;
-    }
-
 
     private List<Line2D> createRays(Point2D lightPosition) {
         final double deltaRad = 0.0001;
@@ -89,6 +66,16 @@ public class MasterOfShadows {
         return rays;
     }
 
+    private List<Point2D> computeClosestIntersections(List<Line2D> rays) {
+        List<Point2D> intersections = new ArrayList<>();
+        for (Line2D ray : rays) {
+            Point2D closestIntersection = computeClosestIntersection(ray);
+            if (closestIntersection != null) {
+                intersections.add(closestIntersection);
+            }
+        }
+        return intersections;
+    }
 
     private Point2D computeClosestIntersection(Line2D ray) {
         final double EPSILON = 1e-6;
@@ -96,6 +83,7 @@ public class MasterOfShadows {
         Point2D absoluteLocation = new Point2D.Double();
         Point2D closestIntersection = null;
         double minRelativeDistance = Double.MAX_VALUE;
+
         for (List<Line2D> lineSegments : this.lineSegments) {
             for (Line2D lineSegment : lineSegments) {
                 if (intersectLineLine(ray, lineSegment, relativeLocation, absoluteLocation)) {
@@ -111,5 +99,16 @@ public class MasterOfShadows {
             }
         }
         return closestIntersection;
+    }
+
+    private static void createLightShape(List<Point2D> closestIntersections, IntersectionIterable iterable) {
+        for (int i = 0; i < closestIntersections.size(); i++) {
+            Point2D point = closestIntersections.get(i);
+            if (i == 0) {
+                iterable.iterateFirst(point.getX(), point.getY());
+            } else {
+                iterable.iterateNext(point.getX(), point.getY());
+            }
+        }
     }
 }

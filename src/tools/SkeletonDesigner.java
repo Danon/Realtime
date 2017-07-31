@@ -227,60 +227,42 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         // left arm
         canvas.setColor(grayScale ? Color.black : Color.red);
         draw.curveCross(
-                skeleton.vect(0), skeleton.vect(2), skeleton.vect(4)
+                skeleton.getVector(0), skeleton.getVector(2), skeleton.getVector(4)
         );
 
         // left leg
         canvas.setColor(grayScale ? Color.black : Color.blue);
         draw.curveCross(
-                animation.getSkeleton(chosedFrame).position, skeleton.vect(6), skeleton.vect(8)
+                animation.getSkeleton(chosedFrame).position, skeleton.getVector(6), skeleton.getVector(8)
         );
 
         // head
         canvas.setStroke(new BasicStroke(15));
         draw.borders(new Oval(
-                Vector.transition(skeleton.vect(1), skeleton.vect(0), 0.5).asVector(),
+                Vector.transition(skeleton.getVector(1), skeleton.getVector(0), 0.5).asVector(),
                 animation.getSkeleton(chosedFrame).head.getLength() / 2
         ));
 
         canvas.setStroke(new BasicStroke(15, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
         // stomach
-        draw.line(animation.getSkeleton(chosedFrame).position, skeleton.vect(0));
+        draw.line(animation.getSkeleton(chosedFrame).position, skeleton.getVector(0));
 
 
         // right arm
         canvas.setColor(grayScale ? Color.black : Color.green);
         draw.curveCross(
-                skeleton.vect(0), skeleton.vect(3), skeleton.vect(5)
+                skeleton.getVector(0), skeleton.getVector(3), skeleton.getVector(5)
         );
 
         // right leg
         canvas.setColor(grayScale ? Color.black : Color.cyan);
         draw.curveCross(
-                animation.getSkeleton(chosedFrame).position, skeleton.vect(7).asVector(), skeleton.vect(9).asVector()
+                animation.getSkeleton(chosedFrame).position, skeleton.getVector(7).asVector(), skeleton.getVector(9).asVector()
         );
 
 
         canvas.setStroke(new BasicStroke(1));
-
-        /*
-        draw.image("shoulder.png", skeleton.vect(2), skel.leftArm.direction, new RotatePoint(0.0, -0.25));
-        draw.image("arm.png", skeleton.vect(4), skel.leftHand.direction, new RotatePoint(0.0, -0.25));
-
-        draw.image("tigh.png", skeleton.vect(6), skel.leftTigh.direction, new RotatePoint(0.0, -0.25));
-        draw.image("leg.png", skeleton.vect(8), skel.leftLeg.direction, new RotatePoint(0.0, -0.25));
-
-        draw.image("torso.png", skel.position, skel.body.direction, new RotatePoint(0.0, 0.25));
-
-        draw.image("shoulder.png", skeleton.vect(3), skel.rightArm.direction, new RotatePoint(0.0, -0.25));
-        draw.image("arm.png", skeleton.vect(5), skel.rightHand.direction, new RotatePoint(0.0, -0.25));
-
-        draw.image("tigh.png", skeleton.vect(7), skel.rightTigh.direction, new RotatePoint(0.0, -0.25));
-        draw.image("leg.png", skeleton.vect(9), skel.rightLeg.direction, new RotatePoint(0.0, -0.25));
-
-        draw.image("head.png", skeleton.vect(1), skel.head.direction, new RotatePoint(0.0, -0.25));
-        */
 
         if (!grayScale) {
             for (Vector v : skeleton.getVectors()) {

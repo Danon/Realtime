@@ -168,14 +168,13 @@ public class Drawer {
         ));
     }
 
-    public void curve(double x1, double y1, double x2, double y2, double x3, double y3) {
+    private void curve(double x1, double y1, double x2, double y2, double x3, double y3) {
         canvas.draw(new QuadCurve2D.Double(
                 serializeX(x1), serializeY(y1),
                 serializeX(x2), serializeY(y2),
                 serializeX(x3), serializeY(y3)
         ));
     }
-
 
     /**
      * Draws a rectangle.

@@ -187,21 +187,7 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
             );
 
             if (selectedFloors.contains(floor)) {
-                canvas.setColor(Color.PINK);
-                draw.line(
-                        new Point(border.x - 1, panelHeight),
-                        new Point(border.x - 1, 0));
-                draw.line(
-                        new Point(border.x + border.width, panelHeight),
-                        new Point(border.x + border.width + 1, 0));
-                draw.line(
-                        new Point(0, border.y + border.height - 1),
-                        new Point(panelWidth, border.y + border.height - 1));
-                draw.line(
-                        new Point(0, border.y - 1),
-                        new Point(panelWidth, border.y - 1));
-                canvas.setColor(Color.RED);
-                draw.borders(border);
+                drawBorder(border);
             }
 
             if (hoveredFloor != null && hoveredFloor.equals(floor)) {
@@ -222,21 +208,7 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
             );
 
             if (selectedLadders.contains(ladder)) {
-                canvas.setColor(Color.PINK);
-                draw.line(
-                        new Point(border.x - 1, panelHeight),
-                        new Point(border.x - 1, 0));
-                draw.line(
-                        new Point(border.x + border.width, panelHeight),
-                        new Point(border.x + border.width + 1, 0));
-                draw.line(
-                        new Point(0, border.y + border.height - 1),
-                        new Point(panelWidth, border.y + border.height - 1));
-                draw.line(
-                        new Point(0, border.y - 1),
-                        new Point(panelWidth, border.y - 1));
-                canvas.setColor(Color.RED);
-                draw.borders(border);
+                drawBorder(border);
             }
             if (hoveredLadder != null && hoveredLadder.equals(ladder)) {
                 canvas.setColor(Color.BLUE);
@@ -316,6 +288,24 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
 
         flip();
         //  drawnInTime((double)(System.nanoTime() - beforeTime) / 1000000.0);
+    }
+
+    private void drawBorder(Rectangle border) {
+        canvas.setColor(Color.PINK);
+        draw.line(
+                new Point(border.x - 1, panelHeight),
+                new Point(border.x - 1, 0));
+        draw.line(
+                new Point(border.x + border.width, panelHeight),
+                new Point(border.x + border.width + 1, 0));
+        draw.line(
+                new Point(0, border.y + border.height - 1),
+                new Point(panelWidth, border.y + border.height - 1));
+        draw.line(
+                new Point(0, border.y - 1),
+                new Point(panelWidth, border.y - 1));
+        canvas.setColor(Color.RED);
+        draw.borders(border);
     }
 
 

@@ -80,11 +80,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
 
         btnJoinTeam1.setText("Join \"Te Ahi\"");
         btnJoinTeam1.setName("joinTeam1"); // NOI18N
-        btnJoinTeam1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnJoinTeam1ActionPerformed(evt);
-            }
-        });
+        btnJoinTeam1.addActionListener(this::btnJoinTeam1ActionPerformed);
 
         javax.swing.GroupLayout pnlTeamLookup1Layout = new javax.swing.GroupLayout(pnlTeamLookup1);
         pnlTeamLookup1.setLayout(pnlTeamLookup1Layout);
@@ -142,11 +138,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
 
         btnJoinTeam2.setText("Join \"Veseae\"");
         btnJoinTeam2.setName("joinTeam2"); // NOI18N
-        btnJoinTeam2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnJoinTeam2ActionPerformed(evt);
-            }
-        });
+        btnJoinTeam2.addActionListener(this::btnJoinTeam2ActionPerformed);
 
         javax.swing.GroupLayout pnlTeamLookup2Layout = new javax.swing.GroupLayout(pnlTeamLookup2);
         pnlTeamLookup2.setLayout(pnlTeamLookup2Layout);
@@ -177,11 +169,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
 
         btnJoinTeam3.setText("Join \"Ddaear\"");
         btnJoinTeam3.setName("joinTeam3"); // NOI18N
-        btnJoinTeam3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnJoinTeam3ActionPerformed(evt);
-            }
-        });
+        btnJoinTeam3.addActionListener(this::btnJoinTeam3ActionPerformed);
 
         javax.swing.GroupLayout pnlTeamLookup3Layout = new javax.swing.GroupLayout(pnlTeamLookup3);
         pnlTeamLookup3.setLayout(pnlTeamLookup3Layout);
@@ -212,11 +200,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
 
         btnJoinTeam4.setText("Join \"Aria\"");
         btnJoinTeam4.setName("joinTeam4"); // NOI18N
-        btnJoinTeam4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnJoinTeam4ActionPerformed(evt);
-            }
-        });
+        btnJoinTeam4.addActionListener(this::btnJoinTeam4ActionPerformed);
 
         javax.swing.GroupLayout pnlTeamLookup4Layout = new javax.swing.GroupLayout(pnlTeamLookup4);
         pnlTeamLookup4.setLayout(pnlTeamLookup4Layout);
@@ -241,11 +225,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
 
         btntReady.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btntReady.setText("Ready");
-        btntReady.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btntReadyActionPerformed(evt);
-            }
-        });
+        btntReady.addActionListener(this::btntReadyActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

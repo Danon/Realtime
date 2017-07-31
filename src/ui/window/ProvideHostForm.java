@@ -50,7 +50,7 @@ public class ProvideHostForm extends javax.swing.JFrame implements IHostObserver
         lblDiscoverHost = new javax.swing.JLabel();
         btnRefresh = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lstAvialbleHosts = new javax.swing.JList();
+        lstAvialbleHosts = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Connect to server");

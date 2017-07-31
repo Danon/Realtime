@@ -6,9 +6,6 @@ import util.save.Savable;
 import util.save.SaveInput;
 import util.save.SaveOutput;
 
-/**
- * @author Danio
- */
 public class SkeletonAnimation implements Savable
 {
     String name;

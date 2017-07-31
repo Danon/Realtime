@@ -4,10 +4,10 @@ import ui.gfx.FrameAnimation;
 import util.Validate;
 
 public class PhysicSimulation {
-    static double JUMP_VELOCITY = 4; //2.55;
-    static double RUN_SPEED = 1.1;     // + (110px) per second
-    static double CLIMB_SPEED = 0.8;     // + (60px) per second
-    static double FALL_ACCELERATION = 0.07;    // + (7px/s) per second
+    private static double JUMP_VELOCITY = 4; //2.55;
+    private static double RUN_SPEED = 1.1;     // + (110px) per second
+    private static double CLIMB_SPEED = 0.8;     // + (60px) per second
+    private static double FALL_ACCELERATION = 0.07;    // + (7px/s) per second
 
     private GameMap currentMap;
 
@@ -27,7 +27,6 @@ public class PhysicSimulation {
     public int getMapHeight() {
         return currentMap.getHeight();
     }
-
 
     enum FloorIs {
         Below, Above
@@ -242,9 +241,6 @@ public class PhysicSimulation {
 
             this.running(character);
 
-            // if user press the "Up" button and his character is on the ground
-            // or was there respectively little time ago:
-            //  > jump
             if (character.shared.keysState.Up && allowedJump(character)) {
                 character.shared.velocityY = JUMP_VELOCITY;
                 character.common.onGround = false;
@@ -283,15 +279,7 @@ public class PhysicSimulation {
         return minDistance;
     }
 
-    /**
-     * Returns start distance from character's position to the closest floor on the right or left to him.
-     *
-     * @param character Character that is checked for distance.
-     * @return Distance from character's position to the closest floor on the right or left to him.
-     * @see gameplay.Character
-     * @see gameplay.Floor
-     */
-    double closestHorizontalObstacle(From from, gameplay.Character character) {
+    private double closestHorizontalObstacle(From from, gameplay.Character character) {
 
         double minDistance = this.getMapWidth();  // largest possible value
 
@@ -301,25 +289,27 @@ public class PhysicSimulation {
                         ? floor.getLeft() - character.getRightSideX()
                         : character.getLeftSideX() - floor.getRight();
 
-                if (dist >= 0) { // only change distance if Floor is in the right direction (negative values are opposite direction)
+                if (dist == 0) {
+                    return 0;
+                }
+                if (dist > 0) { // only change distance if Floor is in the right direction (negative values are opposite direction)
                     minDistance = Math.min(minDistance, dist);
-                    if (dist == 0) return 0;
                 }
             }
         }
         return minDistance;
     }
 
-    boolean attacking(gameplay.Character character) {
+    private boolean attacking(gameplay.Character character) {
         return character.common.basicFrame > -1 || character.common.shootFrame > -1;
     }
 
-    boolean allowedJump(gameplay.Character character) {
+    private boolean allowedJump(gameplay.Character character) {
         return character.common.onGround;
         // return (character.common.onGround || character.common.timeInAir < OFF_FLOOR_JUMP_MARG);
     }
 
-    boolean allowedWalkMovement(gameplay.Character character) {
+    private boolean allowedWalkMovement(gameplay.Character character) {
         return !character.common.onGround || !attacking(character);
     }
 }

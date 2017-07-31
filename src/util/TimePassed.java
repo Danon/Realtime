@@ -1,11 +1,7 @@
 package util;
 
-/**
- * @author Danio
- * @since 1.0
- */
 public class TimePassed {
-    private final static int NANO_IN_MICROSECONDS = 1000000;
+    private final static int NANO_IN_MICROSECONDS = 1000 * 1000;
 
     private final String canonicalName;
     private final long startTime;

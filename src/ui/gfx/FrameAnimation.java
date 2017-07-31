@@ -1,7 +1,6 @@
 package ui.gfx;
 
 public class FrameAnimation {
-    Spritesheet parentSpritesheet;
     private final String name;
     private final int animationSpeed;
     private final Frame[] frames;
@@ -12,8 +11,7 @@ public class FrameAnimation {
         this.frames = frames;
     }
 
-    public void setSpritesheet(Spritesheet spritesheet) {
-        parentSpritesheet = spritesheet;
+    void setSpritesheet(Spritesheet spritesheet) {
         for (Frame frame : this.frames) {
             frame.setSpritesheet(spritesheet);
         }

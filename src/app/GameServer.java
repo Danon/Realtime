@@ -224,48 +224,42 @@ public class GameServer implements ServerConnectionListener {
         UserAccount user = new UserAccount(reader.getValue(), command.username, command.plainPassword);
         SaveManager.save(reader, "settings", "userId");
 
-        if (!SaveManager.Accounts.save(user)) {
-            conn.sendTCP(new Command.LoginRejected("Couldn't save the characer. Maybe try again later?"));
-            return;
-        } else {
+        if (SaveManager.Accounts.save(user)) {
             conn.sendTCP(new Command.Registered(user.getUsername()));
+        } else {
+            conn.sendTCP(new Command.LoginRejected("Couldn't save the characer. Maybe try again later?"));
         }
     }
 
     @Override
-    public void message(ServerAccommodationConnection conn, Command.JoinTeam command) {
+    public void message(ServerAccommodationConnection conn, Command.JoinTeam joinTeam) {
         if (matchStarted) return;
 
-        Command.JoinTeam joinTeamRequest = command;
-        conn.getAccomodator().lobbyEntry.setChosenTeamId(joinTeamRequest.teamId);
+        conn.getAccomodator().lobbyEntry.setChosenTeamId(joinTeam.teamId);
 
         server.sendToAllTCP(new Command.LobbyTeamsChanged(Accommodator.getLobbyTeams(loggedIn)));
     }
 
     @Override
-    public void message(ServerAccommodationConnection conn, Command.ReadyForGame command) {
+    public void message(ServerAccommodationConnection conn, Command.ReadyForGame readyForGame) {
         if (matchStarted) return;
 
-        Command.ReadyForGame readyMsg = command;
-        conn.getAccomodator().lobbyEntry.setReadyForGame(readyMsg.state);
+        conn.getAccomodator().lobbyEntry.setReadyForGame(readyForGame.state);
         recheckGameStart();
     }
 
     @Override
-    public void message(ServerAccommodationConnection conn, Command.ChangePlayerControls command) {
+    public void message(ServerAccommodationConnection conn, Command.ChangePlayerControls playerControls) {
         if (!matchStarted) return;
-
-        Command.ChangePlayerControls controlsChanged = command;
 
         int charId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
 
-        world.messageArrived(charId, controlsChanged);
+        world.messageArrived(charId, playerControls);
         server.sendToAllTCP(world.waitForAcceptance(charId));
     }
 
     @Override
-    public void message(ServerAccommodationConnection conn, Command.ChatMessage command) {
-        Command.ChatMessage chatMessage = command;
+    public void message(ServerAccommodationConnection conn, Command.ChatMessage chatMessage) {
         chatMessage.senderId = conn.getAccomodator().user.getId();
         server.sendToAllTCP(chatMessage);
     }

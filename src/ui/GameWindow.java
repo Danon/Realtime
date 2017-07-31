@@ -11,8 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameWindow extends JFrame implements IWorldUpdateObserver,
-        KeyListener, MouseMotionListener, MouseListener {
+public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
     private ClientWorld world;
 
     private final IKeyStateNotifier keyStateNotifier;
@@ -26,7 +25,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver,
 
     GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize) {
         this.windowSize = windowSize;
-        renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
+        this.renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
 
         this.keyStateNotifier = keyStateNotifier;
     }
@@ -54,6 +53,8 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver,
             } else {
                 System.err.println("Full screen not supported.");
             }
+
+            windowGraphics = this.getGraphics();
         } else {
             if (Application.RunOptions.isUsed("-Windowed")) {
                 this.setSize(windowSize.getWidth(), windowSize.getHeight());
@@ -93,10 +94,6 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver,
             prevRight = right;
         }
     }
-    
-    /*
-       ControlAction and Mouse Events
-    */
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -143,12 +140,6 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver,
         this.world.movePlayerCharacter(keysState); // client side interpolation
     }
 
-
-    /**
-     * ControlAction released.
-     *
-     * @param e event
-     */
     @Override
     public void keyReleased(KeyEvent e) {
         if (Chat.textFieldShown()) {

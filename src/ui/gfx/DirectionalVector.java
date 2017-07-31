@@ -7,7 +7,7 @@ public class DirectionalVector {
     public double length;
     public Angle direction;
 
-    DirectionalVector() {
+    private DirectionalVector() {
         this.direction = new Angle();
         this.length = 0;
     }
