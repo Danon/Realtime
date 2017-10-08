@@ -24,7 +24,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
 
     @Override
     final public void run() {
-
         double previous = millisecondsPassed();
         double lag = 0.0;
 
@@ -131,5 +130,4 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
     private double millisecondsPassed() {
         return System.nanoTime() / 1000000;
     }
-
 }

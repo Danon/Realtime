@@ -24,14 +24,14 @@ public class Chat {
             throw new IllegalArgumentException("Count must be positive number");
         }
 
-        if (messages.isEmpty()) {
-            return new String[0];
+        if (messages.size() < count) {
+            return messages.toArray(new String[messages.size()]);
         }
 
         return messages
                 .subList(
                         max(0, messages.size() - count - 1),
-                        max(0, messages.size() - 1)
+                        max(1, messages.size())
                 )
                 .toArray(new String[min(count, messages.size())]);
     }

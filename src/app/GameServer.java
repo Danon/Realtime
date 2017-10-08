@@ -254,7 +254,8 @@ public class GameServer implements ServerConnectionListener {
         int charId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
 
         world.messageArrived(charId, playerControls);
-        server.sendToAllTCP(world.waitForAcceptance(charId));
+        world.waitForAcceptance(charId)
+                .ifPresent(state -> server.sendToAllTCP(state));
     }
 
     @Override

@@ -58,7 +58,7 @@ public class ClientUserInterface extends CustomUserInterface {
     }
 
     public void incomingChatMessage(int senderId, String text) {
-        chat.addMessage(senderId + ": " + text);
+        chat.addMessage(senderId + ": " + text.trim());
         chat.setLast5ForEasyRetrieval();
     }
 

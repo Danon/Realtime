@@ -5,6 +5,7 @@ import network.Network.WorldMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 final public class ServerWorld extends PhysicalWorld {
@@ -15,7 +16,7 @@ final public class ServerWorld extends PhysicalWorld {
         queue.put(characterId, message);
     }
 
-    public Command.UpdateSharedState waitForAcceptance(int characterId) {
+    public Optional<Command.UpdateSharedState> waitForAcceptance(int characterId) {
         try {
             synchronized (this) {
                 wait();
@@ -23,17 +24,15 @@ final public class ServerWorld extends PhysicalWorld {
         } catch (InterruptedException ignored) {
         }
 
-        Character c;
         synchronized (out) {
-            c = out.get(characterId);
-            out.remove(characterId);
-        }
+            if (out.containsKey(characterId)) {
+                Character c = out.get(characterId);
+                out.remove(characterId);
+                return Optional.of(new Command.UpdateSharedState(c.shared));
+            }
 
-        if (c == null) {
-            System.out.println("Can't get character " + characterId);
+            return Optional.empty();
         }
-
-        return new Command.UpdateSharedState(c.shared);
     }
 
     @Override
@@ -66,13 +65,13 @@ final public class ServerWorld extends PhysicalWorld {
     }
 
     private void movePendingForAcceptance(int characterId, Command.ChangePlayerControls message) {
-        synchronized (characters) {
-            Character cha = characters.get(characterId);
+        Character cha = characters.get(characterId);
 
-            cha.shared.keysState.set(message.keysState);
-            cha.shared.leftClick = message.leftClick;
-            cha.shared.rightClick = message.rightClick;
+        cha.shared.keysState.set(message.keysState);
+        cha.shared.leftClick = message.leftClick;
+        cha.shared.rightClick = message.rightClick;
 
+        synchronized (out) {
             out.put(characterId, cha);
         }
     }
