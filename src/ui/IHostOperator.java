@@ -7,6 +7,10 @@ public interface IHostOperator {
 
     void connectToHost(InetAddress address);
 
+    void disconnect();
+
+    boolean isConnected();
+
     void loginToHost(String username, String plainPassword);
 
     void registerOnHost(String username, String plainPassword);

@@ -54,6 +54,16 @@ public class ClientConnectionManager extends KryonetListener implements IHostOpe
     }
 
     @Override
+    public boolean isConnected() {
+        return kryoClient.isConnected();
+    }
+
+    @Override
+    public void disconnect() {
+        kryoClient.close();
+    }
+
+    @Override
     public void loginToHost(String username, String plainPassword) {
         kryoClient.sendTCP(new Command.WantsLogin(username, new Password(plainPassword)));
     }

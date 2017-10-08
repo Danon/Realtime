@@ -33,10 +33,6 @@ public class GameClient implements ClientConnectionListener {
         userInterface.open();
     }
 
-    /*
-       As a connection listener
-    */
-
     @Override
     public void connected() {
         // client.updateReturnTripTime();   // ping
@@ -67,6 +63,8 @@ public class GameClient implements ClientConnectionListener {
     @Override
     public void messageLoginRejected(Command.LoginRejected command) {
         userInterface.showInfo(command.reason);
+        client.disconnect();
+        userInterface.open();
     }
 
     @Override

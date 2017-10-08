@@ -170,6 +170,7 @@ public class ServerLoginForm extends javax.swing.JFrame {
         }
 
         operator.loginToHost(username, Arrays.toString(password));
+        this.setVisible(false);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
