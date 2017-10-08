@@ -66,6 +66,11 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
     }
 
     @Override
+    public void connected(Connection c) {
+        forEach(listener -> listener.connected((ServerAccommodationConnection) c));
+    }
+
+    @Override
     public void disconnected(Connection c) {
         ServerAccommodationConnection connection = (ServerAccommodationConnection) c;
         Accommodator accomodator = connection.getAccomodator();

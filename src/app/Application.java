@@ -8,7 +8,7 @@ import java.io.IOException;
 import static javax.swing.JOptionPane.*;
 
 public class Application {
-    public final static String VERSION = "0.019.0";
+    public final static String VERSION = "0.02";
     public final static Options RunOptions = new Options();
 
     public static void main(String[] args) throws IOException {
@@ -18,6 +18,7 @@ public class Application {
         if (RunOptions.isUsed("-Debug")) {
             Resources.load();
             new GameServer();
+            new GameClient().openUserInterface();
             new GameClient().openUserInterface();
         } else {
             int option = showOptionDialog(null,

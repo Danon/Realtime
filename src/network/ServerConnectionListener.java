@@ -3,7 +3,7 @@ package network;
 import network.Network.Command;
 
 public interface ServerConnectionListener {
-    void connected();
+    void connected(ServerAccommodationConnection connection);
 
     void disconnected(Accommodator accommodator);
 

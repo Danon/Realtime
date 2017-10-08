@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class GameServer implements ServerConnectionListener {
     private ServerConnectionManager server;
 
@@ -23,9 +25,7 @@ public class GameServer implements ServerConnectionListener {
     private ServerWorld world = new ServerWorld();
     private static boolean matchStarted = false;
 
-    // GameRoom Requirements (which can be shared among Rooms)
     private final static int maxPlayers = 20;
-    public final static int requiredPlayers = Application.RunOptions.isUsed("-Debug") ? 1 : 2;
 
     GameServer() throws IOException {
         this.world.setMap(SaveManager.Map.load("Standard"));
@@ -53,13 +53,9 @@ public class GameServer implements ServerConnectionListener {
             return;
         }
 
-        // Apply a ServerAccomodator to the connection.
         conn.setAccomodator(accommodator);
-
-        // Add accomodator to the room
         loggedIn.add(accommodator);
 
-        // Inform the player that login was successful.
         conn.sendTCP(new Command.LoggedIn(accommodator.user.getId(), accommodator.user.getUsername()));
 
         if (matchStarted) {
@@ -112,8 +108,15 @@ public class GameServer implements ServerConnectionListener {
     }
 
     @Override
-    public void connected() {
+    public void connected(ServerAccommodationConnection connection) {
+        Command.LobbyWelcome welcome = new Command.LobbyWelcome();
 
+        welcome.teams = loggedIn.stream()
+                .map(accommodator -> accommodator.lobbyEntry)
+                .collect(toList())
+                .toArray(new LobbyEntry[loggedIn.size()]);
+
+        connection.sendTCP(welcome);
     }
 
     @Override

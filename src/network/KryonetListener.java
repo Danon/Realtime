@@ -79,6 +79,14 @@ abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
             return;
         }
 
+        if (object instanceof Network.Command.LobbyWelcome) {
+            Network.Command.LobbyWelcome message = (Network.Command.LobbyWelcome) object;
+
+            forAll(listener -> listener.messageLobbyWelcome(message));
+            lobbyListeners.forEach(listener -> listener.messageLobbyWelcome(message));
+            return;
+        }
+
         if (object instanceof Network.Command.UpdateSharedState) {
             forAll(listener -> listener.messageUpdateSharedState((Network.Command.UpdateSharedState) object));
             return;

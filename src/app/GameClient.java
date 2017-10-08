@@ -79,6 +79,11 @@ public class GameClient implements ClientConnectionListener {
     }
 
     @Override
+    public void messageLobbyWelcome(Command.LobbyWelcome command) {
+        lobby.teamSet(command.teams);
+    }
+
+    @Override
     public void messageChatMessage(Command.ChatMessage command) {
         userInterface.incomingChatMessage(command.senderId, command.text);
     }

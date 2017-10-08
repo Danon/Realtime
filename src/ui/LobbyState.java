@@ -15,6 +15,7 @@ public class LobbyState extends AbstractListModel<LobbyEntry> {
 
     public void setLobbyEntries(List<LobbyEntry> lobbyEntries) {
         this.lobbyEntries = lobbyEntries;
+        this.fireContentsChanged(this, 0, lobbyEntries.size() - 1);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class LobbyState extends AbstractListModel<LobbyEntry> {
 
     public void addUser(int userId, int chosenId, boolean readyForGame) {
         lobbyEntries.add(new LobbyEntry(userId, "Unkknown", readyForGame, chosenId));
-        this.fireContentsChanged(this, lobbyEntries.size()-1, lobbyEntries.size()-1);
+        this.fireContentsChanged(this, lobbyEntries.size() - 1, lobbyEntries.size() - 1);
     }
 
     public void removeUser(int userId) {

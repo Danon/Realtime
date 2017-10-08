@@ -291,6 +291,30 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     }
 
     @Override
+    public void teamSet(LobbyEntry[] teammates) {
+        SwingUtilities.invokeLater(() -> {
+            List<List<LobbyEntry>> teams = new ArrayList<List<LobbyEntry>>() {{
+                add(new ArrayList<>());
+                add(new ArrayList<>());
+                add(new ArrayList<>());
+                add(new ArrayList<>());
+                add(new ArrayList<>());
+            }};
+
+            for (LobbyEntry state : teammates) {
+                int id = state.getChosenTeamId();
+                if (id != LobbyEntry.ROOMLESS) {
+                    teams.get(id).add(state);
+                }
+            }
+
+            for (int i = 1; i < teams.size(); i++) {
+                lobbyStates.get(i - 1).setLobbyEntries(teams.get(i));
+            }
+        });
+    }
+
+    @Override
     public void receiveTextMessage(int userId, String text) {
         SwingUtilities.invokeLater(() -> chatModel.addElement(userId + ": " + text));
     }
