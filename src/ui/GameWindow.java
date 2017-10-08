@@ -13,6 +13,7 @@ import java.awt.event.*;
 
 public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
     private ClientWorld world;
+    private Chat chat;
 
     private final IKeyStateNotifier keyStateNotifier;
 
@@ -37,6 +38,11 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     void attachWorld(ClientWorld world) {
         this.world = world;
         renderer.attachWorld(world);
+    }
+
+    void attachChat(Chat chat) {
+        this.chat = chat;
+        renderer.attachChat(chat);
     }
 
     void showGameWindow() {
@@ -97,8 +103,8 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (Chat.isTextFieldShown()) {
-            Chat.keyPressed(e.getKeyChar());
+        if (chat.isTextFieldShown()) {
+            chat.keyPressed(e.getKeyChar());
         }
     }
 
@@ -106,23 +112,23 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_ENTER:
-                if (!Chat.toggleTextField()) {
-                    if (!Chat.textEmpty()) {
-                        keyStateNotifier.sendTextMessage(Chat.getText());
-                        Chat.showHistory();
-                        Chat.clearText();
+                if (!chat.toggleTextField()) {
+                    if (!chat.isTextEmpty()) {
+                        keyStateNotifier.sendTextMessage(chat.getText());
+                        chat.showHistory();
+                        chat.clearText();
                     }
                 }
                 return;
             case KeyEvent.VK_ESCAPE:
-                if (Chat.textEmpty()) {
-                    Chat.hideTextField();
+                if (chat.isTextEmpty()) {
+                    chat.hideTextField();
                 } else {
-                    Chat.clearText();
+                    chat.clearText();
                 }
                 return;
         }
-        if (Chat.isTextFieldShown()) return;
+        if (chat.isTextFieldShown()) return;
         switch (e.getKeyChar()) {
             case 'w':
                 keysState.Up = true;
@@ -142,7 +148,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (Chat.isTextFieldShown()) {
+        if (chat.isTextFieldShown()) {
             return;
         }
         switch (e.getKeyChar()) {

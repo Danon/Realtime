@@ -24,7 +24,7 @@ public final class Renderer implements IRenderObserver {
     private final Size viewSize;
     private Size windowSize;
     private ClientWorld world;
-
+    private Chat chat;
     private FontMetrics fontMetrics;
 
     public static int
@@ -59,6 +59,10 @@ public final class Renderer implements IRenderObserver {
     public void attachWorld(ClientWorld world) {
         this.world = world;
         prepareMasterOfShadows();
+    }
+
+    public void attachChat(Chat chat) {
+        this.chat = chat;
     }
 
     private void prepareMasterOfShadows() {
@@ -148,16 +152,16 @@ public final class Renderer implements IRenderObserver {
 
         draw.freeCamera();
 
-        if (Chat.historyShown()) {
+        if (chat.isHistoryShown()) {
             int height = 40;
-            for (String message : Chat.getPreparedMessages()) {
+            for (String message : chat.getPreparedMessages()) {
                 draw.text(message, new Point(15, height += 18));
             }
         }
-        if (Chat.isTextFieldShown()) {
+        if (chat.isTextFieldShown()) {
             draw.borders(new Rectangle(10, viewSize.getHeight() - 40, 400, 20));
-            draw.text(Chat.getText(), new Point(17, viewSize.getHeight() - 24));
-            int textWidth = fontMetrics.stringWidth(Chat.getText());
+            draw.text(chat.getText(), new Point(17, viewSize.getHeight() - 24));
+            int textWidth = fontMetrics.stringWidth(chat.getText());
             draw.line(new Point(15 + textWidth + 4, viewSize.getHeight() - 24),
                     new Point(15 + textWidth + 4, viewSize.getHeight() - 36)
             );

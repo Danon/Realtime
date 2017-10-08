@@ -14,6 +14,7 @@ public class ClientUserInterface extends CustomUserInterface {
 
     private ProvideHostForm hostProvideForm;
     private LobbyForm lobbyForm;
+    private Chat chat;
 
     private int ping;
 
@@ -21,7 +22,9 @@ public class ClientUserInterface extends CustomUserInterface {
         gameWindow = new GameWindow(keyStateNotifier, windowSize);
         world = new ClientWorld(gameWindow.getRenderObserver(), gameWindow);
         world.setMap(SaveManager.Map.load("Standard"));
+        chat = new Chat();
         gameWindow.attachWorld(this.world);
+        gameWindow.attachChat(this.chat);
     }
 
     public void startGame(Character[] characters) {
@@ -30,10 +33,6 @@ public class ClientUserInterface extends CustomUserInterface {
         }
         gameWindow.showGameWindow();
         world.startLoop();
-    }
-
-    public IWorldUpdateObserver getWorldUpdateObserver() {
-        return this.gameWindow;
     }
 
     public IHostObserver createHostObserver(IHostOperator operator) {
@@ -59,8 +58,8 @@ public class ClientUserInterface extends CustomUserInterface {
     }
 
     public void incomingChatMessage(int senderId, String text) {
-        Chat.addMessage(senderId + ": " + text);
-        Chat.setLast5ForEasyRetrieval();
+        chat.addMessage(senderId + ": " + text);
+        chat.setLast5ForEasyRetrieval();
     }
 
     public void pingTime(int ms) {

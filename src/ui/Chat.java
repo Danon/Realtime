@@ -1,66 +1,63 @@
 package ui;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class Chat {
-    private static volatile boolean fieldOpen;
-    private static volatile boolean historyOpen;
-    private static volatile String textTyped = "";
+    private boolean fieldOpen;
+    private boolean historyOpen;
+    private String textTyped = "";
 
-    private static final List<String> messages = new ArrayList<>();
-    private static volatile String[] preparedMessages = new String[0];
+    private final List<String> messages = new CopyOnWriteArrayList<>();
+    private volatile String[] preparedMessages = new String[0];
 
-    static void addMessage(String text) {
-        synchronized (messages) {
-            messages.add(text);
-        }
+    void addMessage(String text) {
+        messages.add(text);
         showHistory();
     }
 
-    private static String[] getLastMessages(int count) {
+    private String[] getLastMessages(int count) {
         if (count < 1) {
             throw new IllegalArgumentException("Count must be positive number");
         }
 
-        synchronized (messages) {
-            if (messages.isEmpty()) {
-                return new String[0];
-            }
-
-            return messages
-                    .subList(
-                            max(0, messages.size() - count - 1),
-                            max(0, messages.size() - 1)
-                    )
-                    .toArray(new String[Math.min(count, messages.size())]);
+        if (messages.isEmpty()) {
+            return new String[0];
         }
+
+        return messages
+                .subList(
+                        max(0, messages.size() - count - 1),
+                        max(0, messages.size() - 1)
+                )
+                .toArray(new String[min(count, messages.size())]);
     }
 
-    static void setLast5ForEasyRetrieval() {
+    void setLast5ForEasyRetrieval() {
         preparedMessages = getLastMessages(5);
     }
 
-    public static String[] getPreparedMessages() {
+    public String[] getPreparedMessages() {
         return preparedMessages;
     }
 
-    private static void showTextField() {
+    private void showTextField() {
         fieldOpen = true;
         historyOpen = true;
     }
 
-    static void hideTextField() {
+    void hideTextField() {
         fieldOpen = false;
     }
 
-    public static boolean isTextFieldShown() {
+    public boolean isTextFieldShown() {
         return fieldOpen;
     }
 
-    static boolean toggleTextField() {
+    boolean toggleTextField() {
         if (fieldOpen) {
             hideTextField();
         } else {
@@ -69,27 +66,27 @@ public class Chat {
         return isTextFieldShown();
     }
 
-    public static boolean historyShown() {
+    public boolean isHistoryShown() {
         return historyOpen;
     }
 
-    static void showHistory() {
+    void showHistory() {
         historyOpen = true;
     }
 
-    public static String getText() {
+    public String getText() {
         return textTyped;
     }
 
-    static boolean textEmpty() {
+    boolean isTextEmpty() {
         return textTyped.equals("");
     }
 
-    static void clearText() {
+    void clearText() {
         textTyped = "";
     }
 
-    static void keyPressed(char key) {
+    void keyPressed(char key) {
         textTyped += key;
     }
 }
