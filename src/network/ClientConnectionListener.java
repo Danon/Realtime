@@ -2,7 +2,7 @@ package network;
 
 import network.Network.Command;
 
-public interface ClientConnectionListener {
+public interface ClientConnectionListener extends ClientLoginListener {
     void connected();
 
     void connectError();
@@ -10,10 +10,6 @@ public interface ClientConnectionListener {
     void disconnected();
 
     void messageRegistered(Command.Registered command);
-
-    void messageLoggedIn(Command.LoggedIn command);
-
-    void messageLoginRejected(Command.LoginRejected command);
 
     void messageMatchStarted(Command.MatchStarted command);
 

@@ -192,7 +192,6 @@ public class GameServer implements ServerConnectionListener {
         tryLoginAccomodator(conn, accommodator);
     }
 
-
     @Override
     public void message(ServerAccommodationConnection conn, Command.WantsRegister command, boolean isLoggedIn) {
         // Ignore if already logged in.
