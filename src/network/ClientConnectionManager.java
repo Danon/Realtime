@@ -44,6 +44,7 @@ public class ClientConnectionManager extends KryonetListener implements IHostOpe
         try {
             kryoClient.connect(5000, address, Network.Port.forTCP, Network.Port.forUDP);
             connectionListeners.forEach(network.ClientConnectionListener::connected);
+            hostObservers.forEach(IHostObserver::connected);
         } catch (IOException ex) {
             connectionListeners.forEach(network.ClientConnectionListener::connectError);
             return;

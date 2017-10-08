@@ -62,7 +62,7 @@ public final class Renderer implements IRenderObserver {
     }
 
     private void prepareMasterOfShadows() {
-        zed.setBounds(0, 0, world.getMapWidth(), world.getMapHeight() + Floor.HEIGHT);
+        zed.setBounds(0, 0, viewSize.getWidth(), viewSize.getHeight() + Floor.HEIGHT);
         for (Floor floor : world.getMap().getFloors()) {
             zed.addObstacle(floor.asShape());
         }
@@ -124,8 +124,8 @@ public final class Renderer implements IRenderObserver {
 
         Rectangle borders = new Rectangle(
                 0, 0,
-                world.getMapWidth(),
-                world.getMapHeight());
+                viewSize.getWidth(),
+                viewSize.getHeight());
 
         if (characters.length > 0) {
             draw.useCamera(playerPos.sub(viewSize.getWidth() / 2, viewSize.getHeight() / 2));
@@ -242,32 +242,28 @@ public final class Renderer implements IRenderObserver {
     }
 
     private Point getPlayerPosition(Character[] characters, int playerCharacterId) {
-        Point playerPos = null;
         for (Character character : characters) {
             if (character.getCharacterId() == playerCharacterId) {
-                playerPos = character.getPosition();
-                break;
+                return character.getPosition();
             }
         }
-        if (playerPos == null) throw new AssertionError("Index not contained in array.");
-        return playerPos;
+        throw new AssertionError("Index not contained in array.");
     }
 
     private Shape lightShape(Point player) {
-
         Point camera = draw.getCamera();
-        int mapHeight = world.getMapHeight();
+        final int mapHeight = viewSize.getHeight();
 
         Path2D shadowShape = new Path2D.Double();
         zed.getFieldOfView(player, new IntersectionIterable() {
             @Override
             public void iterateFirst(double x, double y) {
-                shadowShape.moveTo(x - camera.getX(), mapHeight - y + camera.getY() - 108);
+                shadowShape.moveTo(x - camera.getX(), mapHeight - y + camera.getY() + 32);
             }
 
             @Override
             public void iterateNext(double x, double y) {
-                shadowShape.lineTo(x - camera.getX(), mapHeight - y + camera.getY() - 108);
+                shadowShape.lineTo(x - camera.getX(), mapHeight - y + camera.getY() + 32);
             }
         });
         shadowShape.closePath();

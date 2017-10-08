@@ -20,8 +20,8 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     private Graphics windowGraphics;
     private final Size windowSize;
 
-    private static final int VIEW_WIDTH = 640;
-    private static final int VIEW_HEIGHT = 480;
+    private static final int VIEW_WIDTH = 800;
+    private static final int VIEW_HEIGHT = 600;
 
     GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize) {
         this.windowSize = windowSize;

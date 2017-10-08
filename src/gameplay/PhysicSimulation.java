@@ -48,7 +48,6 @@ public class PhysicSimulation {
     }
 
     void step(gameplay.Character character) {
-        assert currentMap != null;
         perform(character);
     }
 
