@@ -27,8 +27,8 @@ public class LobbyState extends AbstractListModel<LobbyEntry> {
         return lobbyEntries.get(index);
     }
 
-    public void addUser(int userId, int chosenId) {
-        lobbyEntries.add(new LobbyEntry(userId, "Unkknown", false, chosenId));
+    public void addUser(int userId, int chosenId, boolean readyForGame) {
+        lobbyEntries.add(new LobbyEntry(userId, "Unkknown", readyForGame, chosenId));
         this.fireContentsChanged(this, lobbyEntries.size()-1, lobbyEntries.size()-1);
     }
 

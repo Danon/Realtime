@@ -7,12 +7,15 @@ import ui.LobbyState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     private final ILobbyOperator lobby;
     private final List<LobbyState> lobbyStates = new ArrayList<>();
+    private final DefaultListModel<String> chatModel = new DefaultListModel<>();
 
     private LobbyForm(ILobbyOperator lobbyOperator, Component alignment) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -50,7 +53,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
         btnJoinTeam1 = new javax.swing.JButton();
         pnlChat = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtChatHistory = new javax.swing.JList();
+        txtChatHistory = new javax.swing.JList<>(chatModel);
         txtChatText = new javax.swing.JTextField();
         pnlTeamLookup2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -109,6 +112,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
         jScrollPane2.setViewportView(txtChatHistory);
 
         txtChatText.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtChatText.addKeyListener(new ChatTextKeyAdapter(txtChatText));
 
         javax.swing.GroupLayout pnlChatLayout = new javax.swing.GroupLayout(pnlChat);
         pnlChat.setLayout(pnlChatLayout);
@@ -275,12 +279,19 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     }
 
     @Override
-    public void teamChanged(int userId, int previousTeamId, int currentTeamId) {
+    public void teamChanged(int userId, int previousTeamId, int currentTeamId, boolean readyForGame) {
         SwingUtilities.invokeLater(() -> {
             if (previousTeamId != LobbyEntry.ROOMLESS) {
                 lobbyStates.get(previousTeamId - 1).removeUser(userId);
             }
-            lobbyStates.get(currentTeamId - 1).addUser(userId, currentTeamId);
+            lobbyStates.get(currentTeamId - 1).addUser(userId, currentTeamId, readyForGame);
+        });
+    }
+
+    @Override
+    public void receiveTextMessage(int userId, String text) {
+        SwingUtilities.invokeLater(() -> {
+            chatModel.addElement(userId + ": " + text);
         });
     }
 
@@ -325,7 +336,38 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     private javax.swing.JPanel pnlTeamLookup2;
     private javax.swing.JPanel pnlTeamLookup3;
     private javax.swing.JPanel pnlTeamLookup4;
-    private javax.swing.JList txtChatHistory;
+    private javax.swing.JList<String> txtChatHistory;
     private javax.swing.JTextField txtChatText;
     // End of variables declaration//GEN-END:variables
+
+    private class ChatTextKeyAdapter implements KeyListener {
+        private JTextField field;
+
+        ChatTextKeyAdapter(JTextField txtChatText) {
+            this.field = txtChatText;
+        }
+
+        @Override
+        public void keyTyped(KeyEvent event) {
+            if (event.getKeyChar() == KeyEvent.VK_ENTER) {
+                String text = field.getText().trim();
+                if (text.length() > 0) {
+                    lobby.sendTextMessage(text);
+                }
+                field.setText("");
+            }
+
+            if (event.getKeyChar() == KeyEvent.VK_ESCAPE) {
+                field.setText("");
+            }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent event) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent event) {
+        }
+    }
 }

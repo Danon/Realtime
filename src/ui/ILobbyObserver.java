@@ -1,5 +1,5 @@
 package ui;
 
-public interface ILobbyObserver {
-    void teamChanged(int userId, int previousTeamId, int currentTeamId);
+public interface ILobbyObserver extends ClientChatListener {
+    void teamChanged(int userId, int previousTeamId, int currentTeamId, boolean readyForGame);
 }

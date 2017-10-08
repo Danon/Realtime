@@ -238,14 +238,19 @@ public class GameServer implements ServerConnectionListener {
         int previousTeamId = accomodator.lobbyEntry.getChosenTeamId();
         accomodator.lobbyEntry.setChosenTeamId(joinTeam.teamId);
 
-        server.sendToAllTCP(new Command.LobbyTeamChanged(accomodator.user.getId(), previousTeamId, joinTeam.teamId));
+        server.sendToAllTCP(new Command.LobbyTeamChanged(accomodator.user.getId(), previousTeamId, joinTeam.teamId, accomodator.lobbyEntry.isReadyForGame()));
     }
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.ReadyForGame readyForGame) {
         if (matchStarted) return;
 
-        conn.getAccomodator().lobbyEntry.setReadyForGame(readyForGame.state);
+        Accommodator accomodator = conn.getAccomodator();
+        accomodator.lobbyEntry.setReadyForGame(readyForGame.state);
+        int teamId = accomodator.lobbyEntry.getChosenTeamId();
+
+        server.sendToAllTCP(new Command.LobbyTeamChanged(accomodator.user.getId(), teamId, teamId, accomodator.lobbyEntry.isReadyForGame()));
+
         recheckGameStart();
     }
 
@@ -264,5 +269,4 @@ public class GameServer implements ServerConnectionListener {
         chatMessage.senderId = conn.getAccomodator().user.getId();
         server.sendToAllTCP(chatMessage);
     }
-
 }

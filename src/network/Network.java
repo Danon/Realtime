@@ -157,14 +157,16 @@ public class Network {
             public int userId;
             public int previousTeamId;
             public int currentTeamId;
+            public boolean readyForGame;
 
             public LobbyTeamChanged() {
             }
 
-            public LobbyTeamChanged(int userId, int previousTeamId, int currentTeamId) {
+            public LobbyTeamChanged(int userId, int previousTeamId, int currentTeamId, boolean readyForGame) {
                 this.userId = userId;
                 this.previousTeamId = previousTeamId;
                 this.currentTeamId = currentTeamId;
+                this.readyForGame = readyForGame;
             }
         }
 
@@ -228,5 +230,4 @@ public class Network {
             }
         }
     }
-
 }

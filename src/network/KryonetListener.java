@@ -1,6 +1,7 @@
 package network;
 
 import com.esotericsoftware.kryonet.Connection;
+import ui.ClientChatListener;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -10,6 +11,7 @@ abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
     List<ClientConnectionListener> connectionListeners = new CopyOnWriteArrayList<>();
     private List<ClientLoginListener> loginListeners = new CopyOnWriteArrayList<>();
     private List<ClientLobbyListener> lobbyListeners = new CopyOnWriteArrayList<>();
+    private List<ClientChatListener> chatListeners = new CopyOnWriteArrayList<>();
 
     public void addConnectionListener(ClientConnectionListener listener) {
         connectionListeners.add(listener);
@@ -21,6 +23,10 @@ abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
 
     public void addLobbyListener(ClientLobbyListener listener) {
         lobbyListeners.add(listener);
+    }
+
+    public void addChatListener(ClientChatListener listener) {
+        chatListeners.add(listener);
     }
 
     private void forAll(Consumer<ClientConnectionListener> consumer) {
@@ -89,8 +95,10 @@ abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
         }
 
         if (object instanceof Network.Command.ChatMessage) {
-            forAll(listener -> listener.messageChatMessage((Network.Command.ChatMessage) object));
+            Network.Command.ChatMessage message = (Network.Command.ChatMessage) object;
+
+            forAll(listener -> listener.messageChatMessage(message));
+            chatListeners.forEach(clientChatListener -> clientChatListener.receiveTextMessage(message.senderId, message.text));
         }
     }
-
 }

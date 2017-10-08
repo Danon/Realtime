@@ -30,7 +30,7 @@ public class GameClient implements ClientConnectionListener {
     void openUserInterface() {
         client.addHostObserver(userInterface.createHostObserver(client));
         lobby = userInterface.createLobbyObserver(client);
-
+        client.addChatListener(lobby);
         userInterface.open();
     }
 
@@ -81,7 +81,7 @@ public class GameClient implements ClientConnectionListener {
 
     @Override
     public void messageLobbyTeamChanged(Command.LobbyTeamChanged command) {
-        lobby.teamChanged(command.userId, command.previousTeamId, command.currentTeamId);
+        lobby.teamChanged(command.userId, command.previousTeamId, command.currentTeamId, command.readyForGame);
     }
 
     @Override
