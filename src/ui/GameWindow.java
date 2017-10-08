@@ -97,7 +97,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (Chat.textFieldShown()) {
+        if (Chat.isTextFieldShown()) {
             Chat.keyPressed(e.getKeyChar());
         }
     }
@@ -122,7 +122,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
                 }
                 return;
         }
-        if (Chat.textFieldShown()) return;
+        if (Chat.isTextFieldShown()) return;
         switch (e.getKeyChar()) {
             case 'w':
                 keysState.Up = true;
@@ -142,7 +142,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (Chat.textFieldShown()) {
+        if (Chat.isTextFieldShown()) {
             return;
         }
         switch (e.getKeyChar()) {

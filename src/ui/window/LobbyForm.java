@@ -284,15 +284,15 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
             if (previousTeamId != LobbyEntry.ROOMLESS) {
                 lobbyStates.get(previousTeamId - 1).removeUser(userId);
             }
-            lobbyStates.get(currentTeamId - 1).addUser(userId, currentTeamId, readyForGame);
+            if (currentTeamId != LobbyEntry.ROOMLESS) {
+                lobbyStates.get(currentTeamId - 1).addUser(userId, currentTeamId, readyForGame);
+            }
         });
     }
 
     @Override
     public void receiveTextMessage(int userId, String text) {
-        SwingUtilities.invokeLater(() -> {
-            chatModel.addElement(userId + ": " + text);
-        });
+        SwingUtilities.invokeLater(() -> chatModel.addElement(userId + ": " + text));
     }
 
     private void btntReadyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntReadyActionPerformed

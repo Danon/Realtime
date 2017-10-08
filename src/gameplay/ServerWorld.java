@@ -29,6 +29,10 @@ final public class ServerWorld extends PhysicalWorld {
             out.remove(characterId);
         }
 
+        if (c == null) {
+            System.out.println("Can't get character " + characterId);
+        }
+
         return new Command.UpdateSharedState(c.shared);
     }
 

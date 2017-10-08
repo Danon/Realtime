@@ -150,11 +150,11 @@ public final class Renderer implements IRenderObserver {
 
         if (Chat.historyShown()) {
             int height = 40;
-            for (String message : Chat.preparedMessages) {
-                draw.text("dupa:" + message, new Point(15, height += 18));
+            for (String message : Chat.getPreparedMessages()) {
+                draw.text(message, new Point(15, height += 18));
             }
         }
-        if (Chat.textFieldShown()) {
+        if (Chat.isTextFieldShown()) {
             draw.borders(new Rectangle(10, viewSize.getHeight() - 40, 400, 20));
             draw.text(Chat.getText(), new Point(17, viewSize.getHeight() - 24));
             int textWidth = fontMetrics.stringWidth(Chat.getText());

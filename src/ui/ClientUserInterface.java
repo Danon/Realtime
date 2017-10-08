@@ -59,7 +59,7 @@ public class ClientUserInterface extends CustomUserInterface {
     }
 
     public void incomingChatMessage(int senderId, String text) {
-        Chat.addMessage(text);
+        Chat.addMessage(senderId + ": " + text);
         Chat.setLast5ForEasyRetrieval();
     }
 

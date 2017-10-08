@@ -1,17 +1,22 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.Math.max;
 
 public class Chat {
-    private static boolean fieldOpen;
-    private static boolean historyOpen;
-    private static int historyOpenFor;
-    private static String textTyped = "";
-    private static final ArrayList<String> messages = new ArrayList<>();
-    public static String[] preparedMessages = new String[0];
+    private static volatile boolean fieldOpen;
+    private static volatile boolean historyOpen;
+    private static volatile String textTyped = "";
+
+    private static final List<String> messages = new ArrayList<>();
+    private static volatile String[] preparedMessages = new String[0];
 
     static void addMessage(String text) {
-        messages.add(text);
+        synchronized (messages) {
+            messages.add(text);
+        }
         showHistory();
     }
 
@@ -20,26 +25,38 @@ public class Chat {
             throw new IllegalArgumentException("Count must be positive number");
         }
 
-        return messages.subList(
-                Math.max(0, messages.size() - count), 0
-        ).toArray(new String[Math.min(count, messages.size())]);
+        synchronized (messages) {
+            if (messages.isEmpty()) {
+                return new String[0];
+            }
+
+            return messages
+                    .subList(
+                            max(0, messages.size() - count - 1),
+                            max(0, messages.size() - 1)
+                    )
+                    .toArray(new String[Math.min(count, messages.size())]);
+        }
     }
 
     static void setLast5ForEasyRetrieval() {
         preparedMessages = getLastMessages(5);
     }
 
+    public static String[] getPreparedMessages() {
+        return preparedMessages;
+    }
+
     private static void showTextField() {
         fieldOpen = true;
         historyOpen = true;
-        historyOpenFor = 0;
     }
 
     static void hideTextField() {
         fieldOpen = false;
     }
 
-    public static boolean textFieldShown() {
+    public static boolean isTextFieldShown() {
         return fieldOpen;
     }
 
@@ -49,7 +66,7 @@ public class Chat {
         } else {
             showTextField();
         }
-        return textFieldShown();
+        return isTextFieldShown();
     }
 
     public static boolean historyShown() {
@@ -58,7 +75,6 @@ public class Chat {
 
     static void showHistory() {
         historyOpen = true;
-        historyOpenFor = 0;
     }
 
     public static String getText() {
