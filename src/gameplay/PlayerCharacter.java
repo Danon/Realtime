@@ -15,16 +15,6 @@ final public class PlayerCharacter extends Character {
         this.teamId = teamId;
     }
 
-    public PlayerCharacter(PlayerCharacter base) {
-        this.userId = base.userId;
-        this.username = base.username;
-        this.teamId = base.teamId;
-        this.characterId = base.characterId;
-
-        this.shared = base.shared.copy();
-        this.common = base.common.copy();
-    }
-
     public String getUsername() {
         return username;
     }
@@ -33,7 +23,6 @@ final public class PlayerCharacter extends Character {
     public String getDisplayName() {
         return this.username;
     }
-
 
     @Override
     public String toString() {

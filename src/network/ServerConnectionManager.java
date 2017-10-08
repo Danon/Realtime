@@ -51,8 +51,9 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
             forEach(list -> list.message(connection, (Command.WantsRegister) command, accomodator != null));
 
         // Ignore the rest of messages, if not logged in
-        if (accomodator == null)
+        if (accomodator == null) {
             return;
+        }
 
         if (command instanceof Command.JoinTeam)
             forEach(list -> list.message(connection, (Command.JoinTeam) command));
@@ -62,7 +63,6 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
             forEach(list -> list.message(connection, (Command.ChangePlayerControls) command));
         if (command instanceof Command.ChatMessage)
             forEach(list -> list.message(connection, (Command.ChatMessage) command));
-
     }
 
     @Override

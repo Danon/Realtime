@@ -162,7 +162,6 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
         this.world.movePlayerCharacter(keysState); // client side interpolation
     }
 
-
     @Override
     public void mousePressed(MouseEvent e) {
         switch (e.getButton()) {

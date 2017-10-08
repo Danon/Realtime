@@ -27,7 +27,7 @@ public class Character {
     }
 
     public String getDisplayName() {
-        return "Character";
+        return "Character #" + characterId;
     }
 
     public Character copy() {
@@ -165,10 +165,6 @@ public class Character {
 
     @Override
     public String toString() {
-        return String.format("charId #%d", characterId);
-    }
-
-    static boolean isPlayerCharacter(Character character) {
-        return character instanceof PlayerCharacter;
+        return String.format("gameplay.Character #%d", characterId);
     }
 }

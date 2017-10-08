@@ -1,7 +1,6 @@
 package app;
 
 import debug.DebugClientConnectionManager;
-import gameplay.Character;
 import network.ClientConnectionListener;
 import network.ClientConnectionManager;
 import network.Network.Command;
@@ -9,15 +8,9 @@ import ui.ClientUserInterface;
 import ui.ILobbyObserver;
 import util.Size;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class GameClient implements ClientConnectionListener {
     private ClientUserInterface userInterface;
     private ClientConnectionManager client;
-    Set<Character> loggedCharacters = new HashSet<>();
-
-    // Object that is notified when lobby's state changed
     private ILobbyObserver lobby;
 
     GameClient() {
@@ -77,6 +70,7 @@ public class GameClient implements ClientConnectionListener {
 
     @Override
     public void messageMatchAlreadyStarted(Command.MatchAlreadyStarted command) {
+        userInterface.showInfo("Match has already started");
     }
 
     @Override

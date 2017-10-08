@@ -62,11 +62,10 @@ public class GameServer implements ServerConnectionListener {
         // Inform the player that login was successful.
         conn.sendTCP(new Command.LoggedIn(accommodator.user.getId(), accommodator.user.getUsername()));
 
-        if (!matchStarted) // check if game already is running
-        {
-            recheckGameStart(); // if not, check if match start condition is met
+        if (matchStarted) {
+            conn.sendTCP(new Command.MatchAlreadyStarted());
         } else {
-            conn.sendTCP(new Command.MatchAlreadyStarted()); // if the match is running, inform the player
+            recheckGameStart();
         }
 
         System.out.println("Logged: " + accommodator.user);
@@ -77,7 +76,6 @@ public class GameServer implements ServerConnectionListener {
     }
 
     private void recheckGameStart() {
-        // See how many players are willing to play
         CountedCharacters counted = Accommodator.countedCharacters(loggedIn);
 
         if (matchStartCondition(counted)) {
@@ -87,11 +85,8 @@ public class GameServer implements ServerConnectionListener {
     }
 
     private void informAboutMatchStart(CountedCharacters counted) {
-        // Prepare match start Command
         Command.MatchStarted matchStartMsg = new Command.MatchStarted();
 
-        // Populate message with information about all characters
-        // which will inform players about each other
         int loggedInIndex = 0;
         List<PlayerCharacter> characters = new ArrayList<>(counted.ready);
         for (Accommodator accommodator : loggedIn) {
@@ -100,7 +95,7 @@ public class GameServer implements ServerConnectionListener {
                         accommodator.user.getId(),
                         accommodator.user.getUsername(),
                         accommodator.lobbyEntry.getChosenTeamId(),
-                        loggedInIndex
+                        loggedInIndex++
                 );
 
                 accommodator.setPlayerCharacter(playerCharacter);
@@ -110,12 +105,10 @@ public class GameServer implements ServerConnectionListener {
         }
         matchStartMsg.characters = characters.toArray(new PlayerCharacter[counted.ready]);
 
-        // Send information with players to all players, with their charactersId.
         server.forAllConnections((conn) -> {
             matchStartMsg.clientsCharacterId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
             conn.sendTCP(matchStartMsg);
         });
-
     }
 
     @Override

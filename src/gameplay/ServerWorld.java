@@ -31,7 +31,6 @@ final public class ServerWorld extends PhysicalWorld {
         return new Command.UpdateSharedState(c.shared);
     }
 
-
     private void MovePendingForAcceptance(int characterId, Command.ChangePlayerControls message) {
         synchronized (characters) {
             Character cha = characters.get(characterId);
@@ -49,7 +48,6 @@ final public class ServerWorld extends PhysicalWorld {
         return bunchOfIds[0];
     }
 
-
     private void processInput() {
         if (queue.isEmpty()) {
             return;
@@ -58,7 +56,6 @@ final public class ServerWorld extends PhysicalWorld {
         int characterId = this.firstElementFromSet(queue); // take first character's id
         WorldMessage message = queue.get(characterId);     // take a message for that character
 
-        // process a message
         if (message instanceof Command.ChangePlayerControls) {
             synchronized (characters) {
                 moveCharacter(characterId, (Command.ChangePlayerControls) message);

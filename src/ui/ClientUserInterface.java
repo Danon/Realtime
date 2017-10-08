@@ -9,7 +9,6 @@ import util.Size;
 import util.save.SaveManager;
 
 public class ClientUserInterface extends CustomUserInterface {
-    // logic
     public final ClientWorld world;
     private final GameWindow gameWindow;
 
