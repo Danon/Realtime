@@ -26,12 +26,42 @@ final public class ServerWorld extends PhysicalWorld {
         Character c;
         synchronized (out) {
             c = out.get(characterId);
+            out.remove(characterId);
         }
 
         return new Command.UpdateSharedState(c.shared);
     }
 
-    private void MovePendingForAcceptance(int characterId, Command.ChangePlayerControls message) {
+    @Override
+    protected void whenPossible() {
+        processInput();
+    }
+
+    private void processInput() {
+        if (queue.isEmpty()) {
+            return;
+        }
+
+        int characterId = this.firstElementFromSet(queue);
+        WorldMessage message = queue.get(characterId);
+        queue.remove(characterId);
+
+        if (message instanceof Command.ChangePlayerControls) {
+            synchronized (characters) {
+                moveCharacter(characterId, (Command.ChangePlayerControls) message);
+                movePendingForAcceptance(characterId, (Command.ChangePlayerControls) message);
+            }
+        } else if (message instanceof Command.UserLeft) {
+            removeCharacterById(((Command.UserLeft) message).characterId);
+        }
+    }
+
+    private int firstElementFromSet(Map<Integer, WorldMessage> map) {
+        Integer[] bunchOfIds = map.keySet().toArray(new Integer[map.size()]);
+        return bunchOfIds[0];
+    }
+
+    private void movePendingForAcceptance(int characterId, Command.ChangePlayerControls message) {
         synchronized (characters) {
             Character cha = characters.get(characterId);
 
@@ -41,33 +71,5 @@ final public class ServerWorld extends PhysicalWorld {
 
             out.put(characterId, cha);
         }
-    }
-
-    private int firstElementFromSet(Map<Integer, WorldMessage> map) {
-        Integer[] bunchOfIds = map.keySet().toArray(new Integer[map.size()]);
-        return bunchOfIds[0];
-    }
-
-    private void processInput() {
-        if (queue.isEmpty()) {
-            return;
-        }
-
-        int characterId = this.firstElementFromSet(queue); // take first character's id
-        WorldMessage message = queue.get(characterId);     // take a message for that character
-
-        if (message instanceof Command.ChangePlayerControls) {
-            synchronized (characters) {
-                moveCharacter(characterId, (Command.ChangePlayerControls) message);
-                MovePendingForAcceptance(characterId, (Command.ChangePlayerControls) message);
-            }
-        } else if (message instanceof Command.UserLeft) {
-            removeCharacterById(((Command.UserLeft) message).characterId);
-        }
-    }
-
-    @Override
-    protected void whenPossible() {
-        processInput();
     }
 }
