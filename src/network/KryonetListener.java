@@ -8,7 +8,8 @@ import java.util.function.Consumer;
 
 abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
     List<ClientConnectionListener> connectionListeners = new CopyOnWriteArrayList<>();
-    List<ClientLoginListener> loginListeners = new CopyOnWriteArrayList<>();
+    private List<ClientLoginListener> loginListeners = new CopyOnWriteArrayList<>();
+    private List<ClientLobbyListener> lobbyListeners = new CopyOnWriteArrayList<>();
 
     public void addConnectionListener(ClientConnectionListener listener) {
         connectionListeners.add(listener);
@@ -16,6 +17,10 @@ abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
 
     public void addLoginListener(ClientLoginListener listener) {
         loginListeners.add(listener);
+    }
+
+    public void addLobbyListener(ClientLobbyListener listener) {
+        lobbyListeners.add(listener);
     }
 
     private void forAll(Consumer<ClientConnectionListener> consumer) {
@@ -60,8 +65,11 @@ abstract class KryonetListener extends com.esotericsoftware.kryonet.Listener {
             return;
         }
 
-        if (object instanceof Network.Command.LobbyTeamsChanged) {
-            forAll(listener -> listener.messageLobbyTeamsChanged((Network.Command.LobbyTeamsChanged) object));
+        if (object instanceof Network.Command.LobbyTeamChanged) {
+            Network.Command.LobbyTeamChanged message = (Network.Command.LobbyTeamChanged) object;
+
+            forAll(listener -> listener.messageLobbyTeamChanged(message));
+            lobbyListeners.forEach(listener -> listener.messageLobbyTeamChanged(message));
             return;
         }
 

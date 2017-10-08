@@ -234,9 +234,11 @@ public class GameServer implements ServerConnectionListener {
     public void message(ServerAccommodationConnection conn, Command.JoinTeam joinTeam) {
         if (matchStarted) return;
 
-        conn.getAccomodator().lobbyEntry.setChosenTeamId(joinTeam.teamId);
+        Accommodator accomodator = conn.getAccomodator();
+        int previousTeamId = accomodator.lobbyEntry.getChosenTeamId();
+        accomodator.lobbyEntry.setChosenTeamId(joinTeam.teamId);
 
-        server.sendToAllTCP(new Command.LobbyTeamsChanged(Accommodator.getLobbyTeams(loggedIn)));
+        server.sendToAllTCP(new Command.LobbyTeamChanged(accomodator.user.getId(), previousTeamId, joinTeam.teamId));
     }
 
     @Override

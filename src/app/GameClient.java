@@ -1,5 +1,6 @@
 package app;
 
+import debug.DebugClientConnectionManager;
 import gameplay.Character;
 import network.ClientConnectionListener;
 import network.ClientConnectionManager;
@@ -20,7 +21,7 @@ public class GameClient implements ClientConnectionListener {
     private ILobbyObserver lobby;
 
     GameClient() {
-        client = new ClientConnectionManager();
+        client = new DebugClientConnectionManager();
         client.openSocket();
         client.addConnectionListener(this);
         userInterface = new ClientUserInterface(client, new Size(880, 750));
@@ -79,8 +80,8 @@ public class GameClient implements ClientConnectionListener {
     }
 
     @Override
-    public void messageLobbyTeamsChanged(Command.LobbyTeamsChanged command) {
-        lobby.teamsChanged(command.teams);
+    public void messageLobbyTeamChanged(Command.LobbyTeamChanged command) {
+        lobby.teamChanged(command.userId, command.previousTeamId, command.currentTeamId);
     }
 
     @Override

@@ -5,20 +5,26 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LobbyEntry {
+    public static final int ROOMLESS = -1;
+
     private int userId;
     private String username;
     private boolean readyForGame;
     private int chosenTeam;
 
-    public LobbyEntry() {
+    LobbyEntry() {
         userId = -1;
     }
 
-    LobbyEntry(int userId, String username, boolean readyForGame, int chosenTeam) {
+    public LobbyEntry(int userId, String username, boolean readyForGame, int chosenTeam) {
         this.userId = userId;
         this.readyForGame = readyForGame;
         this.username = username;
         this.chosenTeam = chosenTeam;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public int getChosenTeamId() {
@@ -43,9 +49,9 @@ public class LobbyEntry {
 
     @Override
     public String toString() {
-        return String.format("%s (%s) team: %d",
+        return String.format("#%d %s (%s)",
+                this.userId,
                 this.username,
-                this.readyForGame ? "ready" : "waiting",
-                this.chosenTeam);
+                this.readyForGame ? "ready" : "waiting");
     }
 }

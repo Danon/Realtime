@@ -2,6 +2,7 @@ package network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
+import debug.DebugServerAccommodationConnection;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
         kryoServer = new Server() {
             @Override
             protected Connection newConnection() {
-                return new ServerAccommodationConnection();
+                return new DebugServerAccommodationConnection();
             }
         };
         kryoServer.addListener(this);

@@ -29,7 +29,7 @@ public class Network {
 
         kryo.register(Command.MatchStarted.class);
         kryo.register(Command.MatchAlreadyStarted.class);
-        kryo.register(Command.LobbyTeamsChanged.class);
+        kryo.register(Command.LobbyTeamChanged.class);
         kryo.register(Command.ReadyForGame.class);
         kryo.register(Command.JoinTeam.class);
         kryo.register(Command.MatchEnded.class);
@@ -153,14 +153,18 @@ public class Network {
             }
         }
 
-        static public class LobbyTeamsChanged {
-            public LobbyEntry[] teams;
+        static public class LobbyTeamChanged {
+            public int userId;
+            public int previousTeamId;
+            public int currentTeamId;
 
-            public LobbyTeamsChanged() {
+            public LobbyTeamChanged() {
             }
 
-            public LobbyTeamsChanged(LobbyEntry[] teams) {
-                this.teams = teams;
+            public LobbyTeamChanged(int userId, int previousTeamId, int currentTeamId) {
+                this.userId = userId;
+                this.previousTeamId = previousTeamId;
+                this.currentTeamId = currentTeamId;
             }
         }
 

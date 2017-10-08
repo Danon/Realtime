@@ -5,6 +5,7 @@ import ui.ILobbyObserver;
 import ui.ILobbyOperator;
 import ui.LobbyState;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -274,32 +275,22 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     }
 
     @Override
-    public void teamsChanged(LobbyEntry[] teammates) {
-        // create an array for each team
-        List<List<LobbyEntry>> teams = new ArrayList<>(5);  // 2d array - list of lists.
-
-        for (int i = 0; i < 5; i++) {
-            teams.add(new ArrayList<>());
-        }
-
-        // assign LobbyStates to particular arrays
-        for (LobbyEntry state : teammates) {
-            int id = state.getChosenTeamId();
-            teams.get(id).add(state);
-        }
-
-        for (int i = 1; i < teams.size(); i++) {
-            lobbyStates.get(i - 1).setLobbyEntries(teams.get(i));
-        }
+    public void teamChanged(int userId, int previousTeamId, int currentTeamId) {
+        SwingUtilities.invokeLater(() -> {
+            if (previousTeamId != LobbyEntry.ROOMLESS) {
+                lobbyStates.get(previousTeamId - 1).removeUser(userId);
+            }
+            lobbyStates.get(currentTeamId - 1).addUser(userId, currentTeamId);
+        });
     }
-
-    private void btnJoinTeam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinTeam1ActionPerformed
-        lobby.joinTeam(1);
-    }//GEN-LAST:event_btnJoinTeam1ActionPerformed
 
     private void btntReadyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntReadyActionPerformed
         lobby.setReady(btntReady.isSelected());
     }//GEN-LAST:event_btntReadyActionPerformed
+
+    private void btnJoinTeam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinTeam1ActionPerformed
+        lobby.joinTeam(1);
+    }//GEN-LAST:event_btnJoinTeam1ActionPerformed
 
     private void btnJoinTeam2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinTeam2ActionPerformed
         lobby.joinTeam(2);

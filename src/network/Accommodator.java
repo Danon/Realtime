@@ -3,8 +3,6 @@ package network;
 import game.CountedCharacters;
 import gameplay.PlayerCharacter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class Accommodator {
@@ -17,7 +15,7 @@ public class Accommodator {
 
     public void setUser(UserAccount user) {
         this.user = user;
-        this.lobbyEntry = new LobbyEntry(user.getId(), user.getUsername(), false, 0);
+        this.lobbyEntry = new LobbyEntry(user.getId(), user.getUsername(), false, LobbyEntry.ROOMLESS);
     }
 
     public Accommodator() {
@@ -47,13 +45,5 @@ public class Accommodator {
         counted.inSpectate = counted.all - counted.inTeams;
 
         return counted;
-    }
-
-    public static LobbyEntry[] getLobbyTeams(Set<Accommodator> populatedRoom) {
-        List<LobbyEntry> stats = new ArrayList<>();
-        for (Accommodator accommodator : populatedRoom) {
-            stats.add(accommodator.lobbyEntry);
-        }
-        return stats.toArray(new LobbyEntry[stats.size()]);
     }
 }

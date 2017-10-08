@@ -2,7 +2,7 @@ package network;
 
 import network.Network.Command;
 
-public interface ClientConnectionListener extends ClientLoginListener {
+public interface ClientConnectionListener extends ClientLoginListener, ClientLobbyListener {
     void connected();
 
     void connectError();
@@ -14,8 +14,6 @@ public interface ClientConnectionListener extends ClientLoginListener {
     void messageMatchStarted(Command.MatchStarted command);
 
     void messageMatchAlreadyStarted(Command.MatchAlreadyStarted command);
-
-    void messageLobbyTeamsChanged(Command.LobbyTeamsChanged command);
 
     void messageChatMessage(Command.ChatMessage command);
 
