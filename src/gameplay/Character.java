@@ -79,15 +79,15 @@ public class Character {
     }
 
     public int getHeight() {
-        return CharacterCommonState.Height;
+        return CharacterCommonState.HEIGHT;
     }
 
     double getRightSideX() {
-        return shared.x + CharacterCommonState.Width / 2;
+        return shared.x + CharacterCommonState.WIDTH / 2;
     }
 
     double getLeftSideX() {
-        return shared.x - CharacterCommonState.Width / 2;
+        return shared.x - CharacterCommonState.WIDTH / 2;
     }
 
 

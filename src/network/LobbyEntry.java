@@ -43,10 +43,6 @@ public class LobbyEntry {
         this.chosenTeam = chosenTeamId;
     }
 
-    public static List<LobbyEntry> asList(LobbyEntry... lobbyEntries) {
-        return new ArrayList<>(Arrays.asList(lobbyEntries));
-    }
-
     @Override
     public String toString() {
         return String.format("#%d %s (%s)",

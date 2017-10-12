@@ -1,7 +1,7 @@
 package gameplay;
 
 public class CharacterCommonState {
-    final static int Width = 23, Height = 35;
+    final static int WIDTH = 23, HEIGHT = 35;
 
     boolean walking = false;
     boolean climbingLadder = false;
@@ -17,7 +17,6 @@ public class CharacterCommonState {
     public int climbFrame = -1;
 
     LadderCollide collideLadder = LadderCollide.None;
-
 
     public CharacterCommonState copy() {
         CharacterCommonState deepCopy = new CharacterCommonState();

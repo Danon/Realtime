@@ -3,6 +3,9 @@ package gameplay;
 import ui.gfx.IntTransition;
 import ui.gfx.Vector;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class Point {
     public double x, y;
 
@@ -30,11 +33,6 @@ public class Point {
         return new Point(this.x, this.y);
     }
 
-    public void set(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
     public int getX() {
         return (int) x;
     }
@@ -43,28 +41,12 @@ public class Point {
         return (int) y;
     }
 
-    protected void minX(double minValue) {
-        if (this.x < minValue) {
-            this.x = minValue;
-        }
+    public double capX(double minValue, double maxValue) {
+        return min(max(x, minValue), maxValue);
     }
 
-    protected void minY(double minValue) {
-        if (this.y < minValue) {
-            this.y = minValue;
-        }
-    }
-
-    protected void maxX(double maxValue) {
-        if (this.x > maxValue) {
-            this.x = maxValue;
-        }
-    }
-
-    protected void maxY(double maxValue) {
-        if (this.y > maxValue) {
-            this.y = maxValue;
-        }
+    public double capY(double minValue, double maxValue) {
+        return min(max(y, minValue), maxValue);
     }
 
     public Vector asVector() {
@@ -128,11 +110,13 @@ public class Point {
     }
 
     public boolean distanceBiggerThan(Point A, double distance) {
-        return (this.powDistanceTo(A) > Math.pow(distance, 2));
+        return this.powDistanceTo(A) > distance * distance;
     }
 
     public Angle angleOf(Point a) {
-        if (this.equals(a)) throw new IllegalArgumentException("Points cannot be equal.");
+        if (this.equals(a)) {
+            throw new IllegalArgumentException("Points cannot be equal.");
+        }
         double angle = Math.acos((this.y - a.y) / this.distanceTo(a));
         return new Angle(Math.PI + ((a.x > this.x) ? -angle : angle));
     }

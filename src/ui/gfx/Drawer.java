@@ -42,7 +42,7 @@ public class Drawer {
     }
 
     private void useCamera(int x, int y) {
-        this.camera.set(x, y);
+        this.camera = new Camera(x, y);
         this.includeCamera = true;
     }
 

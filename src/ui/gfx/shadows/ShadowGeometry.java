@@ -1,4 +1,4 @@
-package ui.gfx;
+package ui.gfx.shadows;
 
 import java.awt.*;
 import java.awt.geom.FlatteningPathIterator;

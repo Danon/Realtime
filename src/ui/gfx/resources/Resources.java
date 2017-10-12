@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 public class Resources {
     private final static ResourceImages images = new ResourceImages();
     private final static ResourceSounds sounds = new ResourceSounds();
-    public static Spritesheet spritesheet = new CharacterSpritesheet().spritesheet;
+    public final static Spritesheet spritesheet = new CharacterSpritesheet().spritesheet;
 
     public static void load() {
         images.load();

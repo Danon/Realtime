@@ -8,12 +8,16 @@ import gameplay.Rectangle;
 import javafx.util.Pair;
 import ui.Chat;
 import ui.gfx.resources.Resources;
+import ui.gfx.shadows.MasterOfShadows;
 import util.Size;
 
 import java.awt.*;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
+
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 public final class Renderer implements IRenderObserver {
     private final Drawer draw;
@@ -35,7 +39,7 @@ public final class Renderer implements IRenderObserver {
             CAMERA_TOP_MARGIN = 0;
 
     public Renderer(Size viewSize) {
-        backBuffer = new BufferedImage(viewSize.getWidth(), viewSize.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        backBuffer = new BufferedImage(viewSize.getWidth(), viewSize.getHeight(), TYPE_INT_ARGB);
         canvas = backBuffer.createGraphics();
 
         this.viewSize = viewSize;
@@ -46,7 +50,7 @@ public final class Renderer implements IRenderObserver {
         fontMetrics = canvas.getFontMetrics(defaultFont);
         draw.setCanvas(canvas);
 
-        zed = new MasterOfShadows();
+        zed = new MasterOfShadows(0, 0, viewSize.getWidth(), viewSize.getHeight() + Floor.HEIGHT);
     }
 
     public void setScalingTo(Size size) {
@@ -60,18 +64,13 @@ public final class Renderer implements IRenderObserver {
 
     public void attachWorld(ClientWorld world) {
         this.world = world;
-        prepareMasterOfShadows();
+        for (Floor floor : this.world.getMap().getFloors()) {
+            zed.addObstacle(floor.asShape());
+        }
     }
 
     public void attachChat(Chat chat) {
         this.chat = chat;
-    }
-
-    private void prepareMasterOfShadows() {
-        zed.setBounds(0, 0, viewSize.getWidth(), viewSize.getHeight() + Floor.HEIGHT);
-        for (Floor floor : world.getMap().getFloors()) {
-            zed.addObstacle(floor.asShape());
-        }
     }
 
     private Insets getDisplaySize() {
@@ -270,22 +269,28 @@ public final class Renderer implements IRenderObserver {
     }
 
     private Shape lightShape(Point player) {
-        Point camera = draw.getCamera();
+        Camera camera = draw.getCamera();
         final int mapHeight = viewSize.getHeight();
 
         Path2D shadowShape = new Path2D.Double();
         zed.getFieldOfView(player, new IntersectionIterable() {
             @Override
             public void iterateFirst(double x, double y) {
-                shadowShape.moveTo(x - camera.getX(), mapHeight - y + camera.getY() + 32);
+                shadowShape.moveTo(x, y);
             }
 
             @Override
             public void iterateNext(double x, double y) {
-                shadowShape.lineTo(x - camera.getX(), mapHeight - y + camera.getY() + 32);
+                shadowShape.lineTo(x, y);
             }
         });
         shadowShape.closePath();
+
+        AffineTransform at = new AffineTransform();
+        at.translate(-camera.getX(), camera.getY() + 32 + mapHeight);
+        at.scale(1.0, -1.0);
+        shadowShape.transform(at);
+
         return shadowShape;
     }
 

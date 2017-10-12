@@ -52,7 +52,7 @@ public class PhysicSimulation {
     }
 
     private void capCharacterPosition(gameplay.Character character) {
-        character.shared.x = Math.min(Math.max(CharacterCommonState.Width / 2, character.shared.x), currentMap.getWidth() - CharacterCommonState.Width / 2);
+        character.shared.x = Math.min(Math.max(CharacterCommonState.WIDTH / 2, character.shared.x), currentMap.getWidth() - CharacterCommonState.WIDTH / 2);
         character.shared.y = Math.min(Math.max(0, character.shared.y), currentMap.getHeight() - character.getHeight());
     }
 

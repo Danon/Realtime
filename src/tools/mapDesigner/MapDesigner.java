@@ -5,7 +5,9 @@ import gameplay.*;
 import gameplay.Point;
 import gameplay.Rectangle;
 import ui.CustomUserInterface;
-import ui.gfx.*;
+import ui.gfx.Camera;
+import ui.gfx.DrawFrom;
+import ui.gfx.Drawer;
 import ui.gfx.Renderer;
 import ui.gfx.resources.Resources;
 import util.TimePassed;
@@ -21,6 +23,8 @@ import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 public final class MapDesigner extends JFrame implements KeyListener, MouseListener, MouseMotionListener,
         MouseWheelListener, WindowListener {
@@ -42,6 +46,18 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
     private int floorTiles = 4, ladderTiles = 4;
 
     JPanel panel;
+
+    private HashSet<Floor> selectedFloors = new HashSet<>();
+    private HashSet<Ladder> selectedLadders = new HashSet<>();
+
+    private Floor hoveredFloor;
+    private Ladder hoveredLadder;
+
+    boolean vert, hor;
+
+    private int suwak = 3;
+
+    private String[] suwaks = new String[]{"Accuracy", "Stretch", "Blur", "Radius", "Creating"};
 
     private MapDesigner(String mapName, int mapWidth, int mapHeight) {
         if (SaveManager.Map.exists(mapName)) {
@@ -747,34 +763,25 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
         refreshDraw();
     }
 
-    HashSet<Floor> selectedFloors = new HashSet<>();
-    HashSet<Ladder> selectedLadders = new HashSet<>();
-
-    Floor hoveredFloor;
-    Ladder hoveredLadder;
-
-    boolean vert, hor;
-
-    int suwak = 3;
-
-    String[] suwaks = new String[]{"Accuracy", "Stretch", "Blur", "Radius", "Creating"};
-
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         int rot = -(int) Math.signum(e.getWheelRotation());
         switch (suwak) {
             case 4:
-                mouse.x = e.getX() + draw.getCamera().getX();
-                mouse.y = e.getY() - draw.getCamera().getY();
+                int cameraX = draw.getCamera().getX();
+                int cameraY = draw.getCamera().getY();
 
+                mouse.x = e.getX() + cameraX;
+                mouse.y = e.getY() - cameraY;
 
                 if (hor || vert) {
                     if (hor = e.isShiftDown()) {
-                        draw.getCamera().moveX(rot * 16);
+                        cameraX += rot * 16;
                     }
                     if (vert = e.isControlDown()) {
-                        draw.getCamera().moveY(-rot * 16);
+                        cameraY -= rot * 16;
                     }
+                    draw.useCamera(new Camera(cameraX, cameraY));
                 } else {
                     switch (operation) {
                         case CreateFloor:
@@ -810,7 +817,7 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
     public void windowClosing(WindowEvent e) {
         JOptionPane.showMessageDialog(null, "The map is saved automatically, " +
                         "you can shutdown the program",
-                "Map Designer", JOptionPane.OK_OPTION);
+                "Map Designer", INFORMATION_MESSAGE);
     }
 
     @Override
