@@ -1,6 +1,6 @@
 package app;
 
-import ui.gfx.Resources;
+import ui.gfx.resources.Resources;
 import util.option.Options;
 
 import java.io.IOException;

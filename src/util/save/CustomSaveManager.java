@@ -1,5 +1,6 @@
 package util.save;
 
+import ui.gfx.resources.duality.FileHandler;
 import util.Password;
 
 import java.io.*;
@@ -76,13 +77,13 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
     }
 
     boolean loadObject(String folderName, String fileName, Savable savable) {
-        File file = new File(folderName, fileName.toLowerCase());
+        FileHandler file = new FileHandler(folderName + "/" + fileName.toLowerCase());
         if (!file.exists()) {
-            throw new RuntimeException("No such file found " + fileName);
+            throw new RuntimeException(String.format("No such file '%s' found", fileName));
         }
 
         try {
-            inpStream = new DataInputStream(new FileInputStream(file));
+            inpStream = new DataInputStream(file.getInputStream());
             savable.restoreState(this);
             return true;
         } catch (IOException couldNotLoadState) {

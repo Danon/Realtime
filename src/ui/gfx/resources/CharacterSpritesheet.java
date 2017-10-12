@@ -1,49 +1,11 @@
-package ui.gfx;
+package ui.gfx.resources;
 
-import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
+import ui.gfx.Frame;
+import ui.gfx.FrameAnimation;
+import ui.gfx.Spritesheet;
 
-public final class Resources {
-    private final static HashMap<String, BufferedImage> images = new HashMap<>();
-
-    public static void load() {
-        File[] listOfFiles = new File("res/images").listFiles();
-
-        for (File imageFile : listOfFiles) {
-            if (imageFile.isFile()) {
-                try {
-                    images.put(imageFile.getName(), ImageIO.read(imageFile.getAbsoluteFile()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    static BufferedImage getImageByName(String imageName) {
-        if (images.containsKey(imageName)) {
-            return images.get(imageName);
-        }
-        throw new IllegalAccessError(String.format("No such file %s found", imageName));
-    }
-
-    public static void play(final String fileName) {
-        String path = "res/sounds/";
-        try {
-            Clip clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(path + fileName));
-            clip.open(inputStream);
-            clip.start();
-        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-            System.out.println("play sound error: " + e.getMessage() + " for " + fileName);
-        }
-    }
-
-    static Spritesheet spritesheet = new Spritesheet("sprites.png",
+public class CharacterSpritesheet {
+    Spritesheet spritesheet = new Spritesheet("sprites.png",
             new FrameAnimation("materialization", FrameAnimation.Speed.Materialization,
                     new Frame(6, 5, 9, 48, 4),
                     new Frame(23, 24, 22, 29, 11),

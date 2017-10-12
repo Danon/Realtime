@@ -4,7 +4,7 @@ public class Spritesheet {
     private final String name;
     private final FrameAnimation[] animations;
 
-    Spritesheet(String name, FrameAnimation... animations) {
+    public Spritesheet(String name, FrameAnimation... animations) {
         this.name = name;
         this.animations = animations;
         for (FrameAnimation animation : this.animations) {

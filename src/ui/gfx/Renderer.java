@@ -5,7 +5,9 @@ import gameplay.Character;
 import gameplay.*;
 import gameplay.Point;
 import gameplay.Rectangle;
+import javafx.util.Pair;
 import ui.Chat;
+import ui.gfx.resources.Resources;
 import util.Size;
 
 import java.awt.*;
@@ -175,39 +177,8 @@ public final class Renderer implements IRenderObserver {
     }
 
     private void drawCharacter(Character character) {
-        String animationName;
-        int frameI;
-        if (character.isOnTheGround()) {
-            if (character.isWalking()) {
-                animationName = "run";
-                frameI = character.common.runFrame;
-            } else if (character.isBasicAttack()) {
-                animationName = "basic";
-                frameI = character.common.basicFrame;
-            } else if (character.isShooting()) {
-                animationName = "shooting";
-                frameI = character.common.shootFrame;
-            } else {
-                animationName = "idle";
-                frameI = 0;
-            }
-        } else {
-            if (character.isClimbing()) {
-                animationName = "climbig";
-                frameI = character.common.climbFrame;
-            } else if (character.isBasicAttack()) {
-                animationName = "basic-air";
-                frameI = character.common.basicFrame;
-            } else if (character.isShooting()) {
-                animationName = "midair-gun";
-                frameI = character.common.shootFrame;
-            } else {
-                animationName = "midair";
-                frameI = character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5;
-            }
-        }
         draw.frame(
-                Resources.spritesheet.animation(animationName).getFrameIterate(frameI),
+                getCharacterFrame(character),
                 character.getPosition().invertY(viewSize.getHeight()),
                 DrawFrom.RightBottom,
                 character.isTurnedRight() ? Flip.None : Flip.Horizontally
@@ -216,12 +187,54 @@ public final class Renderer implements IRenderObserver {
         draw.text(String.format("%s %d", character.getDisplayName(), character.shared.hp),
                 character.getPosition().invertY(viewSize.getHeight()).sub(50, 60)
         );
-        Rectangle hpBar = new Rectangle(character.getPosition().invertY(viewSize.getHeight()).sub(20, 80), 50, 6);
-        canvas.setColor(Color.red);
-        draw.borders(hpBar);
-        hpBar.width = (int) Math.round(hpBar.width * ((double) character.getHp() / 500.0));
 
+        drawHealthBar(character);
+    }
+
+    private void drawHealthBar(Character character) {
+        canvas.setColor(Color.red);
+
+        Rectangle hpBar = new Rectangle(character.getPosition().invertY(viewSize.getHeight()).sub(20, 80), 50, 6);
+        draw.borders(hpBar);
+
+        hpBar.width = (int) Math.round(hpBar.width * ((double) character.getHp() / 500.0));
         draw.fill(hpBar);
+    }
+
+    private Frame getCharacterFrame(Character character) {
+        Pair<String, Integer> result = getFrameAnimationAndIteration(character);
+
+        return Resources.spritesheet
+                .animation(result.getKey())
+                .getFrameIterate(result.getValue());
+    }
+
+    private Pair<String, Integer> getFrameAnimationAndIteration(Character character) {
+
+        if (character.isOnTheGround()) {
+            if (character.isWalking()) {
+                return new Pair<>("run", character.common.runFrame);
+            }
+            if (character.isBasicAttack()) {
+                return new Pair<>("basic", character.common.basicFrame);
+            }
+            if (character.isShooting()) {
+                return new Pair<>("shooting", character.common.shootFrame);
+            }
+            return new Pair<>("idle", 0);
+        }
+
+        if (character.isClimbing()) {
+            return new Pair<>("climbig", character.common.climbFrame);
+        }
+        if (character.isBasicAttack()) {
+            return new Pair<>("basic-air", character.common.basicFrame);
+        }
+        if (character.isShooting()) {
+            return new Pair<>("midair-gun", character.common.shootFrame);
+        }
+
+        return new Pair<>("midair", character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5);
     }
 
     private void drawLadders(GameMap worldMap) {
@@ -238,7 +251,9 @@ public final class Renderer implements IRenderObserver {
 
     private void drawBackground(Rectangle borders) {
         for (int i = 0; i <= Math.ceil(borders.width / 167); i++) {
-            draw.image("background.png", new Point(
+            draw.image(
+                    "background.png",
+                    new Point(
                             CAMERA_SIDE_MARGIN + i * 167,
                             viewSize.getHeight() - borders.height),
                     DrawFrom.MiddleTop);

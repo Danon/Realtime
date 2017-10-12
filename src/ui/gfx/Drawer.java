@@ -3,6 +3,7 @@ package ui.gfx;
 import gameplay.*;
 import gameplay.Point;
 import gameplay.Rectangle;
+import ui.gfx.resources.Resources;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

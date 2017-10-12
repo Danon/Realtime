@@ -7,6 +7,7 @@ import gameplay.Rectangle;
 import ui.CustomUserInterface;
 import ui.gfx.*;
 import ui.gfx.Renderer;
+import ui.gfx.resources.Resources;
 import util.TimePassed;
 import util.save.SaveManager;
 

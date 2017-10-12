@@ -21,7 +21,7 @@ final public class SaveManager {
     }
 
     public static class Map {
-        final static String pathName = "maps";
+        final static String pathName = "res/maps";
 
         public static boolean exists(String mapName) {
             return new File(pathName, mapName.toLowerCase()).exists();
@@ -43,7 +43,7 @@ final public class SaveManager {
     }
 
     public static class Animation {
-        final static String pathName = "animations";
+        final static String pathName = "res/animations";
 
         public static boolean exists(String animationName) {
             return new File(pathName, animationName.toLowerCase()).exists();
@@ -65,7 +65,7 @@ final public class SaveManager {
     }
 
     public static class Accounts {
-        final static String pathName = "users";
+        final static String pathName = "res/users";
 
         public static boolean exists(String username) {
             return new File(pathName, username.toLowerCase()).exists();

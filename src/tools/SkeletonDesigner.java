@@ -4,6 +4,7 @@ import gameplay.Oval;
 import gameplay.Point;
 import ui.CustomUserInterface;
 import ui.gfx.*;
+import ui.gfx.resources.Resources;
 import util.save.SaveManager;
 
 import javax.swing.*;

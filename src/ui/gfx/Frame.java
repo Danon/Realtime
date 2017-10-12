@@ -1,6 +1,6 @@
 package ui.gfx;
 
-class Frame {
+public class Frame {
     private Spritesheet parentSpritesheet;
 
     final int x;
@@ -10,7 +10,7 @@ class Frame {
     final int offsetX;
     final int offsetY;
 
-    Frame(int x, int y, int width, int height, int offset, int offsetY) {
+    public Frame(int x, int y, int width, int height, int offset, int offsetY) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -19,11 +19,11 @@ class Frame {
         this.offsetY = offsetY;
     }
 
-    Frame(int x, int y, int width, int height, int offset) {
+    public Frame(int x, int y, int width, int height, int offset) {
         this(x, y, width, height, offset, 0);
     }
 
-    Frame(int x, int y, int width, int height) {
+    public Frame(int x, int y, int width, int height) {
         this(x, y, width, height, 0, 0);
     }
 

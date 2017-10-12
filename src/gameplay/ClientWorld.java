@@ -19,7 +19,9 @@ public class ClientWorld extends PhysicalWorld {
     }
 
     public void movePlayerCharacter(KeysState keysState) {
-        moveCharacter(playerCharacterId, keysState);
+        if (playerCharacterId != -1) {
+            moveCharacter(playerCharacterId, keysState);
+        }
     }
 
     @Override

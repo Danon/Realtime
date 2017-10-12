@@ -4,5 +4,5 @@ build.xml
 manifest.mf
 out/
 res/images/man/
-users/
+res/users/
 settings/
