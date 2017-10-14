@@ -1,9 +1,5 @@
 package network;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class LobbyEntry {
     public static final int ROOMLESS = -1;
 

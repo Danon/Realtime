@@ -13,27 +13,18 @@ public class DirectionalVector {
     }
 
     DirectionalVector(double length, Angle angle) {
-        this.direction = angle;
+        this.direction = new Angle(angle);
         this.length = length;
-    }
-
-    public DirectionalVector copy() {
-        return new DirectionalVector(length, direction.copy());
     }
 
     public DirectionalVector(DirectionalVector v) {
         this.length = v.length;
-        this.direction = new Angle(v.direction.getValue());
+        this.direction = new Angle(v.direction);
     }
 
     public DirectionalVector(Point p) {
-        this.length = Math.sqrt(p.x * p.x + p.y * p.y);
+        this.length = p.distanceTo(new Point());
         this.direction = new Point(0, 0).angleOf(p);
-    }
-
-    public void copy(DirectionalVector v) {
-        this.length = v.length;
-        this.direction.setValue(v.direction.getValue());
     }
 
     public int getLength() {

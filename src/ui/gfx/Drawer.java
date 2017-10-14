@@ -10,21 +10,14 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 
 public class Drawer {
-    public static boolean invertPlane = false;
-    public static int invertValue = 500;
-    private Graphics2D canvas;
-    private Camera camera;
+    private final Graphics2D canvas;
+    private Camera camera = new Camera();
     private boolean includeCamera = false;
-    private final int windowWidth;
-    private final int windowHeight;
+    private final int windowWidth, windowHeight;
 
-    public Drawer(int windowWidth, int windowHeight) {
+    public Drawer(Graphics2D canvas, int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
-        this.camera = new Camera();
-    }
-
-    public void setCanvas(Graphics2D canvas) {
         this.canvas = canvas;
     }
 
@@ -34,11 +27,7 @@ public class Drawer {
     }
 
     void useCamera(Point a) {
-        useCamera(a.getX(), a.getY());
-    }
-
-    private void useCamera(int x, int y) {
-        this.camera = new Camera(x, y);
+        this.camera = new Camera(a.getX(), a.getY());
         this.includeCamera = true;
     }
 
@@ -58,9 +47,6 @@ public class Drawer {
         if (includeCamera) {
             y += camera.getY();
         }
-        if (invertPlane) {
-            y = invertValue - y;
-        }
         return y;
     }
 
@@ -79,9 +65,6 @@ public class Drawer {
             x = x - camera.getX();
             y = y + camera.getY();
         }
-        if (invertPlane) {
-            y = invertValue - y;
-        }
 
         return new Point(x, y);
     }
@@ -95,9 +78,6 @@ public class Drawer {
             y = r.y + camera.getY();
         }
 
-        if (invertPlane) {
-            y = invertValue - y;
-        }
         return new Rectangle(x, y, r.width, r.height);
     }
 
@@ -108,9 +88,6 @@ public class Drawer {
         if (includeCamera) {
             x = o.x - camera.getX();
             y = o.y + camera.getY();
-        }
-        if (invertPlane) {
-            y = invertValue - y;
         }
         return new Oval(new Point(x, y), o.getRadiusX(), o.getRadiusY());
     }

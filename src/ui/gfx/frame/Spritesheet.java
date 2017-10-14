@@ -7,9 +7,6 @@ public class Spritesheet {
     public Spritesheet(String name, FrameAnimation... animations) {
         this.name = name;
         this.animations = animations;
-        for (FrameAnimation animation : this.animations) {
-            animation.setSpritesheet(this);
-        }
     }
 
     public String getName() {

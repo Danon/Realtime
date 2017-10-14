@@ -44,12 +44,11 @@ public final class Renderer implements IRenderObserver {
         canvas = backBuffer.createGraphics();
 
         this.viewSize = viewSize;
-        this.draw = new Drawer(viewSize.getWidth(), viewSize.getHeight());
+        this.draw = new Drawer(canvas, viewSize.getWidth(), viewSize.getHeight());
 
         Font defaultFont = new Font("Arial", Font.PLAIN, 15);
         canvas.setFont(defaultFont);
         fontMetrics = canvas.getFontMetrics(defaultFont);
-        draw.setCanvas(canvas);
 
         zed = new MasterOfShadows(0, 0, viewSize.getWidth(), viewSize.getHeight() + Floor.HEIGHT);
     }

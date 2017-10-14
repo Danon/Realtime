@@ -2,27 +2,22 @@ package gameplay;
 
 import ui.gfx.IntTransition;
 
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
+
 public final class Angle {
-    private double angle;
+    private final double angle;
 
     public Angle() {
-        this(0);
+        this(0.0);
     }
 
     public Angle(double value) {
         this.angle = value;
     }
 
-    public Angle(int Value) {
-        setDegreeValue(Value);
-    }
-
-    public void setValue(double value) {
-        angle = value;
-    }
-
-    private void setDegreeValue(double value) {
-        angle = value / 180 * Math.PI;
+    public Angle(Angle angle) {
+        this(angle.angle);
     }
 
     public double getValue() {
@@ -30,35 +25,15 @@ public final class Angle {
     }
 
     private double getDegreeValue() {
-        return angle * 180.0 / Math.PI;
-    }
-
-    public double getDecValue() {
-        return angle / (2 * Math.PI);
-    }
-
-    public void incValue(double value) {
-        angle += value;
-    }
-
-    public void decValue(double value) {
-        angle -= value;
-    }
-
-    public void incDegreeValue(double value) {
-        angle += value / 180 * Math.PI;
-    }
-
-    public Angle copy() {
-        return new Angle(angle);
+        return toDegrees(angle);
     }
 
     public Angle add(Angle a) {
         return new Angle(this.angle + a.angle);
     }
 
-    public Angle sub(Angle a) {
-        return new Angle(this.angle - a.angle);
+    public static Angle fromDegrees(int degrees) {
+        return new Angle(toRadians(degrees));
     }
 
     public static class Transition {

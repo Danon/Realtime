@@ -27,7 +27,7 @@ public class GameServer implements ServerConnectionListener {
 
     private final static int maxPlayers = 20;
 
-    GameServer() throws IOException {
+    GameServer() {
         this.world.setMap(SaveManager.Map.load("Standard"));
 
         server = new ServerConnectionManager();

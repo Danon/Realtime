@@ -1,7 +1,6 @@
 package util.save;
 
 import gameplay.GameMap;
-import ui.gfx.SkeletonAnimation;
 
 import java.io.File;
 
@@ -39,28 +38,6 @@ final public class SaveManager {
             GameMap map = new GameMap(mapName, -1, -1);
             manager.loadObject(pathName, mapName, map);
             return map;
-        }
-    }
-
-    public static class Animation {
-        final static String pathName = "res/animations";
-
-        public static boolean exists(String animationName) {
-            return new File(pathName, animationName.toLowerCase()).exists();
-        }
-
-        public static String[] list() {
-            return new File(pathName).list();
-        }
-
-        public static void save(SkeletonAnimation animation) {
-            manager.saveObject(pathName, animation.getName(), animation);
-        }
-
-        public static SkeletonAnimation load(String animationName) {
-            SkeletonAnimation skeleton = new SkeletonAnimation(animationName);
-            manager.loadObject(pathName, animationName, skeleton);
-            return skeleton;
         }
     }
 

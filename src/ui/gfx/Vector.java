@@ -11,8 +11,8 @@ public class Vector extends Point {
 
     Vector(DirectionalVector vector) {
         this(
-                vector.length * Math.sin(vector.direction.getValue()),
-                vector.length * Math.cos(vector.direction.getValue())
+                vector.length * Math.sin(vector.getDirection()),
+                vector.length * Math.cos(vector.getDirection())
         );
     }
 

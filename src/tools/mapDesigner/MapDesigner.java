@@ -83,8 +83,7 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
         image = new BufferedImage(panelWidth, panelHeight, BufferedImage.TYPE_4BYTE_ABGR);
         canvas = image.createGraphics();
 
-        draw = new Drawer(panelWidth, panelHeight);
-        draw.setCanvas(canvas);
+        draw = new Drawer(canvas, panelWidth, panelHeight);
         draw.useCamera(new Camera());
 
         setLocationRelativeTo(null);
