@@ -1,5 +1,8 @@
 package ui.gfx.frame;
 
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
+@Immutable
 public class FrameAnimation {
     private final String name;
     private final int animationSpeed;
@@ -9,12 +12,6 @@ public class FrameAnimation {
         this.name = name;
         this.animationSpeed = animationSpeed;
         this.frames = frames;
-    }
-
-    void setSpritesheet(Spritesheet spritesheet) {
-        for (Frame frame : this.frames) {
-            frame.setSpritesheet(spritesheet);
-        }
     }
 
     public String getName() {
