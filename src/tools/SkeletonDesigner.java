@@ -240,7 +240,7 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         // head
         canvas.setStroke(new BasicStroke(15));
         draw.borders(new Oval(
-                Vector.transition(skeleton.getVector(1), skeleton.getVector(0), 0.5).asVector(),
+                Vector.transition(skeleton.getVector(1), skeleton.getVector(0), 0.5),
                 animation.getSkeleton(chosedFrame).head.getLength() / 2
         ));
 
@@ -259,7 +259,7 @@ public final class SkeletonDesigner extends JFrame implements MouseListener, Mou
         // right leg
         canvas.setColor(grayScale ? Color.black : Color.cyan);
         draw.curveCross(
-                animation.getSkeleton(chosedFrame).position, skeleton.getVector(7).asVector(), skeleton.getVector(9).asVector()
+                animation.getSkeleton(chosedFrame).position, skeleton.getVector(7), skeleton.getVector(9)
         );
 
 

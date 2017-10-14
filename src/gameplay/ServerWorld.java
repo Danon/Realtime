@@ -75,4 +75,11 @@ final public class ServerWorld extends PhysicalWorld {
             out.put(characterId, cha);
         }
     }
+
+    @Override
+    public void beforeAddCharacter(Character character) {
+        character.shared.hp = 500;
+        character.shared.y = 32;
+        character.shared.x = Math.random() * (this.getMapWidth() - 200) + 100;
+    }
 }

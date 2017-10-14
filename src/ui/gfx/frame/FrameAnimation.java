@@ -1,4 +1,4 @@
-package ui.gfx;
+package ui.gfx.frame;
 
 public class FrameAnimation {
     private final String name;
@@ -21,7 +21,7 @@ public class FrameAnimation {
         return this.name;
     }
 
-    Frame getFrameIterate(int frameId) {
+    public Frame getFrameIterate(int frameId) {
         assert frameId >= 0;
         return frames[frameId / animationSpeed % frames.length];
     }
@@ -38,7 +38,6 @@ public class FrameAnimation {
         public final static int Pushed = Default;
         public final static int Shooting = 11;
         public final static int Basic = 6;
-        final static int BasicStart = 6;
         public final static int BasicAir = 8;
         public final static int Goal = Default;
         public final static int ClimbingStart = Default;

@@ -1,15 +1,23 @@
 package ui.gfx;
 
 import gameplay.Point;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
+@Immutable
 public class Vector extends Point {
     public Vector(double x, double y) {
         super(x, y);
     }
 
     Vector(DirectionalVector vector) {
-        this.x = vector.length * Math.sin(vector.direction.getValue());
-        this.y = vector.length * Math.cos(vector.direction.getValue());
+        this(
+                vector.length * Math.sin(vector.direction.getValue()),
+                vector.length * Math.cos(vector.direction.getValue())
+        );
+    }
+
+    Vector(Point point) {
+        super(point);
     }
 
     public Vector sub(Point p) {

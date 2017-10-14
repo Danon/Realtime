@@ -1,4 +1,4 @@
-package ui.gfx;
+package ui.gfx.frame;
 
 public class Spritesheet {
     private final String name;
@@ -16,17 +16,12 @@ public class Spritesheet {
         return name;
     }
 
-    FrameAnimation animation(String animationName) {
+    public FrameAnimation animation(String animationName) {
         for (FrameAnimation animation : animations) {
             if (animation.getName().equals(animationName)) {
                 return animation;
             }
         }
         return null;
-    }
-
-    public FrameAnimation animation(int animationId) {
-        assert (0 <= animationId && animationId < animations.length);
-        return animations[animationId];
     }
 }

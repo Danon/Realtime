@@ -1,14 +1,11 @@
-package ui.gfx;
+package ui.gfx.frame;
 
 public class Frame {
     private Spritesheet parentSpritesheet;
 
-    final int x;
-    final int y;
-    final int width;
-    final int height;
-    final int offsetX;
-    final int offsetY;
+    final public int x, y;
+    final public int width, height;
+    final public int offsetX, offsetY;
 
     public Frame(int x, int y, int width, int height, int offset, int offsetY) {
         this.x = x;
@@ -27,7 +24,7 @@ public class Frame {
         this(x, y, width, height, 0, 0);
     }
 
-    String getSpritesheetName() {
+    public String getSpritesheetName() {
         return parentSpritesheet.getName();
     }
 

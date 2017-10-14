@@ -2,7 +2,7 @@ package gameplay;
 
 import network.KeysState;
 import network.Network.Command;
-import ui.gfx.FrameAnimation;
+import ui.gfx.frame.FrameAnimation;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,11 +48,12 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
 
     public void addCharacter(Character character) {
         synchronized (characters) {
-            character.shared.hp = 500;
-            character.shared.y = 32;
-            character.shared.x = Math.random() * (this.getMapWidth() - 200) + 100;
+            beforeAddCharacter(character);
             characters.putIfAbsent(character.characterId, character);
         }
+    }
+
+    public void beforeAddCharacter(Character character) {
     }
 
     void moveCharacter(int characterId, KeysState keysState) {

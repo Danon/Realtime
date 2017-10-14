@@ -1,6 +1,6 @@
 package ui.gfx.resources;
 
-import ui.gfx.Spritesheet;
+import ui.gfx.frame.Spritesheet;
 
 import java.awt.image.BufferedImage;
 

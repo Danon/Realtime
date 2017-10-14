@@ -1,7 +1,6 @@
 package gameplay;
 
 import ui.gfx.IntTransition;
-import ui.gfx.Vector;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -49,10 +48,6 @@ public class Point {
         return min(max(y, minValue), maxValue);
     }
 
-    public Vector asVector() {
-        return new Vector(this.x, this.y);
-    }
-
     public Point invertY(int axis) {
         return new Point(this.x, axis - this.y);
     }
@@ -83,10 +78,6 @@ public class Point {
 
     public Point sub(Point a) {
         return new Point(this.x - a.x, this.y - a.y);
-    }
-
-    public Point addX(double x) {
-        return new Point(this.x + x, this.y);
     }
 
     public Point addY(double y) {

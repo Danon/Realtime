@@ -1,11 +1,11 @@
 package ui.gfx.resources;
 
-import ui.gfx.Frame;
-import ui.gfx.FrameAnimation;
-import ui.gfx.Spritesheet;
+import ui.gfx.frame.Frame;
+import ui.gfx.frame.FrameAnimation;
+import ui.gfx.frame.Spritesheet;
 
 public class CharacterSpritesheet {
-    Spritesheet spritesheet = new Spritesheet("sprites.png",
+    final Spritesheet spritesheet = new Spritesheet("sprites.png",
             new FrameAnimation("materialization", FrameAnimation.Speed.Materialization,
                     new Frame(6, 5, 9, 48, 4),
                     new Frame(23, 24, 22, 29, 11),

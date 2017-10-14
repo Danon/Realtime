@@ -15,14 +15,14 @@ public class Skeleton {
         position = point;
         body = new DirectionalVector(92, new Angle());      // 114
         head = new DirectionalVector(58, new Angle());      // 63
-        leftArm = new DirectionalVector(55, new Angle(-135));  // 70
-        rightArm = new DirectionalVector(55, new Angle(135));   // 70
-        leftHand = new DirectionalVector(56, new Angle(-155));  // 80
-        rightHand = new DirectionalVector(56, new Angle(155));   // 80
-        leftTigh = new DirectionalVector(48, new Angle(-145));  // 92
-        rightTigh = new DirectionalVector(48, new Angle(145));   // 92
-        leftLeg = new DirectionalVector(66, new Angle(-165));  // 86
-        rightLeg = new DirectionalVector(66, new Angle(165));   // 86
+        leftArm = new DirectionalVector(55, Angle.fromDegrees(-135));  // 70
+        rightArm = new DirectionalVector(55, Angle.fromDegrees(135));   // 70
+        leftHand = new DirectionalVector(56, Angle.fromDegrees(-155));  // 80
+        rightHand = new DirectionalVector(56, Angle.fromDegrees(155));   // 80
+        leftTigh = new DirectionalVector(48, Angle.fromDegrees(-145));  // 92
+        rightTigh = new DirectionalVector(48, Angle.fromDegrees(145));   // 92
+        leftLeg = new DirectionalVector(66, Angle.fromDegrees(-165));  // 86
+        rightLeg = new DirectionalVector(66, Angle.fromDegrees(165));   // 86
 
         parts = new DirectionalVector[]{
                 body, head, leftArm, rightArm, leftHand, rightHand, leftTigh, rightTigh, leftLeg, rightLeg
@@ -30,7 +30,7 @@ public class Skeleton {
     }
 
     public Skeleton(Skeleton skeleton) {
-        position = skeleton.position.copy();
+        position = new Point(skeleton.position);
         body = skeleton.body.copy();
         head = skeleton.head.copy();
         leftArm = skeleton.leftArm.copy();
@@ -77,25 +77,25 @@ public class Skeleton {
     public Vector getBoneJointPoint(int id) {
         switch (id) {
             case 0:
-                return position.asVector();
+                return new Vector(position);
             case 1:
-                return body.asVector().add(position);
+                return new Vector(body).add(position);
             case 2:
-                return body.asVector().add(position);
+                return new Vector(body).add(position);
             case 3:
-                return body.asVector().add(position);
+                return new Vector(body).add(position);
             case 4:
-                return body.asVector().add(position).add(leftArm.asVector()).asVector();
+                return new Vector(body).add(position).add(new Vector(leftArm));
             case 5:
-                return body.asVector().add(position).add(rightArm.asVector()).asVector();
+                return new Vector(body).add(position).add(new Vector(rightArm));
             case 6:
-                return position.asVector();
+                return new Vector(position);
             case 7:
-                return position.asVector();
+                return new Vector(position);
             case 8:
-                return position.add(leftTigh.asVector()).asVector();
+                return new Vector(position.add(new Vector(leftTigh)));
             case 9:
-                return position.add(rightTigh.asVector()).asVector();
+                return new Vector(position).add(new Vector(rightTigh));
             default:
                 return null;
         }

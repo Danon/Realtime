@@ -6,19 +6,15 @@ import gameplay.Rectangle;
 import ui.gfx.resources.Resources;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 
 public class Drawer {
     public static boolean invertPlane = false;
     public static int invertValue = 500;
-
     private Graphics2D canvas;
-
     private Camera camera;
     private boolean includeCamera = false;
-
     private final int windowWidth;
     private final int windowHeight;
 
@@ -75,70 +71,62 @@ public class Drawer {
         return x;
     }
 
-    private void serialize(Point p) {
+    private Point serialized(Point p) {
+        double x = p.x;
+        double y = p.y;
+
         if (includeCamera) {
-            p.x -= camera.getX();
-            p.y += camera.getY();
+            x = x - camera.getX();
+            y = y + camera.getY();
         }
         if (invertPlane) {
-            p.y = invertValue - p.y;
+            y = invertValue - y;
         }
+
+        return new Point(x, y);
     }
 
-    private void serialize(Rectangle r) {
+    private Rectangle serialized(Rectangle r) {
+        double x = r.x;
+        double y = r.y;
+
         if (includeCamera) {
-            r.x -= camera.getX();
-            r.y += camera.getY();
+            x = r.x - camera.getX();
+            y = r.y + camera.getY();
+        }
+
+        if (invertPlane) {
+            y = invertValue - y;
+        }
+        return new Rectangle(x, y, r.width, r.height);
+    }
+
+    private Oval serialized(Oval o) {
+        double x = o.x;
+        double y = o.y;
+
+        if (includeCamera) {
+            x = o.x - camera.getX();
+            y = o.y + camera.getY();
         }
         if (invertPlane) {
-            r.y = invertValue - r.y;
+            y = invertValue - y;
         }
+        return new Oval(new Point(x, y), o.getRadiusX(), o.getRadiusY());
     }
 
-    private void serialize(Oval o) {
-        if (includeCamera) {
-            o.x -= camera.getX();
-            o.y += camera.getY();
-        }
-        if (invertPlane) {
-            o.y = invertValue - o.y;
-        }
-    }
-
-
-    /**
-     * Draws a text on the canvas.
-     * If getCamera is setValues, position will be changed accordingly.
-     *
-     * @param text     Text to be drawn
-     * @param position Postion of the text.
-     */
     public void text(String text, Point position) {
-        serialize(position);
-        canvas.drawString(text, position.getX(), position.getY());
+        Point pos = serialized(position);
+        canvas.drawString(text, pos.getX(), pos.getY());
     }
 
-    /**
-     * Draws a formatted text on the canvas (using {@link java.lang.String#format(java.lang.String, java.lang.Object...) ormat()}.
-     * If getCamera is setValues, position will be changed accordingly.
-     *
-     * @param formatText Format text to be drawn
-     * @param position   Postion of the text.
-     * @param args       Arguments to be formatted.
-     */
     public void textFormat(String formatText, Point position, Object... args) {
-        serialize(position);
-        canvas.drawString(String.format(formatText, args), position.getX(), position.getY());
+        Point pos = serialized(position);
+        canvas.drawString(String.format(formatText, args), pos.getX(), pos.getY());
     }
 
-    /*
-     * Draws a line.
-     * If getCamera is setValues, position will be changed accordingly.
-     */
     public void line(Point a, Point b) {
-        Point a2 = new Point(a), b2 = new Point(b);
-        serialize(a2);
-        serialize(b2);
+        Point a2 = serialized(new Point(a)), b2 = serialized(new Point(b));
         canvas.drawLine(a2.getX(), a2.getY(), b2.getX(), b2.getY());
     }
 
@@ -158,10 +146,10 @@ public class Drawer {
 
     public void curveCross(Point a, Point b, Point c) {
         Point control = Bezier.getControlPoint(a, b, c);
-        this.curve(a.x, a.y, control.x, control.y, c.x, c.y);
+        this.curve(a, control, c);
     }
 
-    public void curve(Point a, Point b, Point c) {
+    private void curve(Point a, Point b, Point c) {
         canvas.draw(new QuadCurve2D.Double(
                 serializeX(a.x), serializeY(a.y),
                 serializeX(b.x), serializeY(b.y),
@@ -169,62 +157,25 @@ public class Drawer {
         ));
     }
 
-    private void curve(double x1, double y1, double x2, double y2, double x3, double y3) {
-        canvas.draw(new QuadCurve2D.Double(
-                serializeX(x1), serializeY(y1),
-                serializeX(x2), serializeY(y2),
-                serializeX(x3), serializeY(y3)
-        ));
-    }
-
-    /**
-     * Draws a rectangle.
-     * If getCamera is setValues, position will be changed accordingly.
-     *
-     * @param r Rectangle to be drawn.
-     */
     public void borders(Rectangle r) {
-        Rectangle r2 = new Rectangle(r.x, r.y, r.width, r.height);
-        serialize(r2);
-        canvas.drawRect(r2.getX(), r2.getY(), r2.getWidth(), r2.getHeight());
+        Rectangle rect = serialized(new Rectangle(r.x, r.y, r.width, r.height));
+        canvas.drawRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    /**
-     * Fills a rectangle.
-     * If getCamera is setValues, position will be changed accordingly.
-     *
-     * @param r Rectangle to be drawn.
-     */
     public void fill(Rectangle r) {
-        Rectangle r2 = new Rectangle(r.x, r.y, r.width, r.height);
-        serialize(r2);
-        canvas.fillRect(r2.getX(), r2.getY(), r2.getWidth(), r2.getHeight());
+        Rectangle rect = serialized(new Rectangle(r.x, r.y, r.width, r.height));
+        canvas.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    /**
-     * Draws an oval.
-     * If getCamera is setValues, position will be changed accordingly.
-     *
-     * @param oval Oval to be drawn.
-     */
     public void borders(Oval oval) {
-        Oval o = new Oval(oval);
-        serialize(o);
+        Oval o = serialized(new Oval(oval));
         canvas.drawOval(o.getX() - o.getRadiusX(), o.getY() - o.getRadiusY(), o.getRadiusX() * 2, o.getRadiusY() * 2);
     }
 
-    /**
-     * Fills an oval.
-     * If getCamera is setValues, position will be changed accordingly.
-     *
-     * @param oval Oval to be drawn.
-     */
     public void fill(Oval oval) {
-        Oval o = new Oval(oval);
-        serialize(o);
+        Oval o = serialized(new Oval(oval));
         canvas.fillOval(o.getX() - o.getRadiusX(), o.getY() - o.getRadiusY(), o.getRadiusX() * 2, o.getRadiusY() * 2);
     }
-
 
     public void floor(Floor floor) {
         if (floor.getTiles() == 0) {
@@ -265,112 +216,19 @@ public class Drawer {
         canvas.fillRect(0, 0, windowWidth, windowHeight);
     }
 
-
-    /**
-     * Draws an image on the canvas.
-     *
-     * @param name     Name of the image that will be drawn.
-     * @param position Position of an image on the screen.
-     */
-    public void image(String name, Point position) {
-        drawSimpleImage(Resources.getImageByName(name), position.copy(), DrawFrom.Center, Flip.None);
-    }
-
-    /**
-     * Draws an image on the canvas and rotates it.
-     *
-     * @param name     Name of the image that will be drawn.
-     * @param position Position of an image on the screen.
-     * @param angle    Angle of rotation.
-     */
-    public void image(String name, Point position, Angle angle) {
-        drawRotatedImage(Resources.getImageByName(name), position.copy(), DrawFrom.Center, RotatePoint.Center, angle);
-    }
-
-    /**
-     * Draws an image on the canvas and rotates it.
-     *
-     * @param name     Name of the image that will be drawn.
-     * @param position Position of an image on the screen.
-     * @param angle    Angle of rotation.
-     * @param rotate   Point around which rotation will occur.
-     */
-    public void image(String name, Point position, Angle angle, RotatePoint rotate) {
-        drawRotatedImage(Resources.getImageByName(name), position.copy(), DrawFrom.Center, rotate, angle);
-    }
-
-    /**
-     * Draws an image on the canvas.
-     *
-     * @param name     Name of the image that will be drawn.
-     * @param position Position of an image on the screen.
-     * @param drawFrom Point in the image that will be placed exactly where @{code position}
-     *                 points to.
-     */
     public void image(String name, Point position, DrawFrom drawFrom) {
-        drawSimpleImage(Resources.getImageByName(name), position.copy(), drawFrom, Flip.None);
+        drawSimpleImage(Resources.getImageByName(name), new Point(position), drawFrom, Flip.None);
     }
 
-    /**
-     * Draws an image on the canvas and rotates it.
-     *
-     * @param name     Name of the image that will be drawn.
-     * @param position Position of an image on the screen.
-     * @param drawFrom Point in the image that will be placed exactly where @{code position}
-     *                 points to.
-     * @param angle    Angle of rotation.
-     */
-    public void image(String name, Point position, DrawFrom drawFrom, Angle angle) {
-        drawRotatedImage(Resources.getImageByName(name), position.copy(), drawFrom, RotatePoint.Center, angle);
+    public void frame(ui.gfx.frame.Frame frame, Point position, DrawFrom drawFrom, Flip flip) {
+        drawImageFrame(frame, new Point(position), drawFrom, flip);
     }
 
-    /**
-     * Draws an image on the canvas and rotates it.
-     *
-     * @param name     Name of the image that will be drawn.
-     * @param position Position of an image on the screen.
-     * @param drawFrom Point in the image that will be placed exactly where @{code position}
-     *                 points to.
-     * @param angle    Angle of rotation.
-     * @param rotate   Point around which rotation will occur.
-     */
-    public void image(String name, Point position, DrawFrom drawFrom, Angle angle, RotatePoint rotate) {
-        drawRotatedImage(Resources.getImageByName(name), position.copy(), drawFrom, rotate, angle);
-    }
-
-    /**
-     * Draws an image from a spritesheet onto the canvas, by selecting proper part
-     * of the spritesheet and drawing it onto the canvas. <br><br>
-     * Spritesheet image name is retrieved from {@link ui.gfx.Frame} object.
-     *
-     * @param frame    Object informing about a frame to displaySize
-     * @param position Position of an image on the screen.
-     * @param drawFrom Specifies the vertical anchor of drawing an image.
-     * @param flip     Specifies the flip of an image (Horizontally, Vertically, Both, None)
-     * @see ui.gfx.Frame
-     * @see ui.gfx.DrawFrom
-     * @see ui.gfx.Flip
-     */
-    public void frame(Frame frame, Point position, DrawFrom drawFrom, Flip flip) {
-        drawImageFrame(frame, position.copy(), drawFrom, flip);
-    }
-
-
-    // Private functions
-
-    private void drawRotatedImage(BufferedImage img, Point position, DrawFrom drawFrom, RotatePoint rotate, Angle angle) {
+    private void drawImageFrame(ui.gfx.frame.Frame frame, Point pos, DrawFrom drawFrom, Flip flip) {
         if (canvas == null) {
             throw new UnsetCanvasException("No canvas has been specified.");
         }
-        serialize(position);
-        canvas.drawImage(img, affine(position, angle, drawFrom, rotate, img.getWidth(), img.getHeight()), null);
-    }
-
-    private void drawImageFrame(Frame frame, Point position, DrawFrom drawFrom, Flip flip) {
-        if (canvas == null) {
-            throw new UnsetCanvasException("No canvas has been specified.");
-        }
-        serialize(position);
+        Point position = serialized(pos);
         BufferedImage img = Resources.getImageByName(frame.getSpritesheetName());
         int
                 x = position.getX(),
@@ -406,36 +264,20 @@ public class Drawer {
                 frame.x + frame.width, frame.y + frame.height,
                 null);
         canvas.setColor(Color.black);
-        // canvas.drawRect(x, y, frame.width, frame.height);
     }
 
-    private AffineTransform affine(Point position, Angle angle, DrawFrom drawFrom, RotatePoint rotate, int width, int height) {
-        AffineTransform at = new AffineTransform();
-        at.translate(
-                position.getX() + (int) (width * drawFrom.x),
-                position.getY() + (int) (height * drawFrom.y)
-        );
-        at.rotate(angle.getValue());
-        at.translate(
-                -width * (rotate.x + 0.5),
-                -height * (rotate.y + 0.5)
-        );
-        return at;
-    }
-
-
-    private void drawSimpleImage(BufferedImage img, Point position, DrawFrom drawFrom, Flip flip) {
+    private void drawSimpleImage(BufferedImage img, Point pos, DrawFrom drawFrom, Flip flip) {
         if (canvas == null) {
             throw new UnsetCanvasException("No canvas has been specified.");
         }
-        serialize(position);
+        Point position = serialized(pos);
         int width = img.getWidth();
         int height = img.getHeight();
         int x = position.getX();
         int y = position.getY();
 
-        y -= (drawFrom.y + 0.5) * height;
         x -= (drawFrom.x + 0.5) * width;
+        y -= (drawFrom.y + 0.5) * height;
 
         switch (flip) {
             case Horizontally:
@@ -449,6 +291,4 @@ public class Drawer {
         }
         canvas.drawImage(img, x, y, width, height, null);
     }
-
-
 }

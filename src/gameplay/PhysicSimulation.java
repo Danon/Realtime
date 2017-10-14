@@ -1,6 +1,6 @@
 package gameplay;
 
-import ui.gfx.FrameAnimation;
+import ui.gfx.frame.FrameAnimation;
 import util.Validate;
 
 public class PhysicSimulation {

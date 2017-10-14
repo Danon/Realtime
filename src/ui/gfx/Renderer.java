@@ -7,6 +7,7 @@ import gameplay.Point;
 import gameplay.Rectangle;
 import javafx.util.Pair;
 import ui.Chat;
+import ui.gfx.frame.*;
 import ui.gfx.resources.Resources;
 import ui.gfx.shadows.MasterOfShadows;
 import util.Size;
@@ -200,7 +201,7 @@ public final class Renderer implements IRenderObserver {
         draw.fill(hpBar);
     }
 
-    private Frame getCharacterFrame(Character character) {
+    private ui.gfx.frame.Frame getCharacterFrame(Character character) {
         Pair<String, Integer> result = getFrameAnimationAndIteration(character);
 
         return Resources.spritesheet
