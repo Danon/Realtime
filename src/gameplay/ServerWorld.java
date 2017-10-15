@@ -12,6 +12,10 @@ final public class ServerWorld extends PhysicalWorld {
     final private Map<Integer, Character> out = new HashMap<>();
     final private Map<Integer, WorldMessage> queue = new ConcurrentHashMap<>();
 
+    public ServerWorld(GameMap map) {
+        super(map);
+    }
+
     synchronized public void messageArrived(int characterId, WorldMessage message) {
         queue.put(characterId, message);
     }

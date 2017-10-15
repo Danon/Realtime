@@ -18,8 +18,8 @@ public class Application {
         if (RunOptions.isUsed("-Debug")) {
             Resources.load();
             new GameServer();
-            new GameClient().openUserInterface();
-            new GameClient().openUserInterface();
+            new GameClient();
+//            new GameClient();
         } else {
             int option = showOptionDialog(null,
                     "Would you like to run the server?", "Are you server?",
@@ -33,7 +33,7 @@ public class Application {
 
                 case NO_OPTION:
                     Resources.load();
-                    new GameClient().openUserInterface();
+                    new GameClient();
                     break;
             }
         }

@@ -12,83 +12,89 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
+    private static final int VIEW_WIDTH = 800, VIEW_HEIGHT = 600;
+
+    private final Renderer renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
+    private final IKeyStateNotifier keyStateNotifier;
+    private final Size windowSize;
+
     private ClientWorld world;
     private Chat chat;
 
-    private final IKeyStateNotifier keyStateNotifier;
+    private KeysState keysState = new KeysState();
+    private KeysState prevKeysState = new KeysState();
+    private boolean left, right, prevLeft, prevRight;
 
-    private final Renderer renderer;
-    private Graphics windowGraphics;
-    private final Size windowSize;
-
-    private static final int VIEW_WIDTH = 800;
-    private static final int VIEW_HEIGHT = 600;
-
-    GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize) {
+    GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize, ClientWorld clientWorld, Chat chat) {
         this.windowSize = windowSize;
-        this.renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
 
         this.keyStateNotifier = keyStateNotifier;
-    }
 
-    IRenderObserver getRenderObserver() {
-        return this.renderer;
-    }
-
-    void attachWorld(ClientWorld world) {
-        this.world = world;
+        this.world = clientWorld;
         renderer.attachWorld(world);
-    }
 
-    void attachChat(Chat chat) {
         this.chat = chat;
         renderer.attachChat(chat);
     }
 
     void showGameWindow() {
-        this.setTitle("Game");
+        this.setTitle("GameWindow");
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        if (Application.RunOptions.isUsed("-ForceFullscreen")) {
-            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
-            if (gd.isFullScreenSupported()) {
-                this.setUndecorated(true);
-                gd.setFullScreenWindow(this);
-            } else {
-                System.err.println("Full screen not supported.");
-            }
-
-            windowGraphics = this.getGraphics();
-        } else {
-            if (Application.RunOptions.isUsed("-Windowed")) {
-                this.setSize(windowSize.getWidth(), windowSize.getHeight());
-                JPanel viewport = new JPanel();
-                viewport.setSize(new Dimension(VIEW_WIDTH, VIEW_HEIGHT));
-                this.getContentPane().add(viewport);
-
-                this.setVisible(true);
-                windowGraphics = viewport.getGraphics();
-            } else {
-                this.setSize(windowSize.getWidth(), windowSize.getHeight());
-                this.setUndecorated(true);
-                this.setVisible(true);
-                windowGraphics = this.getGraphics();
-            }
-        }
-
+        Graphics graphics = showAndGetWindowGraphics();
         renderer.setScalingTo(new Size(this.getWidth(), this.getHeight()));
-        renderer.drawOn(windowGraphics);
+        renderer.drawOn(graphics);
 
         this.addKeyListener(this);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
 
-    private KeysState keysState = new KeysState();
-    private KeysState prevKeysState = new KeysState();
-    private boolean left, right, prevLeft, prevRight;
+    IRenderObserver getRenderObserver() {
+        return this.renderer;
+    }
+
+    private Graphics showAndGetWindowGraphics() {
+        if (Application.RunOptions.isUsed("-ForceFullscreen")) {
+            return useFullscreen();
+        }
+
+        this.setSize(windowSize.getWidth(), windowSize.getHeight());
+        if (Application.RunOptions.isUsed("-Windowed")) {
+            return useWindowed();
+        }
+
+        return useDefault();
+    }
+
+    private Graphics useFullscreen() {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        if (gd.isFullScreenSupported()) {
+            this.setUndecorated(true);
+            gd.setFullScreenWindow(this);
+        } else {
+            System.err.println("Full screen not supported.");
+        }
+
+        return this.getGraphics();
+    }
+
+    private Graphics useWindowed() {
+        JPanel viewport = new JPanel();
+        viewport.setSize(new Dimension(VIEW_WIDTH, VIEW_HEIGHT));
+        this.getContentPane().add(viewport);
+
+        this.setVisible(true);
+        return viewport.getGraphics();
+    }
+
+    private Graphics useDefault() {
+        this.setUndecorated(true);
+        this.setVisible(true);
+        return this.getGraphics();
+    }
 
     @Override
     public void worldUpdated() {

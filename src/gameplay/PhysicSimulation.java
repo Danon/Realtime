@@ -4,14 +4,14 @@ import ui.gfx.frame.FrameAnimation;
 import util.Validate;
 
 public class PhysicSimulation {
-    private static double JUMP_VELOCITY = 4; //2.55;
-    private static double RUN_SPEED = 1.1;     // + (110px) per second
-    private static double CLIMB_SPEED = 0.8;     // + (60px) per second
-    private static double FALL_ACCELERATION = 0.07;    // + (7px/s) per second
+    private final static double JUMP_VELOCITY = 4; //2.55;
+    private final static double RUN_SPEED = 1.1;     // + (110px) per second
+    private final static double CLIMB_SPEED = 0.8;     // + (60px) per second
+    private final static double FALL_ACCELERATION = 0.07;    // + (7px/s) per second
 
     private GameMap currentMap;
 
-    public void setMap(GameMap map) {
+    public PhysicSimulation(GameMap map) {
         map.accept();
         this.currentMap = map;
     }
@@ -256,7 +256,7 @@ public class PhysicSimulation {
      * @see gameplay.Character
      * @see gameplay.Floor
      */
-    double closestDistance(FloorIs floorIs, gameplay.Character character) {
+    private double closestDistance(FloorIs floorIs, gameplay.Character character) {
 
         double minDistance = this.getMapHeight();  // largest possible value
 

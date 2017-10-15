@@ -14,7 +14,8 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
     final protected Map<Integer, Character> characters = new ConcurrentHashMap<>();
     private final Thread loopThread;
 
-    PhysicalWorld() {
+    PhysicalWorld(GameMap map) {
+        super(map);
         loopThread = new Thread(this, "LoopThread");
     }
 
@@ -50,6 +51,15 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         synchronized (characters) {
             beforeAddCharacter(character);
             characters.putIfAbsent(character.characterId, character);
+        }
+    }
+
+    public void addCharacters(Character[] characters) {
+        synchronized (this.characters) {
+            for (Character character : characters) {
+                beforeAddCharacter(character);
+                this.characters.putIfAbsent(character.characterId, character);
+            }
         }
     }
 

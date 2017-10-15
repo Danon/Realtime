@@ -1,30 +1,34 @@
 package app;
 
 import debug.DebugClientConnectionManager;
+import gameplay.ClientWorld;
 import network.ClientConnectionListener;
 import network.ClientConnectionManager;
 import network.Network.Command;
 import ui.ClientUserInterface;
-import ui.ILobbyObserver;
+import ui.window.LobbyForm;
+import ui.window.ProvideHostForm;
 import util.Size;
 
 public class GameClient implements ClientConnectionListener {
-    private ClientUserInterface userInterface;
-    private ClientConnectionManager client;
-    private ILobbyObserver lobby;
+    private final ClientUserInterface userInterface;
+    private final ClientConnectionManager client = new DebugClientConnectionManager();
+
+    private LobbyForm lobby;
+    private ProvideHostForm hostProvideForm;
+    private ClientWorld world;
 
     GameClient() {
-        client = new DebugClientConnectionManager();
-        client.openSocket();
-        client.addConnectionListener(this);
-        userInterface = new ClientUserInterface(client, new Size(880, 750));
-    }
+        client.openSocket(this);
 
-    void openUserInterface() {
-        client.addHostObserver(userInterface.createHostObserver(client));
-        lobby = userInterface.createLobbyObserver(client);
+        userInterface = new ClientUserInterface(client, new Size(880, 750));
+        hostProvideForm = new ProvideHostForm(client);
+        lobby = new LobbyForm(client);
+
+        client.addHostObserver(hostProvideForm);
         client.addChatListener(lobby);
-        userInterface.open();
+
+        hostProvideForm.setVisible(true);
     }
 
     @Override
@@ -50,7 +54,7 @@ public class GameClient implements ClientConnectionListener {
 
     @Override
     public void messageLoggedIn(Command.LoggedIn command) {
-        userInterface.openLobby();
+        lobby.setVisible(true);
         System.out.println(String.format("Logged in as \"%s\" (#%d)", command.username, command.userId));
     }
 
@@ -58,14 +62,13 @@ public class GameClient implements ClientConnectionListener {
     public void messageLoginRejected(Command.LoginRejected command) {
         userInterface.showInfo(command.reason);
         client.disconnect();
-        userInterface.open();
+        hostProvideForm.setVisible(true);
     }
 
     @Override
     public void messageMatchStarted(Command.MatchStarted command) {
         System.out.println("Match started.");
-        userInterface.setMainPlayerLoggedIn(command.clientsCharacterId);
-        userInterface.startGame(command.characters);
+        world = userInterface.startGame(command.clientsCharacterId, command.characters);
     }
 
     @Override
@@ -90,12 +93,12 @@ public class GameClient implements ClientConnectionListener {
 
     @Override
     public void messageUpdateSharedState(Command.UpdateSharedState command) {
-        userInterface.world.updateCharacter(command);
+        world.updateCharacter(command);
     }
 
     @Override
     public void messageUserLeft(Command.UserLeft command) {
-        userInterface.world.removeCharacterById(command.userId);
+        world.removeCharacterById(command.userId);
         System.out.println(String.format("player #%d left the game", command.userId));
     }
 }

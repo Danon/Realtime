@@ -22,10 +22,11 @@ public class ClientConnectionManager extends KryonetListener implements IHostOpe
         kryoClient.addListener(new ThreadedListener(this));
     }
 
-    public void openSocket() {
+    public void openSocket(ClientConnectionListener listener) {
         // For consistency, the classes to be sent over the network are
         // registered by the same method for both the kryoClient and kryoServer.
         Network.register(kryoClient);
+        addConnectionListener(listener);
         kryoClient.start();
     }
 

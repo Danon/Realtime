@@ -22,13 +22,13 @@ public class GameServer implements ServerConnectionListener {
 
     // GameRoom
     private HashSet<Accommodator> loggedIn = new HashSet<>();
-    private ServerWorld world = new ServerWorld();
+    private final ServerWorld world;
     private static boolean matchStarted = false;
 
     private final static int maxPlayers = 20;
 
     GameServer() {
-        this.world.setMap(SaveManager.Map.load("Standard"));
+        this.world = new ServerWorld(SaveManager.Map.load("Standard"));
 
         server = new ServerConnectionManager();
         try {
