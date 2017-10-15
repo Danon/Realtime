@@ -1,4 +1,4 @@
-package app;
+package debug;
 
 import debug.decorator.DebugClientConnectionManager;
 import gameplay.ClientWorld;
@@ -6,36 +6,37 @@ import network.ClientConnectionListener;
 import network.ClientConnectionManager;
 import network.Network.Command;
 import ui.ClientUserInterface;
-import ui.window.LobbyForm;
-import ui.window.ProvideHostForm;
-import ui.window.ServerLoginForm;
 import util.Size;
 
-public class GameClient implements ClientConnectionListener {
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class DebugGameClient implements ClientConnectionListener {
     private final ClientUserInterface userInterface;
     private final ClientConnectionManager client = new DebugClientConnectionManager();
-
-    private LobbyForm lobby;
-    private ProvideHostForm hostProvideForm;
     private ClientWorld world;
 
-    GameClient() {
+    public DebugGameClient() {
         client.openSocket(this);
 
         userInterface = new ClientUserInterface(client, new Size(880, 750));
-        hostProvideForm = new ProvideHostForm(client);
-        lobby = new LobbyForm(client);
+        client.connectToHost(getLocalHost());
+        client.loginToHost("Test", "test");
+        client.joinTeam(1);
+        client.setReady(true);
+    }
 
-        client.addHostObserver(hostProvideForm);
-        client.addChatListener(lobby);
-
-        hostProvideForm.setVisible(true);
+    private InetAddress getLocalHost() {
+        try {
+            return InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void connected() {
         // client.updateReturnTripTime();   // ping
-        new ServerLoginForm(client).setVisible(true);
     }
 
     @Override
@@ -56,7 +57,6 @@ public class GameClient implements ClientConnectionListener {
 
     @Override
     public void messageLoggedIn(Command.LoggedIn command) {
-        lobby.setVisible(true);
         System.out.println(String.format("Logged in as \"%s\" (#%d)", command.username, command.userId));
     }
 
@@ -64,7 +64,7 @@ public class GameClient implements ClientConnectionListener {
     public void messageLoginRejected(Command.LoginRejected command) {
         userInterface.showInfo(command.reason);
         client.disconnect();
-        hostProvideForm.setVisible(true);
+        System.out.println("Login rejected");
     }
 
     @Override
@@ -80,12 +80,10 @@ public class GameClient implements ClientConnectionListener {
 
     @Override
     public void messageLobbyTeamChanged(Command.LobbyTeamChanged command) {
-        lobby.teamChanged(command.userId, command.previousTeamId, command.currentTeamId, command.readyForGame);
     }
 
     @Override
     public void messageLobbyWelcome(Command.LobbyWelcome command) {
-        lobby.teamSet(command.teams);
     }
 
     @Override

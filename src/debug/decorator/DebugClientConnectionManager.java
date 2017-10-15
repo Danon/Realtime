@@ -1,4 +1,4 @@
-package debug;
+package debug.decorator;
 
 import com.esotericsoftware.kryonet.Connection;
 import network.ClientConnectionManager;

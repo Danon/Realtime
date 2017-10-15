@@ -2,7 +2,7 @@ package network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import debug.DebugServerAccommodationConnection;
+import debug.decorator.DebugServerAccommodationConnection;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package app;
 
+import debug.DebugGameClient;
 import ui.gfx.resources.Resources;
 import util.option.Options;
 
@@ -18,8 +19,7 @@ public class Application {
         if (RunOptions.isUsed("-Debug")) {
             Resources.load();
             new GameServer();
-            new GameClient();
-//            new GameClient();
+            new DebugGameClient();
         } else {
             int option = showOptionDialog(null,
                     "Would you like to run the server?", "Are you server?",

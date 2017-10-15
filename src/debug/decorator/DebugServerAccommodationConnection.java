@@ -1,4 +1,4 @@
-package debug;
+package debug.decorator;
 
 import network.Network;
 import network.ServerAccommodationConnection;

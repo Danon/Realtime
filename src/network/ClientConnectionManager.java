@@ -6,7 +6,6 @@ import ui.IHostObserver;
 import ui.IHostOperator;
 import ui.IKeyStateNotifier;
 import ui.ILobbyOperator;
-import ui.window.ServerLoginForm;
 import util.Password;
 
 import java.io.IOException;
@@ -43,15 +42,20 @@ public class ClientConnectionManager extends KryonetListener implements IHostOpe
     @Override
     public void connectToHost(InetAddress address) {
         try {
-            kryoClient.connect(5000, address, Network.Port.forTCP, Network.Port.forUDP);
+            tryConnect(address);
             connectionListeners.forEach(network.ClientConnectionListener::connected);
             hostObservers.forEach(IHostObserver::connected);
-        } catch (IOException ex) {
+        } catch (ClientConnectionException ex) {
             connectionListeners.forEach(network.ClientConnectionListener::connectError);
-            return;
         }
+    }
 
-        new ServerLoginForm(this).setVisible(true);
+    private void tryConnect(InetAddress address) {
+        try {
+            kryoClient.connect(5000, address, Network.Port.forTCP, Network.Port.forUDP);
+        } catch (IOException e) {
+            throw new ClientConnectionException(e);
+        }
     }
 
     @Override
