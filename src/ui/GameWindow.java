@@ -56,16 +56,18 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     }
 
     private Graphics showAndGetWindowGraphics() {
-        if (Application.RunOptions.isUsed("-ForceFullscreen")) {
+        String type = Application.RunOptions.getText("-Display");
+
+        if (type.equals("Fullscreen")) {
             return useFullscreen();
         }
 
-        this.setSize(windowSize.getWidth(), windowSize.getHeight());
-        if (Application.RunOptions.isUsed("-Windowed")) {
+        if (type.equals("Window")) {
+            this.setSize(windowSize.getWidth(), windowSize.getHeight());
             return useWindowed();
         }
 
-        return useDefault();
+        throw new RuntimeException("Invalid display type");
     }
 
     private Graphics useFullscreen() {
@@ -88,12 +90,6 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
 
         this.setVisible(true);
         return viewport.getGraphics();
-    }
-
-    private Graphics useDefault() {
-        this.setUndecorated(true);
-        this.setVisible(true);
-        return this.getGraphics();
     }
 
     @Override

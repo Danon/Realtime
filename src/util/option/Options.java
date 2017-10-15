@@ -3,8 +3,7 @@ package util.option;
 public class Options {
     private final Option[] options = {
             new Option("-Debug"),
-            new Option("-ForceFullscreen"),
-            new Option("-Windowed"),
+            new Option("-Display", OptionType.Text, "Window", "Fullscreen"),
             new Option("-View", OptionType.Text, "Fit", "Stretch", "Normal"),
             new Option("-IgnorePassword"),
             new Option("-TCPPort", OptionType.Number, 33455),
@@ -48,8 +47,12 @@ public class Options {
         return option.isUsed() && option.getTextParam().equals(param);
     }
 
-    public int getValue(String optionName) {
+    public int getNumber(String optionName) {
         return getOptionByName(optionName).getNumberParam();
+    }
+
+    public String getText(String optionName) {
+        return getOptionByName(optionName).getTextParam();
     }
 
     static class ErrorMessage {

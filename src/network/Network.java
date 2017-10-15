@@ -14,8 +14,8 @@ import static app.Application.RunOptions;
 public class Network {
     public static class Port {
         public static final int
-                forTCP = RunOptions.getValue("-TCPPort"), //default 33455;
-                forUDP = RunOptions.getValue("-UDPPort"); //default 33456;
+                forTCP = RunOptions.getNumber("-TCPPort"), //default 33455;
+                forUDP = RunOptions.getNumber("-UDPPort"); //default 33456;
     }
 
     static void register(EndPoint endPoint) {

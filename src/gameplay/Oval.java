@@ -11,7 +11,7 @@ public class Oval extends Shape {
         this.radiusY = o.radiusY;
     }
 
-    private Oval(Point pos, int radiusX, int radiusY) {
+    public Oval(Point pos, int radiusX, int radiusY) {
         this.x = pos.x;
         this.y = pos.y;
         this.radiusX = radiusX;

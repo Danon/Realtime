@@ -51,7 +51,7 @@ public class Option {
         isSet = state;
     }
 
-    public final void setParam(String value) {
+    void setParam(String value) {
         if (this.type != OptionType.Text) {
             throw new RuntimeException(TEXT_TO_NON_TEXT);
         }

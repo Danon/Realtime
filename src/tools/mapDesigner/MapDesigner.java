@@ -261,49 +261,9 @@ public final class MapDesigner extends JFrame implements KeyListener, MouseListe
         canvas.setColor(Color.red);
         canvas.drawString(debugText, 50, 50);
 
-        Point mouseA = mouse.invertY(map.getHeight());
-
-        // angle.incValue(0.1);
-        angle.setValue(Math.PI * 1 / 4.0);
-        Point p = mouseA.find(200, angle);
-
-        PointLine line = new PointLine(mouseA, p);
-        draw.line(mouse, p.invertY(map.getHeight()));
-        draw.borders(new Oval(mouse, 5));
-        draw.borders(new Oval(
-                p.invertY(map.getHeight()), 5)
-        );
-
-
         debugText = angle.toString();
 
-        List<Point> points = new ArrayList<>();
-
-        for (Floor floor : map.getFloors()) {
-            List<Point> corns = floor.getCorners();
-            for (Point pt : corns) {
-                canvas.setColor(Color.blue);
-                draw.borders(new Oval(pt.invertY(map.getHeight()), 8));
-            }
-            Point intersect;
-            if ((intersect = line.crossPointWith(new PointLine(corns.get(0), corns.get(1)))) != null)
-                points.add(intersect);
-            if ((intersect = line.crossPointWith(new PointLine(corns.get(1), corns.get(2)))) != null)
-                points.add(intersect);
-            if ((intersect = line.crossPointWith(new PointLine(corns.get(2), corns.get(3)))) != null)
-                points.add(intersect);
-            if ((intersect = line.crossPointWith(new PointLine(corns.get(3), corns.get(0)))) != null)
-                points.add(intersect);
-        }
-
-        canvas.setColor(Color.red);
-        for (Point pt : points) {
-            draw.fill(new Oval(pt.invertY(map.getHeight()), 5));
-        }
-
-
         flip();
-        //  drawnInTime((double)(System.nanoTime() - beforeTime) / 1000000.0);
     }
 
     private void drawBorder(Rectangle border) {
