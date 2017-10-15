@@ -12,24 +12,15 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static util.LookAndFeel.setLookAndFeel;
+
 public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     private final ILobbyOperator lobby;
     private final List<LobbyState> lobbyStates = new ArrayList<>();
     private final DefaultListModel<String> chatModel = new DefaultListModel<>();
 
     private LobbyForm(ILobbyOperator lobbyOperator, Component alignment) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LobbyForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        setLookAndFeel();
         initComponents();
 
         this.setLocationRelativeTo(alignment);
@@ -70,6 +61,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
         btntReady = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Realtime | Chose your team");
         setName("frmLobby"); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

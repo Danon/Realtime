@@ -2,6 +2,8 @@ package app;
 
 import debug.DebugGameClient;
 import ui.gfx.resources.Resources;
+import ui.window.LobbyForm;
+import util.LookAndFeel;
 import util.option.Options;
 
 import java.io.IOException;
@@ -13,6 +15,8 @@ public class Application {
     public final static Options RunOptions = new Options();
 
     public static void main(String[] args) throws IOException {
+        LookAndFeel.setLookAndFeel();
+
         RunOptions.setOptions(args);
         System.out.println(RunOptions);
 

@@ -2,6 +2,7 @@ package ui.window;
 
 import ui.IHostOperator;
 import ui.MessageBox;
+import util.LookAndFeel;
 
 import java.util.Arrays;
 
@@ -9,18 +10,7 @@ public class ServerRegisterForm extends javax.swing.JFrame {
     IHostOperator operator;
 
     public ServerRegisterForm(IHostOperator operator, java.awt.Component alignment) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ServerRegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        LookAndFeel.setLookAndFeel();
         initComponents();
         this.setLocationRelativeTo(alignment);
         this.operator = operator;
@@ -46,7 +36,7 @@ public class ServerRegisterForm extends javax.swing.JFrame {
         btnClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Connected :: Register on Server");
+        setTitle("Realtime | Create an Account");
         setName("frmRegister"); // NOI18N
         setResizable(false);
 

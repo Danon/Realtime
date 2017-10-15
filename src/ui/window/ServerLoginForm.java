@@ -2,27 +2,18 @@ package ui.window;
 
 import ui.IHostOperator;
 import ui.MessageBox;
+import util.LookAndFeel;
 
 import java.util.Arrays;
 
 import static java.awt.Font.PLAIN;
+import static util.LookAndFeel.setLookAndFeel;
 
 public class ServerLoginForm extends javax.swing.JFrame {
     private IHostOperator operator;
 
     private ServerLoginForm(IHostOperator operator, java.awt.Component alignment) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ServerLoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        setLookAndFeel();
         initComponents();
         this.setLocationRelativeTo(alignment);
         this.operator = operator;
@@ -45,7 +36,7 @@ public class ServerLoginForm extends javax.swing.JFrame {
         lblResetPassword = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Connected :: Login to server");
+        setTitle("Realtime | Login to server");
         setName("frmLogin"); // NOI18N
         setResizable(false);
 

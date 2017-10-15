@@ -38,7 +38,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     }
 
     void showGameWindow() {
-        this.setTitle("GameWindow");
+        this.setTitle("Realtime | Game playing...");
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

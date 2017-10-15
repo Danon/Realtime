@@ -4,6 +4,7 @@ import ui.DiscoveredHostsListModel;
 import ui.IHostObserver;
 import ui.IHostOperator;
 import ui.MessageBox;
+import util.LookAndFeel;
 
 import java.awt.*;
 import java.net.InetAddress;
@@ -15,18 +16,7 @@ public class ProvideHostForm extends javax.swing.JFrame implements IHostObserver
     private final DiscoveredHostsListModel discoveredHostsListModel = new DiscoveredHostsListModel();
 
     private ProvideHostForm(IHostOperator operator, Component alignment) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProvideHostForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        LookAndFeel.setLookAndFeel();
         initComponents();
 
         setLocationRelativeTo(alignment);
@@ -53,7 +43,7 @@ public class ProvideHostForm extends javax.swing.JFrame implements IHostObserver
         lstAvialbleHosts = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Connect to server");
+        setTitle("Realtime | Connect to server");
         setName("frmProvideHost"); // NOI18N
         setResizable(false);
 
@@ -78,7 +68,7 @@ public class ProvideHostForm extends javax.swing.JFrame implements IHostObserver
         btnConnectIP.addActionListener(this::btnConnectIPActionPerformed);
 
         lblDiscoverHost.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lblDiscoverHost.setText("<html>Search your LAN network looking for avialble servers:</html>");
+        lblDiscoverHost.setText("<html>Search your LAN network looking for available servers:</html>");
 
         btnRefresh.setText("Search");
         btnRefresh.addActionListener(this::btnRefreshActionPerformed);
