@@ -19,7 +19,7 @@ public class DebugGameClient implements ClientConnectionListener {
     public DebugGameClient() {
         client.openSocket(this);
 
-        userInterface = new ClientUserInterface(client, new Size(880, 750));
+        userInterface = new ClientUserInterface(client, new Size(1440, 1050));
         client.connectToHost(getLocalHost());
         client.loginToHost("Test", "test");
         client.joinTeam(1);

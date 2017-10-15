@@ -7,7 +7,8 @@ import gameplay.Point;
 import gameplay.Rectangle;
 import javafx.util.Pair;
 import ui.Chat;
-import ui.gfx.frame.*;
+import ui.gfx.blur.filter.BoxBlurFilter;
+import ui.gfx.frame.FrameAnimation;
 import ui.gfx.resources.Resources;
 import ui.gfx.shadows.MasterOfShadows;
 import util.Size;
@@ -15,6 +16,7 @@ import util.Size;
 import java.awt.*;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
@@ -33,6 +35,9 @@ public final class Renderer implements IRenderObserver {
     private ClientWorld world;
     private Chat chat;
     private FontMetrics fontMetrics;
+
+    private BufferedImage tmp;
+    private Graphics2D tmpG;
 
     public static int
             CAMERA_SIDE_MARGIN = 0,
@@ -56,6 +61,9 @@ public final class Renderer implements IRenderObserver {
     public void setScalingTo(Size size) {
         this.windowSize = size;
         this.displaySize = this.getDisplaySize();
+
+        this.tmp = new BufferedImage(windowSize.getWidth(), windowSize.getHeight(), TYPE_INT_ARGB);
+        this.tmpG = this.tmp.createGraphics();
     }
 
     public void drawOn(Graphics graphics) {
@@ -117,12 +125,8 @@ public final class Renderer implements IRenderObserver {
     @Override
     public void render(gameplay.Character[] characters, int playerCharacterId) {
         draw.freeCamera();
-        canvas.setColor(Color.black);
-        draw.fill(new Rectangle(0, 0, viewSize.getWidth(), viewSize.getHeight()));
 
         Point playerPos = getPlayerPosition(characters, playerCharacterId);
-
-        setRaycastingFieldClip(playerPos.addY(60));
 
         canvas.setColor(Color.decode("#549CAE"));
         draw.fill(new Rectangle(0, 0, viewSize.getWidth(), viewSize.getHeight()));
@@ -141,8 +145,14 @@ public final class Renderer implements IRenderObserver {
         draw.getCamera().cap(borders, viewSize.getWidth(), viewSize.getHeight());
 
         drawBackground(borders);
+        draw.freeCamera();
 
-        canvas.setClip(0, 0, displaySize.right, displaySize.bottom);
+        tmpG.setColor(new Color(0, 0, 0, .575f));
+        tmpG.setComposite(AlphaComposite.Clear);
+        tmpG.fillRect(0, 0, tmp.getWidth(), tmp.getHeight());
+        tmpG.setComposite(AlphaComposite.SrcOver);
+
+        tmpG.fill(invertedLightShape(playerPos.addY(60)));
 
         drawFloors(world.getMap());
         drawLadders(world.getMap());
@@ -150,6 +160,9 @@ public final class Renderer implements IRenderObserver {
         for (gameplay.Character character : characters) {
             drawCharacter(character);
         }
+
+        canvas.setColor(Color.black);
+        canvas.drawImage(tmp, new BoxBlurFilter(4), 0, 0);
 
         draw.freeCamera();
 
@@ -269,9 +282,6 @@ public final class Renderer implements IRenderObserver {
     }
 
     private Shape lightShape(Point player) {
-        Camera camera = draw.getCamera();
-        final int mapHeight = viewSize.getHeight();
-
         Path2D shadowShape = new Path2D.Double();
         zed.getFieldOfView(player, new IntersectionIterable() {
             @Override
@@ -287,14 +297,22 @@ public final class Renderer implements IRenderObserver {
         shadowShape.closePath();
 
         AffineTransform at = new AffineTransform();
-        at.translate(-camera.getX(), camera.getY() + 32 + mapHeight);
+        Camera camera = draw.getCamera();
+        at.translate(-camera.getX(), camera.getY() + 32 + viewSize.getHeight());
         at.scale(1.0, -1.0);
         shadowShape.transform(at);
 
         return shadowShape;
     }
 
-    private void setRaycastingFieldClip(Point player) {
-        canvas.setClip(lightShape(player));
+    private Shape invertedLightShape(Point player) {
+        Shape clip = lightShape(player);
+
+        Area view = new Area(clip);
+        Area window = new Area(new java.awt.Rectangle(0, 0, viewSize.getWidth(), viewSize.getHeight()));
+
+        window.subtract(view);
+
+        return window;
     }
 }
