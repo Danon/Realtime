@@ -2,9 +2,9 @@ package ui.gfx;
 
 import app.Application;
 import gameplay.Character;
-import gameplay.*;
 import gameplay.Point;
 import gameplay.Rectangle;
+import gameplay.*;
 import javafx.util.Pair;
 import ui.Chat;
 import ui.gfx.blur.filter.BoxBlurFilter;
@@ -13,8 +13,8 @@ import ui.gfx.resources.Resources;
 import ui.gfx.shadows.MasterOfShadows;
 import util.Size;
 
-import java.awt.*;
 import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
@@ -293,8 +293,12 @@ public final class Renderer implements IRenderObserver {
             public void iterateNext(double x, double y) {
                 shadowShape.lineTo(x, y);
             }
+
+            @Override
+            public void onFinish() {
+                shadowShape.closePath();
+            }
         });
-        shadowShape.closePath();
 
         AffineTransform at = new AffineTransform();
         Camera camera = draw.getCamera();

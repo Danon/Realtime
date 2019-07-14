@@ -125,5 +125,6 @@ public class MasterOfShadows {
                 iterable.iterateNext(point.getX(), point.getY());
             }
         }
+        iterable.onFinish();
     }
 }
