@@ -41,6 +41,10 @@ public class ClientConnectionManager extends KryonetListener implements IHostOpe
 
     @Override
     public void connectToHost(InetAddress address) {
+        if (kryoClient.isConnected()) {
+            System.out.println("Already connected");
+            return;
+        }
         try {
             tryConnect(address);
             connectionListeners.forEach(network.ClientConnectionListener::connected);

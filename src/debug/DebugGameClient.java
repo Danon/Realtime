@@ -63,7 +63,6 @@ public class DebugGameClient implements ClientConnectionListener {
     @Override
     public void messageLoginRejected(Command.LoginRejected command) {
         userInterface.showInfo(command.reason);
-        client.disconnect();
         System.out.println("Login rejected");
     }
 

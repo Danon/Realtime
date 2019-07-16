@@ -9,6 +9,7 @@ import ui.ClientUserInterface;
 import ui.window.LobbyForm;
 import ui.window.ProvideHostForm;
 import ui.window.ServerLoginForm;
+import util.LookAndFeel;
 import util.Size;
 
 public class GameClient implements ClientConnectionListener {
@@ -17,7 +18,13 @@ public class GameClient implements ClientConnectionListener {
 
     private LobbyForm lobby;
     private ProvideHostForm hostProvideForm;
+    private ServerLoginForm serverLoginForm;
     private ClientWorld world;
+
+    public static void main(String[] args) {
+        LookAndFeel.setLookAndFeel();
+        new GameClient();
+    }
 
     GameClient() {
         client.openSocket(this);
@@ -28,6 +35,7 @@ public class GameClient implements ClientConnectionListener {
 
         client.addHostObserver(hostProvideForm);
         client.addChatListener(lobby);
+        serverLoginForm = new ServerLoginForm(client);
 
         hostProvideForm.setVisible(true);
     }
@@ -35,7 +43,7 @@ public class GameClient implements ClientConnectionListener {
     @Override
     public void connected() {
         // client.updateReturnTripTime();   // ping
-        new ServerLoginForm(client).setVisible(true);
+        serverLoginForm.setVisible(true);
     }
 
     @Override
@@ -46,6 +54,7 @@ public class GameClient implements ClientConnectionListener {
     @Override
     public void disconnected() {
         userInterface.showInfo("Disconnected.");
+        hostProvideForm.setVisible(true);
     }
 
     @Override
@@ -63,8 +72,7 @@ public class GameClient implements ClientConnectionListener {
     @Override
     public void messageLoginRejected(Command.LoginRejected command) {
         userInterface.showInfo(command.reason);
-        client.disconnect();
-        hostProvideForm.setVisible(true);
+        serverLoginForm.setVisible(true);
     }
 
     @Override

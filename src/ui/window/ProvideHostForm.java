@@ -139,7 +139,6 @@ public class ProvideHostForm extends javax.swing.JFrame implements IHostObserver
     @Override
     public void connected() {
         setVisible(false);
-        dispose();
     }
 
     private void btnConnectIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectIPActionPerformed

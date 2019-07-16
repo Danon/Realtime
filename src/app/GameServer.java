@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -21,11 +22,15 @@ public class GameServer implements ServerConnectionListener {
     private ServerConnectionManager server;
 
     // GameRoom
-    private HashSet<Accommodator> loggedIn = new HashSet<>();
+    private Set<Accommodator> loggedIn = new HashSet<>();
     private final ServerWorld world;
     private static boolean matchStarted = false;
 
     private final static int maxPlayers = 20;
+
+    public static void main(String[] args) {
+        new GameServer();
+    }
 
     GameServer() {
         this.world = new ServerWorld(SaveManager.Map.load("Standard"));
@@ -101,7 +106,7 @@ public class GameServer implements ServerConnectionListener {
         }
         matchStartMsg.characters = characters.toArray(new PlayerCharacter[counted.ready]);
 
-        server.forAllConnections((conn) -> {
+        server.forAllConnections(conn -> {
             matchStartMsg.clientsCharacterId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
             conn.sendTCP(matchStartMsg);
         });
