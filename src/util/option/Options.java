@@ -3,6 +3,7 @@ package util.option;
 public class Options {
     private final Option[] options = {
             new Option("-Debug"),
+            new Option("-DebugX"),
             new Option("-Display", OptionType.Text, "Window", "Fullscreen"),
             new Option("-View", OptionType.Text, "Fit", "Stretch", "Normal"),
             new Option("-IgnorePassword"),

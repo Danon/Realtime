@@ -27,7 +27,7 @@ public class GameClient implements ClientConnectionListener {
     }
 
     GameClient() {
-        userInterface = new ClientUserInterface(client, new Size(880, 750));
+        userInterface = new ClientUserInterface(client, new Size(660, 450));
     }
 
     public void start() {

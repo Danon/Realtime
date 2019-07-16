@@ -54,7 +54,7 @@ public class ServerLoginForm extends javax.swing.JFrame {
         txtUsername.setText("Test");
 
         txtPassword.setFont(new java.awt.Font("Tahoma", PLAIN, 14)); // NOI18N
-        txtPassword.setText("dupa");
+        txtPassword.setText("test");
 
         btnLogin.setText("Login");
         btnLogin.addActionListener(this::btnLoginActionPerformed);

@@ -49,7 +49,6 @@ public class GameServer implements ServerConnectionListener {
             ui.show();
 
             System.setOut(ui.getPrintStream());
-            System.setErr(ui.getPrintStream());
 
             System.out.println("World's running");
         } catch (IOException ex) {
@@ -234,7 +233,7 @@ public class GameServer implements ServerConnectionListener {
         if (SaveManager.Accounts.save(user)) {
             conn.sendTCP(new Command.Registered(user.getUsername()));
         } else {
-            conn.sendTCP(new Command.LoginRejected("Couldn't save the characer. Maybe try again later?"));
+            conn.sendTCP(new Command.LoginRejected("Couldn't save the character. Maybe try again later?"));
         }
     }
 

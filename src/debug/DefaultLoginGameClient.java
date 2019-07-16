@@ -8,35 +8,28 @@ import network.Network.Command;
 import ui.ClientUserInterface;
 import util.Size;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 public class DefaultLoginGameClient implements ClientConnectionListener {
     private final ClientUserInterface userInterface;
+    private final ClientConnectionManager client;
     private ClientWorld world;
 
-    public DefaultLoginGameClient() {
-        ClientConnectionManager client = new DebugClientConnectionManager();
-        client.openSocket(this);
+    private final String username, password;
 
+    public DefaultLoginGameClient(String username, String password) {
+        this.username = username;
+        this.password = password;
+        client = new DebugClientConnectionManager();
         userInterface = new ClientUserInterface(client, new Size(1440, 1050));
-        client.connectToHost(getLocalHost());
-        client.loginToHost("Test", "test");
-        client.joinTeam(1);
-        client.setReady(true);
     }
 
-    private InetAddress getLocalHost() {
-        try {
-            return InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+    public void start() {
+        client.openSocket(this);
+        client.connectToHost(InetAddressHelper.getLocalHost());
     }
 
     @Override
     public void connected() {
-        // client.updateReturnTripTime();   // ping
+        client.loginToHost(username, password);
     }
 
     @Override
@@ -83,6 +76,8 @@ public class DefaultLoginGameClient implements ClientConnectionListener {
 
     @Override
     public void messageLobbyWelcome(Command.LobbyWelcome command) {
+        client.joinTeam(1);
+        client.setReady(true);
     }
 
     @Override
@@ -92,11 +87,13 @@ public class DefaultLoginGameClient implements ClientConnectionListener {
 
     @Override
     public void messageUpdateSharedState(Command.UpdateSharedState command) {
+        if (world == null) return;
         world.updateCharacter(command);
     }
 
     @Override
     public void messageUserLeft(Command.UserLeft command) {
+        if (world == null) return;
         world.removeCharacterById(command.userId);
         System.out.println(String.format("player #%d left the game", command.userId));
     }
