@@ -23,6 +23,10 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
         loopThread.start();
     }
 
+    public void stopLoop() {
+        loopThread.interrupt();
+    }
+
     @Override
     final public void run() {
         double previous = millisecondsPassed();

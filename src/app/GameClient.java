@@ -23,13 +23,16 @@ public class GameClient implements ClientConnectionListener {
 
     public static void main(String[] args) {
         LookAndFeel.setLookAndFeel();
-        new GameClient();
+        new GameClient().start();
     }
 
     GameClient() {
+        userInterface = new ClientUserInterface(client, new Size(880, 750));
+    }
+
+    public void start() {
         client.openSocket(this);
 
-        userInterface = new ClientUserInterface(client, new Size(880, 750));
         hostProvideForm = new ProvideHostForm(client);
         lobby = new LobbyForm(client);
 

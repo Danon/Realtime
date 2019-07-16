@@ -4,9 +4,11 @@ import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import static java.awt.event.WindowEvent.WINDOW_CLOSING;
 import static java.lang.String.valueOf;
 
 public class PrintStreamJFrame {
@@ -71,7 +73,10 @@ public class PrintStreamJFrame {
         constraints.gridx = 1;
 
         JButton closeButton = new JButton("Disconnect all clients and Close");
-        closeButton.addActionListener(event -> onClose.run());
+        closeButton.addActionListener(event -> {
+            onClose.run();
+            closeWindow(jFrame);
+        });
         jFrame.add(closeButton, constraints);
 
         constraints.gridx = 0;
@@ -87,5 +92,9 @@ public class PrintStreamJFrame {
         jFrame.setSize(480, 320);
         jFrame.setLocationRelativeTo(null);
         return jFrame;
+    }
+
+    private void closeWindow(JFrame jFrame) {
+        jFrame.dispatchEvent(new WindowEvent(jFrame, WINDOW_CLOSING));
     }
 }

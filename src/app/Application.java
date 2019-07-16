@@ -34,7 +34,7 @@ public class Application {
 
                 case NO_OPTION:
                     Resources.load();
-                    new GameClient();
+                    new GameClient().start();
                     break;
             }
         }

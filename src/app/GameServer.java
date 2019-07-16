@@ -43,7 +43,11 @@ public class GameServer implements ServerConnectionListener {
 
             world.startLoop();
             System.out.println(String.format("Server started v%s (::%d :: %d)", Application.VERSION, Network.Port.forTCP, Network.Port.forUDP));
-            PrintStreamJFrame ui = new PrintStreamJFrame(() -> server.forAllConnections(Connection::close));
+            PrintStreamJFrame ui = new PrintStreamJFrame(() -> {
+                server.forAllConnections(Connection::close);
+                server.disconnect();
+                world.stopLoop();
+            });
             ui.show();
 
             System.setOut(ui.getPrintStream());

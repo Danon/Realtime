@@ -102,4 +102,8 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
     public void sendToAllTCP(Object o) {
         kryoServer.sendToAllTCP(o);
     }
+
+    public void disconnect() {
+        kryoServer.close();
+    }
 }
