@@ -5,6 +5,10 @@ final public class PlayerCharacter extends Character {
     public String username;
     private int teamId;
 
+    @SuppressWarnings("Kryo Deserialization")
+    public PlayerCharacter() {
+    }
+
     public PlayerCharacter(int userId, String username, int teamId, int characterId) {
         super(characterId);
         this.userId = userId;

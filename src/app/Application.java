@@ -2,11 +2,8 @@ package app;
 
 import debug.DebugGameClient;
 import ui.gfx.resources.Resources;
-import ui.window.LobbyForm;
 import util.LookAndFeel;
 import util.option.Options;
-
-import java.io.IOException;
 
 import static javax.swing.JOptionPane.*;
 
@@ -14,7 +11,7 @@ public class Application {
     public final static String VERSION = "0.02";
     public final static Options RunOptions = new Options();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         LookAndFeel.setLookAndFeel();
 
         RunOptions.setOptions(args);
