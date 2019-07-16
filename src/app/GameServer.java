@@ -1,11 +1,12 @@
 package app;
 
+import com.esotericsoftware.kryonet.Connection;
 import gameplay.CountedCharacters;
 import gameplay.PlayerCharacter;
 import gameplay.ServerWorld;
 import network.*;
 import network.Network.Command;
-import ui.ServerUserInterface;
+import ui.PrintStreamJFrame;
 import util.Validate;
 import util.save.PrimitiveReader;
 import util.save.SaveManager;
@@ -42,8 +43,12 @@ public class GameServer implements ServerConnectionListener {
 
             world.startLoop();
             System.out.println(String.format("Server started v%s (::%d :: %d)", Application.VERSION, Network.Port.forTCP, Network.Port.forUDP));
-            ServerUserInterface ui = new ServerUserInterface();
-            ui.showWindow();
+            PrintStreamJFrame ui = new PrintStreamJFrame(() -> server.forAllConnections(Connection::close));
+            ui.show();
+
+            System.setOut(ui.getPrintStream());
+            System.setErr(ui.getPrintStream());
+
             System.out.println("World's running");
         } catch (IOException ex) {
             System.err.println("Socket port is probably in use.");
