@@ -28,12 +28,10 @@ public class GameServer implements ServerConnectionListener {
     private static boolean matchStarted = false;
 
     private final static int maxPlayers = 20;
+    private boolean singlePlayer;
 
-    public static void main(String[] args) {
-        new GameServer();
-    }
-
-    GameServer() {
+    GameServer(boolean automaticallyStartSinglePlayerGames) {
+        this.singlePlayer = automaticallyStartSinglePlayerGames;
         this.world = new ServerWorld(SaveManager.Map.load("Standard"));
 
         server = new ServerConnectionManager();
@@ -82,7 +80,7 @@ public class GameServer implements ServerConnectionListener {
     }
 
     private boolean matchStartCondition(CountedCharacters charsTable) {
-        return (charsTable.inTeams == charsTable.ready && charsTable.inTeams > 0);
+        return (charsTable.inTeams == charsTable.ready && charsTable.inTeams > (singlePlayer ? 0 : 1));
     }
 
     private void recheckGameStart() {

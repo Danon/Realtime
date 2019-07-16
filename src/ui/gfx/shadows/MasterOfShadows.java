@@ -16,7 +16,6 @@ import static ui.gfx.shadows.ShadowGeometry.Shapes.computeLineSegments;
 
 public class MasterOfShadows {
     private final List<List<Line2D>> lineSegments = new ArrayList<>();
-
     private final Map<List<Line2D>, Shape> skip = new HashMap<>();
 
     public MasterOfShadows(int x, int y, int width, int height) {

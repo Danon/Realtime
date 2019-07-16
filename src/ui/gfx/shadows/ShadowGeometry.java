@@ -25,7 +25,6 @@ class ShadowGeometry {
         }
     }
 
-
     static class Lines {
         static Line2D rotate(Line2D line, double angleRad) {
             double x0 = line.getX1();
@@ -47,18 +46,12 @@ class ShadowGeometry {
     static class Intersection {
         private static final double EPSILON = 1e-6;
 
-
         /**
-         * Computes the intersection of the given lines.
-         *
-         * @param line0            The first line
-         * @param line1            The second line
          * @param relativeLocation Optional location that stores the
          *                         relative location of the intersection point on
          *                         the given line segments
          * @param absoluteLocation Optional location that stores the
          *                         absolute location of the intersection point
-         * @return Whether the lines intersect
          */
         static boolean intersectLineLine(
                 Line2D line0, Line2D line1,
@@ -73,8 +66,6 @@ class ShadowGeometry {
         }
 
         /**
-         * Computes the intersection of the specified lines.
-         * <p>
          * Ported from
          * http://www.geometrictools.com/LibMathematics/Intersection/
          * Wm5IntrSegment2Segment2.cpp
@@ -156,8 +147,8 @@ class ShadowGeometry {
             List<Line2D> result = new ArrayList<>();
             PathIterator pi = new FlatteningPathIterator(shape.getPathIterator(null), flatness);
             double[] coordinates = new double[6];
-            double previous[] = new double[2];
-            double first[] = new double[2];
+            double[] previous = new double[2];
+            double[] first = new double[2];
             while (!pi.isDone()) {
                 int segment = pi.currentSegment(coordinates);
                 switch (segment) {

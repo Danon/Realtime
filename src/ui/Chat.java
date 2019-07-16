@@ -25,7 +25,7 @@ public class Chat {
         }
 
         if (messages.size() < count) {
-            return messages.toArray(new String[messages.size()]);
+            return messages.toArray(new String[0]);
         }
 
         return messages

@@ -3,7 +3,7 @@ package util;
 import java.util.Arrays;
 
 public class Password {
-    private byte[] hashBytes;
+    private final byte[] hashBytes;
 
     public Password() {
         hashBytes = new byte[0];

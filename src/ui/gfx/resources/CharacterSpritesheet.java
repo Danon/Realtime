@@ -1,11 +1,9 @@
 package ui.gfx.resources;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import ui.gfx.frame.Frame;
 import ui.gfx.frame.FrameAnimation;
 import ui.gfx.frame.Spritesheet;
 
-@Immutable
 public class CharacterSpritesheet {
     private final String name = "sprites.png";
 
@@ -110,7 +108,7 @@ public class CharacterSpritesheet {
             new FrameAnimation("climbing-end", FrameAnimation.Speed.ClimbingEnd,
                     new Frame(name, 616, 357, 21, 32),
                     new Frame(name, 645, 350, 18, 34)),
-            new FrameAnimation("climbig", FrameAnimation.Speed.Climbing,
+            new FrameAnimation("climbing", FrameAnimation.Speed.Climbing,
                     new Frame(name, 499, 352, 19, 49, 9),
                     new Frame(name, 528, 357, 20, 40, 10),
                     new Frame(name, 557, 357, 20, 40, 11),

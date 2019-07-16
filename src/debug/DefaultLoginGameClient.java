@@ -11,12 +11,12 @@ import util.Size;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class DebugGameClient implements ClientConnectionListener {
+public class DefaultLoginGameClient implements ClientConnectionListener {
     private final ClientUserInterface userInterface;
-    private final ClientConnectionManager client = new DebugClientConnectionManager();
     private ClientWorld world;
 
-    public DebugGameClient() {
+    public DefaultLoginGameClient() {
+        ClientConnectionManager client = new DebugClientConnectionManager();
         client.openSocket(this);
 
         userInterface = new ClientUserInterface(client, new Size(1440, 1050));

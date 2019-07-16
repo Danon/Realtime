@@ -162,7 +162,7 @@ public final class Renderer implements IRenderObserver {
         }
 
         canvas.setColor(Color.black);
-        canvas.drawImage(tmp, 0, 0, null);
+        canvas.drawImage(tmp, new BoxBlurFilter(4), 0, 0);
 
         draw.freeCamera();
 
@@ -237,7 +237,7 @@ public final class Renderer implements IRenderObserver {
         }
 
         if (character.isClimbing()) {
-            return new Pair<>("climbig", character.common.climbFrame);
+            return new Pair<>("climbing", character.common.climbFrame);
         }
         if (character.isBasicAttack()) {
             return new Pair<>("basic-air", character.common.basicFrame);
