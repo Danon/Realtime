@@ -1,8 +1,6 @@
 package gameplay;
 
 import java.awt.geom.Rectangle2D;
-import java.util.Arrays;
-import java.util.List;
 
 public class Floor {
     public final static int HEIGHT = 32;
@@ -45,14 +43,5 @@ public class Floor {
 
     public Rectangle2D asShape() {
         return new Rectangle2D.Float(this.getLeft(), this.getTop(), this.getWidth(), this.getHeight());
-    }
-
-    public List<Point> getCorners() {
-        return Arrays.asList(
-                new Point(this.getLeft(), this.getTop()),
-                new Point(this.getRight(), this.getTop()),
-                new Point(this.getRight(), this.getBottom()),
-                new Point(this.getLeft(), this.getBottom())
-        );
     }
 }
