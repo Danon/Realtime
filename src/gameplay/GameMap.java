@@ -42,25 +42,17 @@ public class GameMap implements Savable {
         _workLadders.add(ladder);
     }
 
-    public void delete(Floor floor) {
-        _workFloors.remove(floor);
-    }
-
-    public void delete(Ladder ladder) {
-        _workLadders.remove(ladder);
-    }
-
-    public void accept() {
+    void accept() {
         acceptFloors();
         acceptLadders();
     }
 
     private void acceptFloors() {
-        _floors = _workFloors.toArray(new Floor[_workFloors.size()]);
+        _floors = _workFloors.toArray(new Floor[0]);
     }
 
     private void acceptLadders() {
-        _ladders = _workLadders.toArray(new Ladder[_workLadders.size()]);
+        _ladders = _workLadders.toArray(new Ladder[0]);
     }
 
     public Floor[] getFloors() {

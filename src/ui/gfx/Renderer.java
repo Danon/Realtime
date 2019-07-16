@@ -92,16 +92,15 @@ public final class Renderer implements IRenderObserver {
             displayHeight = viewSize.getHeight();
         } else //if (Application.RunOptions.isUsedWithValue("-View", "Fit"))
         {
-            displayWidth = windowSize.getWidth();
-            displayHeight = windowSize.getHeight();
-
             double windowRatio = (double) windowSize.getWidth() / (double) windowSize.getHeight();
             double viewRatio = (double) viewSize.getWidth() / (double) viewSize.getHeight();
 
             if (windowRatio > viewRatio) {
                 displayWidth = (int) ((double) windowSize.getHeight() * viewRatio);
+                displayHeight = windowSize.getHeight();
             } else {
-                displayHeight = (int) ((double) windowSize.getWidth() * 1 / viewRatio);
+                displayWidth = windowSize.getWidth();
+                displayHeight = (int) ((double) windowSize.getWidth() / viewRatio);
             }
         }
 

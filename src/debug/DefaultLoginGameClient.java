@@ -19,7 +19,7 @@ public class DefaultLoginGameClient implements ClientConnectionListener {
         this.username = username;
         this.password = password;
         client = new DebugClientConnectionManager();
-        userInterface = new ClientUserInterface(client, new Size(1440, 1050));
+        userInterface = new ClientUserInterface(client, new Size(800, 600));
     }
 
     public void start() {
