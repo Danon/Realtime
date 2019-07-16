@@ -162,7 +162,7 @@ public final class Renderer implements IRenderObserver {
         }
 
         canvas.setColor(Color.black);
-        canvas.drawImage(tmp, new BoxBlurFilter(4), 0, 0);
+        canvas.drawImage(tmp, 0, 0, null);
 
         draw.freeCamera();
 

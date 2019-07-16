@@ -1,6 +1,6 @@
 package network;
 
-import game.CountedCharacters;
+import gameplay.CountedCharacters;
 import gameplay.PlayerCharacter;
 
 import java.util.Set;

@@ -5,9 +5,6 @@ final public class PlayerCharacter extends Character {
     public String username;
     private int teamId;
 
-    public PlayerCharacter() {
-    }
-
     public PlayerCharacter(int userId, String username, int teamId, int characterId) {
         super(characterId);
         this.userId = userId;

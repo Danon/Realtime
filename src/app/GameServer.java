@@ -1,6 +1,6 @@
 package app;
 
-import game.CountedCharacters;
+import gameplay.CountedCharacters;
 import gameplay.PlayerCharacter;
 import gameplay.ServerWorld;
 import network.*;

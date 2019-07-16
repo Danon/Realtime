@@ -1,4 +1,4 @@
-package game;
+package gameplay;
 
 public class CountedCharacters {
     public int all = 0;
