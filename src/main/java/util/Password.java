@@ -58,10 +58,6 @@ public class Password {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (byte hashByte : hashBytes) {
-            sb.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
+        return Bytes.toString(hashBytes);
     }
 }
