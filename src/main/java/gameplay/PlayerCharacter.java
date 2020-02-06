@@ -1,23 +1,20 @@
 package gameplay;
 
-final public class PlayerCharacter extends Character {
-    private int userId;
-    public String username;
-    private int teamId;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    @SuppressWarnings("Kryo Deserialization")
-    public PlayerCharacter() {
-    }
+@NoArgsConstructor
+public class PlayerCharacter extends Character {
+    private int userId;
+    @Getter
+    private String username;
+    private int teamId;
 
     public PlayerCharacter(int userId, String username, int teamId, int characterId) {
         super(characterId);
         this.userId = userId;
         this.username = username;
         this.teamId = teamId;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     @Override

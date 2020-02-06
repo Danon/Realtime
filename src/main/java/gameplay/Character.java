@@ -1,15 +1,16 @@
 package gameplay;
 
 import gameplay.physics.PhysicSimulation;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class Character {
+    @Getter
     int characterId;
 
     public CharacterSharedState shared;
     public CharacterCommonState common;
-
-    public Character() {
-    }
 
     public Character(int characterId) {
         this.characterId = characterId;
@@ -22,10 +23,6 @@ public class Character {
 
         this.shared = base.shared.copy();
         this.common = base.common.copy();
-    }
-
-    public int getCharacterId() {
-        return this.characterId;
     }
 
     public String getDisplayName() {
@@ -42,18 +39,6 @@ public class Character {
 
     public double getY() {
         return shared.y;
-    }
-
-    public double getVelocityX() {
-        return shared.velocityX;
-    }
-
-    public double getVelocityY() {
-        return shared.velocityY;
-    }
-
-    public boolean isFallingDown() {
-        return shared.velocityY < 0;
     }
 
     public boolean isGoingUpByVelocity() {
@@ -85,13 +70,12 @@ public class Character {
     }
 
     public double getRightSideX() {
-        return shared.x + CharacterCommonState.WIDTH / 2;
+        return shared.x + CharacterCommonState.WIDTH / 2.0;
     }
 
     public double getLeftSideX() {
-        return shared.x - CharacterCommonState.WIDTH / 2;
+        return shared.x - CharacterCommonState.WIDTH / 2.0;
     }
-
 
     /**
      * Before this function can be used, at least one step of physical simulation
@@ -163,10 +147,5 @@ public class Character {
      */
     public boolean isClimbing() {
         return common.climbFrame != -1;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("gameplay.Character #%d", characterId);
     }
 }
