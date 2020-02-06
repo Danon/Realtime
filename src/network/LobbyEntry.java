@@ -1,42 +1,27 @@
 package network;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
 public class LobbyEntry {
     public static final int ROOMLESS = -1;
 
+    @Getter
     private int userId;
+
     private String username;
+
+    @Getter
+    @Setter
     private boolean readyForGame;
-    private int chosenTeam;
+    @Getter
+    @Setter
+    private int chosenTeamId;
 
     LobbyEntry() {
         userId = -1;
-    }
-
-    public LobbyEntry(int userId, String username, boolean readyForGame, int chosenTeam) {
-        this.userId = userId;
-        this.readyForGame = readyForGame;
-        this.username = username;
-        this.chosenTeam = chosenTeam;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public int getChosenTeamId() {
-        return this.chosenTeam;
-    }
-
-    public boolean isReadyForGame() {
-        return this.readyForGame;
-    }
-
-    public void setReadyForGame(boolean state) {
-        this.readyForGame = state;
-    }
-
-    public void setChosenTeamId(int chosenTeamId) {
-        this.chosenTeam = chosenTeamId;
     }
 
     @Override

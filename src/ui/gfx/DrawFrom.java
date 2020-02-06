@@ -1,15 +1,15 @@
 package ui.gfx;
 
-public class DrawFrom extends RatioPoint {
-    private DrawFrom(double x, double y) {
-        super(x, y);
-    }
+import lombok.RequiredArgsConstructor;
 
-    final static DrawFrom MiddleTop = new DrawFrom(0.0, -0.5);
-    final public static DrawFrom Center = new DrawFrom(0.0, 0.0);
-    final public static DrawFrom MiddleBottom = new DrawFrom(0.0, 0.5);
+@RequiredArgsConstructor
+public class DrawFrom {
+    final double x, y;
 
-    final static DrawFrom RightTop = new DrawFrom(-0.5, -0.5);
-    final public static DrawFrom RightMiddle = new DrawFrom(-0.5, 0.0);
-    final static DrawFrom RightBottom = new DrawFrom(-0.5, 0.5);
+    public static final DrawFrom MiddleTop = new DrawFrom(0.0, -0.5);
+    public static final DrawFrom Center = new DrawFrom(0.0, 0.0);
+    public static final DrawFrom MiddleBottom = new DrawFrom(0.0, 0.5);
+    public static final DrawFrom RightTop = new DrawFrom(-0.5, -0.5);
+    public static final DrawFrom RightMiddle = new DrawFrom(-0.5, 0.0);
+    public static final DrawFrom RightBottom = new DrawFrom(-0.5, 0.5);
 }
