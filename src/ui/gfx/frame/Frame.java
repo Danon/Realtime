@@ -1,31 +1,22 @@
 package ui.gfx.frame;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class Frame {
-    final private String spritesheetName;
+    @Getter
+    private final String name;
 
-    final public int x, y;
-    final public int width, height;
-    final public int offsetX, offsetY;
+    public final int x, y;
+    public final int width, height;
+    public final int offsetX, offsetY;
 
-    public Frame(String spritesheetName, int x, int y, int width, int height, int offsetX, int offsetY) {
-        this.spritesheetName = spritesheetName;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
+    public Frame(String name, int x, int y, int width, int height, int offsetX) {
+        this(name, x, y, width, height, offsetX, 0);
     }
 
-    public Frame(String spritesheetName, int x, int y, int width, int height, int offsetX) {
-        this(spritesheetName, x, y, width, height, offsetX, 0);
-    }
-
-    public Frame(String spritesheetName, int x, int y, int width, int height) {
-        this(spritesheetName, x, y, width, height, 0, 0);
-    }
-
-    public String getSpritesheetName() {
-        return spritesheetName;
+    public Frame(String name, int x, int y, int width, int height) {
+        this(name, x, y, width, height, 0, 0);
     }
 }

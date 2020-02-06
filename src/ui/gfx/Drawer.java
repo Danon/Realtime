@@ -206,7 +206,7 @@ public class Drawer {
             throw new UnsetCanvasException("No canvas has been specified.");
         }
         Point position = serialized(pos);
-        BufferedImage img = Resources.getImageByName(frame.getSpritesheetName());
+        BufferedImage img = Resources.getImageByName(frame.getName());
         int
                 x = position.getX(),
                 y = position.getY(),

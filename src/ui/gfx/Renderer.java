@@ -2,9 +2,12 @@ package ui.gfx;
 
 import app.Application;
 import gameplay.Character;
+import gameplay.ClientWorld;
+import gameplay.Floor;
+import gameplay.GameMap;
+import gameplay.Ladder;
 import gameplay.Point;
 import gameplay.Rectangle;
-import gameplay.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.Chat;
@@ -14,7 +17,6 @@ import ui.gfx.resources.Resources;
 import ui.gfx.shadows.MasterOfShadows;
 import util.Size;
 
-import java.awt.Shape;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -322,7 +324,7 @@ public final class Renderer implements IRenderObserver {
 
     @Getter
     @RequiredArgsConstructor
-    static class Pair<K,V> {
+    private static class Pair<K, V> {
         private final K key;
         private final V value;
     }

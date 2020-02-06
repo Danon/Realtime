@@ -9,17 +9,17 @@ import ui.ClientUserInterface;
 import util.Size;
 
 public class DefaultLoginGameClient implements ClientConnectionListener {
-    private final ClientUserInterface userInterface;
     private final ClientConnectionManager client;
-    private ClientWorld world;
-
+    private final ClientUserInterface userInterface;
     private final String username, password;
 
+    private ClientWorld world = null;
+
     public DefaultLoginGameClient(String username, String password) {
+        this.client = new DebugClientConnectionManager();
         this.username = username;
         this.password = password;
-        client = new DebugClientConnectionManager();
-        userInterface = new ClientUserInterface(client, new Size(800, 600));
+        this.userInterface = new ClientUserInterface(client, new Size(800, 600));
     }
 
     public void start() {
