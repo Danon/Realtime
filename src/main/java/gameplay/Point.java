@@ -2,16 +2,15 @@ package gameplay;
 
 import gameplay.geometry.Angle;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import ui.gfx.IntTransition;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-@RequiredArgsConstructor
 @EqualsAndHashCode
 public class Point {
-    public final double x, y;
+    public final double x;
+    public final double y;
 
     public Point() {
         this(0.0, 0.0);
@@ -19,6 +18,11 @@ public class Point {
 
     public Point(Point point) {
         this(point.x, point.y);
+    }
+
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {

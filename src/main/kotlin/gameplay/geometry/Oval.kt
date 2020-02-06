@@ -3,7 +3,7 @@ package gameplay.geometry
 import gameplay.Point
 import kotlin.math.pow
 
-class Oval(private val x: Double,private val y: Double, private val radiusX: Double, private val radiusY: Double) : Shape {
+class Oval(private val x: Double, private val y: Double, private val radiusX: Double, private val radiusY: Double) : Shape {
 
     constructor(o: Oval) : this(o.x, o.y, o.radiusX, o.radiusY)
     constructor(pos: Point, radiusX: Int, radiusY: Int) : this(pos.x, pos.y, radiusX.toDouble(), radiusY.toDouble())
