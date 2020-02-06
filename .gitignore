@@ -2,6 +2,10 @@
 Realtime.iml
 build.xml
 manifest.mf
+.gradle
+gradle
+gradlew
+gradlew.bat
 out/
 res/images/man/
 res/users/

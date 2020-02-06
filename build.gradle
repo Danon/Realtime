@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+sourceSets {
+    main.java.srcDirs = ['src']
+    main.resources.srcDirs = ['resources']
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    compile group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
+
+    compile group: 'org.dyn4j', name: 'dyn4j', version: '3.1.5'
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    testCompile 'junit:junit:4.12'
+}
