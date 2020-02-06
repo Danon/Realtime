@@ -1,8 +1,5 @@
 package ui.gfx.frame;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
-
-@Immutable
 public class Frame {
     final private String spritesheetName;
 

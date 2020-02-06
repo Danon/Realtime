@@ -5,7 +5,8 @@ import gameplay.Character;
 import gameplay.Point;
 import gameplay.Rectangle;
 import gameplay.*;
-import javafx.util.Pair;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import ui.Chat;
 import ui.gfx.blur.filter.BoxBlurFilter;
 import ui.gfx.frame.FrameAnimation;
@@ -317,5 +318,12 @@ public final class Renderer implements IRenderObserver {
         window.subtract(view);
 
         return window;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    static class Pair<K,V> {
+        private final K key;
+        private final V value;
     }
 }

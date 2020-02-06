@@ -1,8 +1,5 @@
 package ui.gfx;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
-
-@Immutable
 public class DrawFrom extends RatioPoint {
     private DrawFrom(double x, double y) {
         super(x, y);
