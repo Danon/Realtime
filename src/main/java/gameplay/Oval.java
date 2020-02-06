@@ -22,26 +22,12 @@ public class Oval extends Shape {
         this(pos, radius, radius);
     }
 
-    public void shrink(double count) {
-        radiusX -= count;
-        radiusY -= count;
-    }
-
-    public void expand(double count) {
-        radiusX += count;
-        radiusY += count;
-    }
-
     public int getX() {
         return (int) x;
     }
 
     public int getY() {
         return (int) y;
-    }
-
-    public Point getPosition() {
-        return new Point(x, y);
     }
 
     public int getRadiusX() {
@@ -57,5 +43,4 @@ public class Oval extends Shape {
         return Math.pow(p.x - this.x, 2) / Math.pow(this.radiusX, 2) +
                 Math.pow(p.y - this.y, 2) / Math.pow(this.radiusY, 2) <= 1;
     }
-
 }

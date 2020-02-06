@@ -1,10 +1,12 @@
 package gameplay;
 
+import lombok.EqualsAndHashCode;
 import ui.gfx.IntTransition;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+@EqualsAndHashCode
 public class Point {
     public double x, y;
 
@@ -21,15 +23,6 @@ public class Point {
     public Point(Point a) {
         this.x = a.x;
         this.y = a.y;
-    }
-
-    public void copy(Point a) {
-        this.x = a.x;
-        this.y = a.y;
-    }
-
-    public Point copy() {
-        return new Point(this.x, this.y);
     }
 
     public int getX() {
@@ -121,27 +114,6 @@ public class Point {
 
     public boolean isInside(Shape s) {
         return s.contains(this);
-    }
-
-    @Override
-    public String toString() {
-        return String.format(" Point: %d / %d", (int) this.x, (int) this.y);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) return false;
-        if (!(o instanceof Point)) return false;
-        Point p = (Point) o;
-        return (this.x == p.x && this.y == p.y);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
-        hash = 37 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
-        return hash;
     }
 
     public static class Transition {
