@@ -1,35 +1,18 @@
 package ui.gfx.blur.fx;
 
+import lombok.Getter;
 import ui.gfx.blur.filter.GaussianFilter;
 import ui.gfx.blur.math.PixelUtils;
 
 import java.awt.image.BufferedImage;
 
+@Getter
 public class UnsharpFilter extends GaussianFilter {
-
-    static final long serialVersionUID = 5377089073023183684L;
-
     private float amount = 0.5f;
     private int threshold = 1;
 
     public UnsharpFilter() {
         super(2);
-    }
-
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
-    }
-
-    public int getThreshold() {
-        return threshold;
-    }
-
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
-    public float getAmount() {
-        return amount;
     }
 
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
@@ -77,9 +60,5 @@ public class UnsharpFilter extends GaussianFilter {
 
         dst.setRGB(0, 0, width, height, inPixels, 0, width);
         return dst;
-    }
-
-    public String toString() {
-        return "Blur/Unsharp Mask...";
     }
 }

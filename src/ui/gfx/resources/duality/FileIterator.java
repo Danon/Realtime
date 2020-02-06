@@ -1,5 +1,7 @@
 package ui.gfx.resources.duality;
 
+import lombok.RequiredArgsConstructor;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -7,12 +9,9 @@ import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+@RequiredArgsConstructor
 public class FileIterator {
     private final String path;
-
-    public FileIterator(String path) {
-        this.path = path;
-    }
 
     public void iterate(Consumer<String> consumer) {
         File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());

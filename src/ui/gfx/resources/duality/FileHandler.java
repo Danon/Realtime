@@ -1,5 +1,6 @@
 package ui.gfx.resources.duality;
 
+import lombok.RequiredArgsConstructor;
 import ui.gfx.resources.ResourceImages;
 
 import java.io.File;
@@ -7,12 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+@RequiredArgsConstructor
 public class FileHandler {
-    private String filename;
-
-    public FileHandler(String filename) {
-        this.filename = filename;
-    }
+    private final String filename;
 
     public InputStream getInputStream() {
         try {

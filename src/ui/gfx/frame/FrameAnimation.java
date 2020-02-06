@@ -1,6 +1,9 @@
 package ui.gfx.frame;
 
+import lombok.Getter;
+
 public class FrameAnimation {
+    @Getter
     private final String name;
     private final int animationSpeed;
     private final Frame[] frames;
@@ -9,10 +12,6 @@ public class FrameAnimation {
         this.name = name;
         this.animationSpeed = animationSpeed;
         this.frames = frames;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public Frame getFrameIterate(int frameId) {

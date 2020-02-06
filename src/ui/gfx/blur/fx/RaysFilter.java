@@ -1,5 +1,7 @@
 package ui.gfx.blur.fx;
 
+import lombok.Getter;
+import lombok.Setter;
 import ui.gfx.blur.filter.FastMotionBlurFilter;
 import ui.gfx.blur.math.Colormap;
 import ui.gfx.blur.math.PixelUtils;
@@ -8,8 +10,9 @@ import ui.gfx.blur.math.composite.AddComposite;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+@Getter
+@Setter
 public class RaysFilter extends FastMotionBlurFilter {
-
     private float opacity = 1.0f;
     private float threshold = 0.0f;
     private float strength = 0.5f;
@@ -18,46 +21,6 @@ public class RaysFilter extends FastMotionBlurFilter {
 
     public RaysFilter(float distance, float angle, float rotation, float zoom) {
         super(distance, angle, rotation, zoom);
-    }
-
-    public void setOpacity(float opacity) {
-        this.opacity = opacity;
-    }
-
-    public float getOpacity() {
-        return opacity;
-    }
-
-    public void setThreshold(float threshold) {
-        this.threshold = threshold;
-    }
-
-    public float getThreshold() {
-        return threshold;
-    }
-
-    public void setStrength(float strength) {
-        this.strength = strength;
-    }
-
-    public float getStrength() {
-        return strength;
-    }
-
-    public void setraysOnly(boolean raysOnly) {
-        this.raysOnly = raysOnly;
-    }
-
-    public boolean getraysOnly() {
-        return raysOnly;
-    }
-
-    public void setColormap(Colormap colormap) {
-        this.colormap = colormap;
-    }
-
-    public Colormap getColormap() {
-        return colormap;
     }
 
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
@@ -128,9 +91,5 @@ public class RaysFilter extends FastMotionBlurFilter {
         g.dispose();
 
         return dst;
-    }
-
-    public String toString() {
-        return "Stylize/Rays...";
     }
 }

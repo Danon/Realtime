@@ -1,5 +1,7 @@
 package ui.gfx.blur.fx;
 
+import lombok.Getter;
+import lombok.Setter;
 import ui.gfx.blur.filter.GaussianFilter;
 import ui.gfx.blur.math.AbstractBufferedImageOp;
 
@@ -9,10 +11,9 @@ import java.awt.image.BandCombineOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 
+@Getter
+@Setter
 public class ShadowFilter extends AbstractBufferedImageOp {
-
-    static final long serialVersionUID = 6310370419462785691L;
-
     private int radius = 5;
     private int xOffset = 5;
     private int yOffset = 5;
@@ -21,80 +22,11 @@ public class ShadowFilter extends AbstractBufferedImageOp {
     private boolean shadowOnly = false;
     private int shadowColor = 0xff000000;
 
-    public ShadowFilter() {
-    }
-
     public ShadowFilter(int radius, int xOffset, int yOffset, float opacity) {
         this.radius = radius;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
         this.opacity = opacity;
-    }
-
-    public void setXOffset(int xOffset) {
-        this.xOffset = xOffset;
-    }
-
-    public int getXOffset() {
-        return xOffset;
-    }
-
-    public void setYOffset(int yOffset) {
-        this.yOffset = yOffset;
-    }
-
-    public int getYOffset() {
-        return yOffset;
-    }
-
-    /**
-     * Set the radius of the kernel, and hence the amount of blur. The bigger the radius, the longer this filter will take.
-     *
-     * @param radius the radius of the blur in pixels.
-     */
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
-    /**
-     * Get the radius of the kernel.
-     *
-     * @return the radius
-     */
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setOpacity(float opacity) {
-        this.opacity = opacity;
-    }
-
-    public float getOpacity() {
-        return opacity;
-    }
-
-    public void setShadowColor(int shadowColor) {
-        this.shadowColor = shadowColor;
-    }
-
-    public int getShadowColor() {
-        return shadowColor;
-    }
-
-    public void setAddMargins(boolean addMargins) {
-        this.addMargins = addMargins;
-    }
-
-    public boolean getAddMargins() {
-        return addMargins;
-    }
-
-    public void setShadowOnly(boolean shadowOnly) {
-        this.shadowOnly = shadowOnly;
-    }
-
-    public boolean getShadowOnly() {
-        return shadowOnly;
     }
 
     protected void transformSpace(Rectangle r) {
@@ -143,9 +75,5 @@ public class ShadowFilter extends AbstractBufferedImageOp {
         g.dispose();
 
         return dst;
-    }
-
-    public String toString() {
-        return "Stylize/Drop Shadow...";
     }
 }

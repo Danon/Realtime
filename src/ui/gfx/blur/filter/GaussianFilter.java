@@ -1,32 +1,19 @@
 package ui.gfx.blur.filter;
 
+import lombok.Getter;
 import ui.gfx.blur.math.ImageMath;
 import ui.gfx.blur.math.PixelUtils;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.Kernel;
 
-/**
- * A filter which applies Gaussian blur to an image. This is a subclass of ConvolveFilter
- * which simply creates a kernel with a Gaussian distribution for blurring.
- */
 public class GaussianFilter extends ConvolveFilter {
+    @Getter
     protected float radius;
-    protected Kernel kernel;
 
-    /**
-     * Construct a Gaussian filter
-     *
-     * @param radius blur radius in pixels
-     */
     public GaussianFilter(float radius) {
         super(makeKernel(radius));
         this.radius = radius;
-        this.kernel = super.kernel;
-    }
-
-    public float getRadius() {
-        return radius;
     }
 
     public BufferedImage filter(BufferedImage src, BufferedImage dst) {
@@ -118,9 +105,5 @@ public class GaussianFilter extends ConvolveFilter {
             matrix[i] /= total;
 
         return new Kernel(rows, 1, matrix);
-    }
-
-    public String toString() {
-        return "Blur/Gaussian Blur...";
     }
 }
