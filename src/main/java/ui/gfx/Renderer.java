@@ -7,7 +7,7 @@ import gameplay.Floor;
 import gameplay.GameMap;
 import gameplay.Ladder;
 import gameplay.Point;
-import gameplay.Rectangle;
+import gameplay.geometry.Rectangle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.Chat;

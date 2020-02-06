@@ -1,8 +1,10 @@
 package ui.gfx;
 
-import gameplay.*;
+import gameplay.Floor;
+import gameplay.Ladder;
+import gameplay.Oval;
 import gameplay.Point;
-import gameplay.Rectangle;
+import gameplay.geometry.Rectangle;
 import ui.gfx.resources.Resources;
 
 import java.awt.*;

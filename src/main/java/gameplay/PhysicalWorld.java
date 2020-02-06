@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.geometry.Rectangle;
 import gameplay.physics.PhysicSimulation;
 import network.KeysState;
 import network.Network.Command;

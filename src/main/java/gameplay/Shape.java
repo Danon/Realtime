@@ -1,5 +1,5 @@
 package gameplay;
 
-interface Shape {
+public interface Shape {
     boolean contains(Point p);
 }

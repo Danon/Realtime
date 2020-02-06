@@ -1,9 +1,11 @@
 package ui.gfx;
 
 import gameplay.Point;
-import gameplay.Rectangle;
+import gameplay.geometry.Rectangle;
 
-import static ui.gfx.Renderer.*;
+import static ui.gfx.Renderer.CAMERA_BOTTOM_MARGIN;
+import static ui.gfx.Renderer.CAMERA_SIDE_MARGIN;
+import static ui.gfx.Renderer.CAMERA_TOP_MARGIN;
 
 public class Camera {
     private Point point;

@@ -1,4 +1,7 @@
-package gameplay;
+package gameplay.geometry;
+
+import gameplay.Point;
+import gameplay.Shape;
 
 public class Rectangle implements Shape {
     public double x, y;
