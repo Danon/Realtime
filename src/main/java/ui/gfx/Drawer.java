@@ -1,10 +1,10 @@
 package ui.gfx;
 
+import gameplay.Point;
+import gameplay.geometry.Oval;
+import gameplay.geometry.Rectangle;
 import gameplay.scene.Floor;
 import gameplay.scene.Ladder;
-import gameplay.geometry.Oval;
-import gameplay.Point;
-import gameplay.geometry.Rectangle;
 import ui.gfx.resources.Resources;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ public class Drawer {
     private boolean includeCamera = false;
     private final int windowWidth, windowHeight;
 
-    public Drawer(Graphics2D canvas, int windowWidth, int windowHeight) {
+    Drawer(Graphics2D canvas, int windowWidth, int windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         this.canvas = canvas;
@@ -33,15 +33,15 @@ public class Drawer {
         this.includeCamera = true;
     }
 
-    public void useCamera() {
+    void useCamera() {
         this.includeCamera = true;
     }
 
-    public void freeCamera() {
+    void freeCamera() {
         this.includeCamera = false;
     }
 
-    public Camera getCamera() {
+    Camera getCamera() {
         return camera;
     }
 
@@ -84,14 +84,16 @@ public class Drawer {
     }
 
     private Oval serialized(Oval o) {
-        double x = o.x;
-        double y = o.y;
+        return new Oval(serializeOvalCenter(o), o.getRadiusX(), o.getRadiusY());
+    }
 
+    private Point serializeOvalCenter(Oval oval) {
         if (includeCamera) {
-            x = o.x - camera.getX();
-            y = o.y + camera.getY();
+            return new Point(
+                    oval.getX() - camera.getX(),
+                    oval.getY() + camera.getY());
         }
-        return new Oval(new Point(x, y), o.getRadiusX(), o.getRadiusY());
+        return oval.getCenter();
     }
 
     public void text(String text, Point position) {
@@ -104,8 +106,9 @@ public class Drawer {
         canvas.drawString(String.format(formatText, args), pos.getX(), pos.getY());
     }
 
-    public void line(Point a, Point b) {
-        Point a2 = serialized(new Point(a)), b2 = serialized(new Point(b));
+    void line(Point a, Point b) {
+        Point a2 = serialized(new Point(a));
+        Point b2 = serialized(new Point(b));
         canvas.drawLine(a2.getX(), a2.getY(), b2.getX(), b2.getY());
     }
 
@@ -124,8 +127,7 @@ public class Drawer {
     }
 
     public void curveCross(Point a, Point b, Point c) {
-        Point control = Bezier.getControlPoint(a, b, c);
-        this.curve(a, control, c);
+        this.curve(a, Bezier.getControlPoint(a, b, c), c);
     }
 
     private void curve(Point a, Point b, Point c) {
@@ -136,12 +138,12 @@ public class Drawer {
         ));
     }
 
-    public void borders(Rectangle r) {
+    void borders(Rectangle r) {
         Rectangle rect = serialized(new Rectangle(r.x, r.y, r.width, r.height));
         canvas.drawRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    public void fill(Rectangle r) {
+    void fill(Rectangle r) {
         Rectangle rect = serialized(new Rectangle(r.x, r.y, r.width, r.height));
         canvas.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
@@ -156,7 +158,7 @@ public class Drawer {
         canvas.fillOval(o.getX() - o.getRadiusX(), o.getY() - o.getRadiusY(), o.getRadiusX() * 2, o.getRadiusY() * 2);
     }
 
-    public void floor(Floor floor) {
+    void floor(Floor floor) {
         if (floor.getTiles() == 0) {
             return;
         }
@@ -180,7 +182,7 @@ public class Drawer {
         }
     }
 
-    public void ladder(Ladder ladder) {
+    void ladder(Ladder ladder) {
         for (int i = 0; i < ladder.getTiles(); i++) {
             image("ladder.png", new Point(
                             ladder.getLeft() - 4,

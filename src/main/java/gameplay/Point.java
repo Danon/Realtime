@@ -9,7 +9,7 @@ import static java.lang.Math.min;
 
 @EqualsAndHashCode
 public class Point {
-    public double x, y;
+    public final double x, y;
 
     public Point() {
         this.x = 0.0;
@@ -21,9 +21,9 @@ public class Point {
         this.y = y;
     }
 
-    public Point(Point a) {
-        this.x = a.x;
-        this.y = a.y;
+    public Point(Point point) {
+        this.x = point.x;
+        this.y = point.y;
     }
 
     public int getX() {
@@ -90,7 +90,7 @@ public class Point {
         return Math.pow(this.x - A.x, 2) + Math.pow(this.y - A.y, 2);
     }
 
-    public double distanceTo(Point A) {
+    private double distanceTo(Point A) {
         return Math.sqrt(powDistanceTo(A));
     }
 
