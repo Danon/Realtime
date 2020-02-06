@@ -1,5 +1,6 @@
 .idea/
 Realtime.iml
+build
 build.xml
 manifest.mf
 .gradle
@@ -7,5 +8,6 @@ gradle
 gradlew
 gradlew.bat
 out/
+
 settings/
-ó
+users
