@@ -6,7 +6,6 @@ import com.esotericsoftware.kryonet.EndPoint;
 import gameplay.Character;
 import gameplay.*;
 import ui.CharacterEndScore;
-import ui.TeamEndStats;
 import util.Password;
 
 import static app.Application.RunOptions;
@@ -51,8 +50,6 @@ public class Network {
         kryo.register(LadderCollide.class);
         kryo.register(WalkDirection.class);
 
-        kryo.register(TeamEndStats[].class);
-        kryo.register(TeamEndStats.class);
         kryo.register(CharacterEndScore[].class);
         kryo.register(CharacterEndScore.class);
 

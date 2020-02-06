@@ -27,14 +27,11 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
 
     GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize, ClientWorld clientWorld, Chat chat) {
         this.windowSize = windowSize;
-
         this.keyStateNotifier = keyStateNotifier;
-
         this.world = clientWorld;
-        renderer.attachWorld(world);
-
         this.chat = chat;
-        renderer.attachChat(chat);
+        this.renderer.attachWorld(world);
+        this.renderer.attachChat(chat);
     }
 
     void showGameWindow() {

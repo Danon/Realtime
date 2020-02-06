@@ -1,5 +1,7 @@
 package ui;
 
+import lombok.Getter;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -16,6 +18,7 @@ public class PrintStreamJFrame {
 
     private final JFrame frame;
     private final JTextArea textArea;
+    @Getter
     private final PrintStream printStream;
 
     public PrintStreamJFrame(Runnable onClose) {
@@ -27,10 +30,6 @@ public class PrintStreamJFrame {
 
     public void show() {
         frame.setVisible(true);
-    }
-
-    public PrintStream getPrintStream() {
-        return printStream;
     }
 
     private PrintStream createPrintStream(JTextArea textArea) {

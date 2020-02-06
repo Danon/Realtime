@@ -26,15 +26,15 @@ import java.util.Set;
 import static java.util.stream.Collectors.toList;
 
 public class GameServer implements ServerConnectionListener {
-    private ServerConnectionManager server;
+    private final ServerConnectionManager server;
 
     // GameRoom
-    private Set<Accommodator> loggedIn = new HashSet<>();
+    private final Set<Accommodator> loggedIn = new HashSet<>();
     private final ServerWorld world;
     private static boolean matchStarted = false;
 
     private final static int maxPlayers = 20;
-    private boolean singlePlayer;
+    private final boolean singlePlayer;
 
     GameServer(boolean automaticallyStartSinglePlayerGames) {
         this.singlePlayer = automaticallyStartSinglePlayerGames;
