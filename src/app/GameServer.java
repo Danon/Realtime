@@ -70,7 +70,7 @@ public class GameServer implements ServerConnectionListener {
             return;
         }
 
-        conn.setAccomodator(accommodator);
+        conn.setAccommodator(accommodator);
         loggedIn.add(accommodator);
 
         conn.sendTCP(new Command.LoggedIn(accommodator.user.getId(), accommodator.user.getUsername()));
@@ -119,7 +119,7 @@ public class GameServer implements ServerConnectionListener {
         matchStartMsg.characters = characters.toArray(new PlayerCharacter[counted.ready]);
 
         server.forAllConnections(conn -> {
-            matchStartMsg.clientsCharacterId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
+            matchStartMsg.clientsCharacterId = conn.getAccommodator().getPlayerCharacter().getCharacterId();
             conn.sendTCP(matchStartMsg);
         });
     }
@@ -246,7 +246,7 @@ public class GameServer implements ServerConnectionListener {
     public void message(ServerAccommodationConnection conn, Command.JoinTeam joinTeam) {
         if (matchStarted) return;
 
-        Accommodator accommodator = conn.getAccomodator();
+        Accommodator accommodator = conn.getAccommodator();
         int previousTeamId = accommodator.lobbyEntry.getChosenTeamId();
         accommodator.lobbyEntry.setChosenTeamId(joinTeam.teamId);
 
@@ -257,7 +257,7 @@ public class GameServer implements ServerConnectionListener {
     public void message(ServerAccommodationConnection conn, Command.ReadyForGame readyForGame) {
         if (matchStarted) return;
 
-        Accommodator accommodator = conn.getAccomodator();
+        Accommodator accommodator = conn.getAccommodator();
         accommodator.lobbyEntry.setReadyForGame(readyForGame.state);
         int teamId = accommodator.lobbyEntry.getChosenTeamId();
 
@@ -270,15 +270,15 @@ public class GameServer implements ServerConnectionListener {
     public void message(ServerAccommodationConnection conn, Command.ChangePlayerControls playerControls) {
         if (!matchStarted) return;
 
-        int charId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
+        int charId = conn.getAccommodator().getPlayerCharacter().getCharacterId();
 
         world.messageArrived(charId, playerControls);
-        world.waitForAcceptance(charId).ifPresent(state -> server.sendToAllTCP(state));
+        world.waitForAcceptance(charId).ifPresent(server::sendToAllTCP);
     }
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.ChatMessage chatMessage) {
-        chatMessage.senderId = conn.getAccomodator().user.getId();
+        chatMessage.senderId = conn.getAccommodator().user.getId();
         server.sendToAllTCP(chatMessage);
     }
 }

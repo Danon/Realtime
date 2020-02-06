@@ -80,10 +80,6 @@ public final class MiscComposite implements Composite {
     protected float extraAlpha;
     protected int rule;
 
-    private MiscComposite(int rule) {
-        this(rule, 1.0f);
-    }
-
     private MiscComposite(int rule, float alpha) {
         if (alpha < 0.0f || alpha > 1.0f) throw new IllegalArgumentException("alpha value out of range");
         if (rule < MIN_RULE || rule > MAX_RULE) throw new IllegalArgumentException("unknown composite rule");

@@ -3,10 +3,10 @@ package ui.gfx.blur.math;
 import java.awt.*;
 import java.util.Random;
 
-/**
- * Some more useful math functions for image processing.
- * These are becoming obsolete as we move to Java2D. Use MiscComposite instead.
- */
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class PixelUtils {
 
     public final static int REPLACE = 0;
@@ -33,15 +33,8 @@ public class PixelUtils {
 
     private static Random randomGenerator = new Random();
 
-    /**
-     * Clamp a value to the range 0..255
-     */
     public static int clamp(int c) {
-        if (c < 0)
-            return 0;
-        if (c > 255)
-            return 255;
-        return c;
+        return min(max(0, c), 255);
     }
 
     public static int interpolate(int v1, int v2, float f) {
@@ -62,11 +55,11 @@ public class PixelUtils {
         int r2 = (rgb2 >> 16) & 0xff;
         int g2 = (rgb2 >> 8) & 0xff;
         int b2 = rgb2 & 0xff;
-        return Math.abs(r1 - r2) <= tolerance && Math.abs(g1 - g2) <= tolerance && Math.abs(b1 - b2) <= tolerance;
+        return abs(r1 - r2) <= tolerance && abs(g1 - g2) <= tolerance && abs(b1 - b2) <= tolerance;
     }
 
-    private final static float hsb1[] = new float[3];//FIXME-not thread safe
-    private final static float hsb2[] = new float[3];//FIXME-not thread safe
+    private final static float[] hsb1 = new float[3];//FIXME-not thread safe
+    private final static float[] hsb2 = new float[3];//FIXME-not thread safe
 
     // Return rgb1 painted onto rgb2
     public static int combinePixels(int rgb1, int rgb2, int op) {
@@ -78,8 +71,9 @@ public class PixelUtils {
     }
 
     public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha) {
-        if (op == REPLACE)
+        if (op == REPLACE) {
             return rgb1;
+        }
         int a1 = (rgb1 >> 24) & 0xff;
         int r1 = (rgb1 >> 16) & 0xff;
         int g1 = (rgb1 >> 8) & 0xff;
@@ -93,14 +87,14 @@ public class PixelUtils {
             case NORMAL:
                 break;
             case MIN:
-                r1 = Math.min(r1, r2);
-                g1 = Math.min(g1, g2);
-                b1 = Math.min(b1, b2);
+                r1 = min(r1, r2);
+                g1 = min(g1, g2);
+                b1 = min(b1, b2);
                 break;
             case MAX:
-                r1 = Math.max(r1, r2);
-                g1 = Math.max(g1, g2);
-                b1 = Math.max(b1, b2);
+                r1 = max(r1, r2);
+                g1 = max(g1, g2);
+                b1 = max(b1, b2);
                 break;
             case ADD:
                 r1 = clamp(r1 + r2);
@@ -113,9 +107,9 @@ public class PixelUtils {
                 b1 = clamp(b2 - b1);
                 break;
             case DIFFERENCE:
-                r1 = clamp(Math.abs(r1 - r2));
-                g1 = clamp(Math.abs(g1 - g2));
-                b1 = clamp(Math.abs(b1 - b2));
+                r1 = clamp(abs(r1 - r2));
+                g1 = clamp(abs(g1 - g2));
+                b1 = clamp(abs(b1 - b2));
                 break;
             case MULTIPLY:
                 r1 = clamp(r1 * r2 / 255);
@@ -203,5 +197,4 @@ public class PixelUtils {
         }
         return (a1 << 24) | (r1 << 16) | (g1 << 8) | b1;
     }
-
 }
