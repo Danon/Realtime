@@ -5,7 +5,7 @@ import gameplay.Character;
 import gameplay.ClientWorld;
 import gameplay.scene.Floor;
 import gameplay.GameMap;
-import gameplay.Ladder;
+import gameplay.scene.Ladder;
 import gameplay.Point;
 import gameplay.geometry.Rectangle;
 import lombok.Getter;

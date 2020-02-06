@@ -4,7 +4,7 @@ import gameplay.Character;
 import gameplay.CharacterCommonState;
 import gameplay.scene.Floor;
 import gameplay.GameMap;
-import gameplay.Ladder;
+import gameplay.scene.Ladder;
 import gameplay.LadderCollide;
 import gameplay.WalkDirection;
 import lombok.Getter;

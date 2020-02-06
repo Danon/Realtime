@@ -1,6 +1,7 @@
 package gameplay;
 
 import gameplay.scene.Floor;
+import gameplay.scene.Ladder;
 import lombok.Getter;
 import util.save.Savable;
 import util.save.SaveInput;
