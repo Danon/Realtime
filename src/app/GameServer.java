@@ -4,8 +4,14 @@ import com.esotericsoftware.kryonet.Connection;
 import gameplay.CountedCharacters;
 import gameplay.PlayerCharacter;
 import gameplay.ServerWorld;
-import network.*;
+import network.Accommodator;
+import network.LobbyEntry;
+import network.Network;
 import network.Network.Command;
+import network.ServerAccommodationConnection;
+import network.ServerConnectionListener;
+import network.ServerConnectionManager;
+import network.UserAccount;
 import ui.PrintStreamJFrame;
 import util.Validate;
 import util.save.PrimitiveReader;
@@ -56,7 +62,7 @@ public class GameServer implements ServerConnectionListener {
         }
     }
 
-    private void tryLoginAccomodator(ServerAccommodationConnection conn, Accommodator accommodator) {
+    private void tryLoginAccommodator(ServerAccommodationConnection conn, Accommodator accommodator) {
         if (loggedIn.size() >= GameServer.maxPlayers) {
             conn.sendTCP(new Command.LoginRejected(String.format(
                     "Max capability of players logged at a time (%d) reached. Try again later.",
@@ -183,12 +189,11 @@ public class GameServer implements ServerConnectionListener {
             if (accommodator.user == null) {
                 conn.sendTCP(new Command.LoginRejected("IO Error : reading account file."));
                 return;
-            } else {
-                if (!Application.RunOptions.isUsed("-IgnorePassword")) {
-                    if (!accommodator.user.getPassword().compare(loginRequest.password)) {
-                        conn.sendTCP(new Command.LoginRejected("Wrong username or password."));
-                        return;
-                    }
+            }
+            if (!Application.RunOptions.isUsed("-IgnorePassword")) {
+                if (!accommodator.user.getPassword().compare(loginRequest.password)) {
+                    conn.sendTCP(new Command.LoginRejected("Wrong username or password."));
+                    return;
                 }
             }
         } else {
@@ -196,7 +201,7 @@ public class GameServer implements ServerConnectionListener {
             return;
         }
 
-        tryLoginAccomodator(conn, accommodator);
+        tryLoginAccommodator(conn, accommodator);
     }
 
     @Override
@@ -214,7 +219,7 @@ public class GameServer implements ServerConnectionListener {
             return;
         }
 
-        // Reject if character alread exists.
+        // Reject if character already exists.
         if (SaveManager.Accounts.exists(command.username)) {
             conn.sendTCP(new Command.LoginRejected(String.format("Account name \"%s\" is already in use.", command.username)));
             return;
@@ -241,22 +246,22 @@ public class GameServer implements ServerConnectionListener {
     public void message(ServerAccommodationConnection conn, Command.JoinTeam joinTeam) {
         if (matchStarted) return;
 
-        Accommodator accomodator = conn.getAccomodator();
-        int previousTeamId = accomodator.lobbyEntry.getChosenTeamId();
-        accomodator.lobbyEntry.setChosenTeamId(joinTeam.teamId);
+        Accommodator accommodator = conn.getAccomodator();
+        int previousTeamId = accommodator.lobbyEntry.getChosenTeamId();
+        accommodator.lobbyEntry.setChosenTeamId(joinTeam.teamId);
 
-        server.sendToAllTCP(new Command.LobbyTeamChanged(accomodator.user.getId(), previousTeamId, joinTeam.teamId, accomodator.lobbyEntry.isReadyForGame()));
+        server.sendToAllTCP(new Command.LobbyTeamChanged(accommodator.user.getId(), previousTeamId, joinTeam.teamId, accommodator.lobbyEntry.isReadyForGame()));
     }
 
     @Override
     public void message(ServerAccommodationConnection conn, Command.ReadyForGame readyForGame) {
         if (matchStarted) return;
 
-        Accommodator accomodator = conn.getAccomodator();
-        accomodator.lobbyEntry.setReadyForGame(readyForGame.state);
-        int teamId = accomodator.lobbyEntry.getChosenTeamId();
+        Accommodator accommodator = conn.getAccomodator();
+        accommodator.lobbyEntry.setReadyForGame(readyForGame.state);
+        int teamId = accommodator.lobbyEntry.getChosenTeamId();
 
-        server.sendToAllTCP(new Command.LobbyTeamChanged(accomodator.user.getId(), teamId, teamId, accomodator.lobbyEntry.isReadyForGame()));
+        server.sendToAllTCP(new Command.LobbyTeamChanged(accommodator.user.getId(), teamId, teamId, accommodator.lobbyEntry.isReadyForGame()));
 
         recheckGameStart();
     }
@@ -268,8 +273,7 @@ public class GameServer implements ServerConnectionListener {
         int charId = conn.getAccomodator().getPlayerCharacter().getCharacterId();
 
         world.messageArrived(charId, playerControls);
-        world.waitForAcceptance(charId)
-                .ifPresent(state -> server.sendToAllTCP(state));
+        world.waitForAcceptance(charId).ifPresent(state -> server.sendToAllTCP(state));
     }
 
     @Override

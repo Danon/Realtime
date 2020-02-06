@@ -1,19 +1,22 @@
 package gameplay;
 
+import lombok.Getter;
 import network.KeysState;
 
-final public class CharacterSharedState {
+public class CharacterSharedState {
+    @Getter
     private int characterId;
 
     public int hp;
-    double x, y, velocityX, velocityY;
+    double x;
+    double y;
+    double velocityX;
+    double velocityY;
     WalkDirection walkDirection = WalkDirection.Right;
 
     public KeysState keysState = new KeysState();
-    boolean leftClick, rightClick;
-
-    public CharacterSharedState() {
-    }
+    boolean leftClick;
+    boolean rightClick;
 
     CharacterSharedState(int characterId) {
         this.characterId = characterId;
@@ -25,9 +28,9 @@ final public class CharacterSharedState {
 
     void setValues(CharacterSharedState base) {
         this.characterId = base.characterId;
+        this.hp = base.hp;
         this.x = base.x;
         this.y = base.y;
-        this.hp = base.hp;
         this.walkDirection = base.walkDirection;
         this.leftClick = base.leftClick;
         this.rightClick = base.rightClick;
@@ -38,9 +41,5 @@ final public class CharacterSharedState {
 
     public CharacterSharedState copy() {
         return new CharacterSharedState(this);
-    }
-
-    int getCharacterId() {
-        return this.characterId;
     }
 }
