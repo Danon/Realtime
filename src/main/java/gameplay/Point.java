@@ -1,8 +1,6 @@
 package gameplay;
 
-import gameplay.geometry.Angle;
 import lombok.EqualsAndHashCode;
-import ui.gfx.IntTransition;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -45,32 +43,8 @@ public class Point {
         return new Point(this.x, axis - this.y);
     }
 
-    public Point negY() {
-        return new Point(this.x, -this.y);
-    }
-
-    public Point negX() {
-        return new Point(-this.x, this.y);
-    }
-
-    public Point neg() {
-        return new Point(-this.x, -this.y);
-    }
-
-    public Point subX(double x) {
-        return new Point(this.x - x, this.y);
-    }
-
-    public Point subY(double y) {
-        return new Point(this.x, this.y - y);
-    }
-
     public Point sub(double x, double y) {
         return new Point(this.x - x, this.y - y);
-    }
-
-    public Point sub(Point a) {
-        return new Point(this.x - a.x, this.y - a.y);
     }
 
     public Point addY(double y) {
@@ -83,55 +57,5 @@ public class Point {
 
     public Point add(Point p) {
         return new Point(this.x + p.x, this.y + p.y);
-    }
-
-    private double powDistanceTo(Point A) {
-        return Math.pow(this.x - A.x, 2) + Math.pow(this.y - A.y, 2);
-    }
-
-    private double distanceTo(Point A) {
-        return Math.sqrt(powDistanceTo(A));
-    }
-
-    public boolean distanceBiggerThan(Point A, double distance) {
-        return this.powDistanceTo(A) > distance * distance;
-    }
-
-    public Angle angleOf(Point a) {
-        if (this.equals(a)) {
-            throw new IllegalArgumentException("Points cannot be equal.");
-        }
-        double angle = Math.acos((this.y - a.y) / this.distanceTo(a));
-        return new Angle(Math.PI + ((a.x > this.x) ? -angle : angle));
-    }
-
-    public Point find(double distance, Angle angle) {
-        return new Point(
-                this.x + distance * Math.sin(angle.getValue()),
-                this.y + distance * Math.cos(angle.getValue())
-        );
-    }
-
-    public static class Transition {
-        public static Point linear(Point a, Point b, double transitionValue) {
-            return new Point(
-                    IntTransition.linear(a.x, b.x, transitionValue),
-                    IntTransition.linear(a.y, b.y, transitionValue)
-            );
-        }
-
-        public static Point cosine(Point a, Point b, double transitionValue) {
-            return new Point(
-                    IntTransition.cosine(a.x, b.x, transitionValue),
-                    IntTransition.cosine(a.y, b.y, transitionValue)
-            );
-        }
-
-        public static Point cubic(Point a, Point b, Point c, Point d, double transitionValue) {
-            return new Point(
-                    IntTransition.cubic(a.x, b.x, c.x, d.x, transitionValue),
-                    IntTransition.cubic(a.y, b.y, c.y, d.y, transitionValue)
-            );
-        }
     }
 }
