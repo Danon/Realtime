@@ -51,6 +51,9 @@ public final class AddComposite extends RGBComposite {
                 dst[i + 3] = (int) (sa * alpha + dia * ac);
             }
         }
-    }
 
+        @Override
+        public void dispose() {
+        }
+    }
 }

@@ -35,8 +35,7 @@ public class MiscCompositeContext implements CompositeContext {
     public void dispose() {
     }
 
-    // Multiply two numbers in the range 0..255 such that 255*255=255
-    static int multiply255(int a, int b) {
+    private static int multiply255(int a, int b) {
         int t = a * b + 0x80;
         return ((t >> 8) + t) >> 8;
     }
@@ -329,5 +328,4 @@ public class MiscCompositeContext implements CompositeContext {
             dstOut.setPixels(x, y, w, 1, dstPix);
         }
     }
-
 }

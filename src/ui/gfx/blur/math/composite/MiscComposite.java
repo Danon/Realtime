@@ -1,8 +1,11 @@
 package ui.gfx.blur.math.composite;
 
+import lombok.EqualsAndHashCode;
+
 import java.awt.*;
 import java.awt.image.ColorModel;
 
+@EqualsAndHashCode
 public final class MiscComposite implements Composite {
 
     public final static int BLEND = 0;
@@ -82,10 +85,8 @@ public final class MiscComposite implements Composite {
     }
 
     private MiscComposite(int rule, float alpha) {
-        if (alpha < 0.0f || alpha > 1.0f)
-            throw new IllegalArgumentException("alpha value out of range");
-        if (rule < MIN_RULE || rule > MAX_RULE)
-            throw new IllegalArgumentException("unknown composite rule");
+        if (alpha < 0.0f || alpha > 1.0f) throw new IllegalArgumentException("alpha value out of range");
+        if (rule < MIN_RULE || rule > MAX_RULE) throw new IllegalArgumentException("unknown composite rule");
         this.rule = rule;
         this.extraAlpha = alpha;
     }
@@ -93,25 +94,4 @@ public final class MiscComposite implements Composite {
     public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
         return new MiscCompositeContext(rule, extraAlpha, srcColorModel, dstColorModel);
     }
-
-    public float getAlpha() {
-        return extraAlpha;
-    }
-
-    public int hashCode() {
-        return (Float.floatToIntBits(extraAlpha) * 31 + rule);
-    }
-
-    public boolean equals(Object o) {
-        if (!(o instanceof MiscComposite))
-            return false;
-        MiscComposite c = (MiscComposite) o;
-
-        if (rule != c.rule)
-            return false;
-        if (extraAlpha != c.extraAlpha)
-            return false;
-        return true;
-    }
-
 }

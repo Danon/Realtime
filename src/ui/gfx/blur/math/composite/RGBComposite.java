@@ -1,9 +1,14 @@
 package ui.gfx.blur.math.composite;
 
+import lombok.RequiredArgsConstructor;
+
 import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public abstract class RGBComposite implements Composite {
 
@@ -37,20 +42,11 @@ public abstract class RGBComposite implements Composite {
         return true;
     }
 
+    @RequiredArgsConstructor
     public abstract static class RGBCompositeContext implements CompositeContext {
-
-        private float alpha;
-        private ColorModel srcColorModel;
-        private ColorModel dstColorModel;
-
-        public RGBCompositeContext(float alpha, ColorModel srcColorModel, ColorModel dstColorModel) {
-            this.alpha = alpha;
-            this.srcColorModel = srcColorModel;
-            this.dstColorModel = dstColorModel;
-        }
-
-        public void dispose() {
-        }
+        private final float alpha;
+        private final ColorModel srcColorModel;
+        private final ColorModel dstColorModel;
 
         // Multiply two numbers in the range 0..255 such that 255*255=255
         static int multiply255(int a, int b) {
@@ -59,7 +55,7 @@ public abstract class RGBComposite implements Composite {
         }
 
         static int clamp(int a) {
-            return a < 0 ? 0 : a > 255 ? 255 : a;
+            return min(max(0, a), 255);
         }
 
         public abstract void composeRGB(int[] src, int[] dst, float alpha);
@@ -82,6 +78,5 @@ public abstract class RGBComposite implements Composite {
                 dstOut.setPixels(x, y, w, 1, dstPix);
             }
         }
-
     }
 }
