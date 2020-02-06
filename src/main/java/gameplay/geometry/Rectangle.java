@@ -1,7 +1,6 @@
 package gameplay.geometry;
 
 import gameplay.Point;
-import gameplay.Shape;
 
 public class Rectangle implements Shape {
     public double x, y;
@@ -35,10 +34,10 @@ public class Rectangle implements Shape {
     }
 
     @Override
-    public boolean contains(Point p) {
-        return this.x <= p.x &&
-                this.y <= p.y &&
-                this.x + this.width >= p.x
-                && this.y + this.height >= p.y;
+    public boolean contains(Point point) {
+        return this.x <= point.x &&
+                this.y <= point.y &&
+                this.x + this.width >= point.x &&
+                this.y + this.height >= point.y;
     }
 } 

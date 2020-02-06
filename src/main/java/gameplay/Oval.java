@@ -1,5 +1,7 @@
 package gameplay;
 
+import gameplay.geometry.Shape;
+
 public class Oval implements Shape {
     public double x, y;
     private double radiusX, radiusY;
@@ -9,10 +11,6 @@ public class Oval implements Shape {
         this.y = o.y;
         this.radiusX = o.radiusX;
         this.radiusY = o.radiusY;
-    }
-
-    public Oval(Point pos, int radius) {
-        this(pos, radius, radius);
     }
 
     public Oval(Point pos, int radiusX, int radiusY) {
@@ -39,8 +37,8 @@ public class Oval implements Shape {
     }
 
     @Override
-    public boolean contains(Point p) {
-        return Math.pow(p.x - this.x, 2) / Math.pow(this.radiusX, 2) +
-                Math.pow(p.y - this.y, 2) / Math.pow(this.radiusY, 2) <= 1;
+    public boolean contains(Point point) {
+        return Math.pow(point.x - this.x, 2) / Math.pow(this.radiusX, 2) +
+                Math.pow(point.y - this.y, 2) / Math.pow(this.radiusY, 2) <= 1;
     }
 }
