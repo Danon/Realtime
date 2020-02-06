@@ -1,9 +1,14 @@
 package util.save;
 
+import lombok.SneakyThrows;
 import ui.gfx.resources.duality.FileHandler;
 import util.Password;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class CustomSaveManager implements SaveInput, SaveOutput {
     private DataInputStream inpStream;
@@ -59,7 +64,9 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
 
     boolean saveObject(String folderName, String fileName, Savable item) {
         File file = new File(folderName, fileName.toLowerCase());
-        file.getParentFile().mkdirs();
+        if (!file.getParentFile().mkdirs()) {
+            return false;
+        }
 
         try {
             outStream = new DataOutputStream(new FileOutputStream(file));
@@ -76,7 +83,8 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
         }
     }
 
-    boolean loadObject(String folderName, String fileName, Savable savable) {
+    @SneakyThrows
+    void loadObject(String folderName, String fileName, Savable savable) {
         FileHandler file = new FileHandler(folderName + "/" + fileName.toLowerCase());
         if (!file.exists()) {
             throw new RuntimeException(String.format("No such file '%s' found", fileName));
@@ -85,14 +93,8 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
         try {
             inpStream = new DataInputStream(file.getInputStream());
             savable.restoreState(this);
-            return true;
-        } catch (IOException couldNotLoadState) {
-            return false;
         } finally {
-            try {
-                inpStream.close();
-            } catch (IOException ignored) {
-            }
+            inpStream.close();
         }
     }
 }

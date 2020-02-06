@@ -7,31 +7,23 @@ import java.io.File;
 final public class SaveManager {
     private static final CustomSaveManager manager = new CustomSaveManager();
 
-    public static boolean save(Savable object, String folderName, String fileName) {
-        return manager.saveObject(folderName, fileName, object);
+    public static boolean save(Savable object, String folderName, String filename) {
+        return manager.saveObject(folderName, filename, object);
     }
 
-    public static boolean load(String folderName, String fileName, Savable object) {
-        return manager.loadObject(folderName, fileName, object);
+    public static void load(String folderName, String fileName, Savable object) {
+        manager.loadObject(folderName, fileName, object);
     }
 
-    public static boolean exists(String folderName, String mapName) {
-        return new File(folderName, mapName.toLowerCase()).exists();
+    public static boolean exists(String folderName, String filename) {
+        return new File(folderName, filename.toLowerCase()).exists();
     }
 
     public static class Map {
         final static String pathName = "maps";
 
-        public static boolean exists(String mapName) {
-            return new File(pathName, mapName.toLowerCase()).exists();
-        }
-
         public static String[] list() {
             return new File(pathName).list();
-        }
-
-        public static void save(GameMap map) {
-            manager.saveObject(pathName, map.getName(), map);
         }
 
         public static GameMap load(String mapName) {
@@ -58,10 +50,8 @@ final public class SaveManager {
 
         public static network.UserAccount load(String username) {
             network.UserAccount account = new network.UserAccount();
-            if (manager.loadObject(pathName, username, account)) {
-                return account;
-            }
-            return null;
+            manager.loadObject(pathName, username, account);
+            return account;
         }
     }
 }
