@@ -2,7 +2,7 @@ package ui.gfx;
 
 import gameplay.scene.Floor;
 import gameplay.scene.Ladder;
-import gameplay.Oval;
+import gameplay.geometry.Oval;
 import gameplay.Point;
 import gameplay.geometry.Rectangle;
 import ui.gfx.resources.Resources;
