@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static network.Network.*;
+import static network.Network.Command;
+import static network.Network.Port;
+import static network.Network.register;
 
 public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listener {
     private Server kryoServer;
@@ -43,15 +45,15 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
     @Override
     public void received(Connection con, Object command) {
         ServerAccommodationConnection connection = (ServerAccommodationConnection) con;
-        Accommodator accomodator = connection.getAccomodator();
+        Accommodator accommodator = connection.getAccommodator();
 
         if (command instanceof Command.WantsLogin)
-            forEach(list -> list.message(connection, (Command.WantsLogin) command, accomodator != null));
+            forEach(list -> list.message(connection, (Command.WantsLogin) command, accommodator != null));
         if (command instanceof Command.WantsRegister)
-            forEach(list -> list.message(connection, (Command.WantsRegister) command, accomodator != null));
+            forEach(list -> list.message(connection, (Command.WantsRegister) command, accommodator != null));
 
         // Ignore the rest of messages, if not logged in
-        if (accomodator == null) {
+        if (accommodator == null) {
             return;
         }
 
@@ -73,9 +75,9 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
     @Override
     public void disconnected(Connection c) {
         ServerAccommodationConnection connection = (ServerAccommodationConnection) c;
-        Accommodator accomodator = connection.getAccomodator();
+        Accommodator accommodator = connection.getAccommodator();
 
-        forEach(list -> list.disconnected(accomodator));
+        forEach(list -> list.disconnected(accommodator));
     }
 
     private void forEach(ServerConnectionListenerIterator action) {
@@ -84,10 +86,10 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
         }
     }
 
-    public void forAllConnections(ConnectionIterable iteratable) {
+    public void forAllConnections(ConnectionIterable iterable) {
         // Send information with players to all players, with their charactersId.
         for (Connection connection : kryoServer.getConnections()) {
-            iteratable.iterate((ServerAccommodationConnection) connection);
+            iterable.iterate((ServerAccommodationConnection) connection);
         }
     }
 

@@ -1,5 +1,9 @@
 package network;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import util.Password;
 import util.save.Savable;
 import util.save.SaveInput;
@@ -7,51 +11,24 @@ import util.save.SaveOutput;
 
 import java.io.IOException;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class UserAccount implements Savable {
+    @Getter
     private int id;
+    @Getter
     private String username;
+    @Getter
     private Password password;
 
-    public UserAccount() {
-    }
-
-    private UserAccount(String username, Password password) {
-        this.username = username;
-        this.password = password;
-    }
-
     public UserAccount(int id, String username, String plainPassword) {
-        this(username, new Password(plainPassword));
-        this.id = id;
-    }
-
-    public Password getPassword() {
-        return this.password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
+        this(id, username, new Password(plainPassword));
     }
 
     @Override
     public String toString() {
         return String.format("#%d %s", id, username);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof UserAccount && id == ((UserAccount) o).id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + this.id;
-        return hash;
     }
 
     @Override
