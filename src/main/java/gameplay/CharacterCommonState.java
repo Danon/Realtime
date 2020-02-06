@@ -1,22 +1,23 @@
 package gameplay;
 
 public class CharacterCommonState {
-    final static int WIDTH = 23, HEIGHT = 35;
+    public final static int WIDTH = 23;
+    public final static int HEIGHT = 35;
 
-    boolean walking = false;
-    boolean climbingLadder = false;
-    private boolean onLadderTop = false;
-    private boolean disableLadderTopCollision = false;
-    boolean onGround = false;
+    public boolean walking = false;
+    public boolean climbingLadder = false;
+    public boolean onLadderTop = false;
+    public boolean disableLadderTopCollision = false;
+    public boolean onGround = false;
 
-    int timeInAir = 0;
+    public int timeInAir = 0;
     public int jumpFrame = -1;
     public int basicFrame = -1;
     public int shootFrame = -1;
     public int runFrame = -1;
     public int climbFrame = -1;
 
-    LadderCollide collideLadder = LadderCollide.None;
+    public LadderCollide collideLadder = LadderCollide.None;
 
     public CharacterCommonState copy() {
         CharacterCommonState deepCopy = new CharacterCommonState();

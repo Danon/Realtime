@@ -1,31 +1,29 @@
-package gameplay;
+package gameplay.physics;
 
+import gameplay.Character;
+import gameplay.CharacterCommonState;
+import gameplay.Floor;
+import gameplay.GameMap;
+import gameplay.Ladder;
+import gameplay.LadderCollide;
+import gameplay.WalkDirection;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import ui.gfx.frame.FrameAnimation;
 import util.Validate;
 
+@RequiredArgsConstructor
 public class PhysicSimulation {
     private final static double JUMP_VELOCITY = 4; //2.55;
     private final static double RUN_SPEED = 1.1;     // + (110px) per second
     private final static double CLIMB_SPEED = 0.8;     // + (60px) per second
     private final static double FALL_ACCELERATION = 0.07;    // + (7px/s) per second
 
-    private GameMap currentMap;
-
-    public PhysicSimulation(GameMap map) {
-        map.accept();
-        this.currentMap = map;
-    }
+    @Getter
+    private final GameMap currentMap;
 
     public GameMap getMap() {
         return currentMap;
-    }
-
-    public int getMapWidth() {
-        return currentMap.getWidth();
-    }
-
-    public int getMapHeight() {
-        return currentMap.getHeight();
     }
 
     enum FloorIs {
@@ -42,13 +40,8 @@ public class PhysicSimulation {
                 if (Validate.between(character.getY(), ladder.getBottom(), ladder.getPeek())) {
                     return ladder;
                 }
-
         }
         return null;
-    }
-
-    void step(gameplay.Character character) {
-        perform(character);
     }
 
     private void capCharacterPosition(gameplay.Character character) {
@@ -76,7 +69,6 @@ public class PhysicSimulation {
             if (character.shared.keysState.Left != character.shared.keysState.Right) {
                 character.common.collideLadder = LadderCollide.None;
                 character.common.climbingLadder = false;
-
             }
         }
     }
@@ -169,83 +161,85 @@ public class PhysicSimulation {
         this.setLadderFor(character, ladder);
         this.setClimbVariables(character, ladder);
 
-        if (character.common.climbingLadder)  // TODO: climbingLadder shouldn't but can be true, even if ladder is null
-        {
+        if (character.common.climbingLadder) {
+            // TODO: climbingLadder shouldn't but can be true, even if ladder is null
             this.climbingLadderPhysics(character, ladder);
         } else {
-            if (character.common.walking = (character.shared.keysState.Left != character.shared.keysState.Right)) {
-                character.shared.walkDirection = (character.shared.keysState.Right) ? WalkDirection.Right : WalkDirection.Left;
-            }
+            this.freeRunPhysics(character);
+        }
+    }
 
-            if (this.allowedWalkMovement(character)) {
-                if (character.shared.keysState.Left)
-                    character.shared.x -= Math.min(RUN_SPEED, closestHorizontalObstacle(From.Left, character));
-                if (character.shared.keysState.Right)
-                    character.shared.x += Math.min(RUN_SPEED, closestHorizontalObstacle(From.Right, character));
-            } else {
-                character.common.walking = false;
-            }
-
-
-            if (character.isGoingUpByVelocity()) {
-                if (character.common.jumpFrame < 5 * FrameAnimation.Speed.MidAir)
-                    character.common.jumpFrame++;
-
-                double characterOffsetToCeiling = closestDistance(FloorIs.Above, character);
-                if (characterOffsetToCeiling > character.shared.velocityY) {
-                    character.shared.y += character.shared.velocityY;
-                } else /*if (characterOffsetToCeiling > 0.0)*/ {
-                    character.shared.y += characterOffsetToCeiling;
-                    character.shared.velocityY = 0.0;
-                }
-
-                character.common.onGround = false;
-            } else {
-                double characterOffsetToGround = closestDistance(FloorIs.Below, character);
-                if (characterOffsetToGround > -character.shared.velocityY) {
-                    character.shared.y += character.shared.velocityY;
-                    character.common.onGround = false;
-                } else if (characterOffsetToGround > 0.0) {
-                    character.shared.y -= characterOffsetToGround;
-                    characterOffsetToGround = 0.0;
-                }
-
-                if (characterOffsetToGround == 0.0) {
-                    character.common.onGround = true;
-                }
-                character.common.jumpFrame = 5 * FrameAnimation.Speed.MidAir;
-            }
-
-            character.shared.velocityY = (character.common.onGround) ? 0 : character.shared.velocityY - FALL_ACCELERATION;
-            character.common.timeInAir = (character.common.onGround) ? 0 : character.common.timeInAir + 1;
-
-            if (character.shared.leftClick) {
-                character.common.runFrame = -1;
-                character.common.basicFrame++;
-                character.common.basicFrame %= 9 * FrameAnimation.Speed.Basic;
-            } else {
-                character.common.basicFrame = -1;
-            }
-
-            if (character.shared.rightClick /*&& (
-                    !(character.walking && character.onGround) || !character.onGround)
-               */) {
-                character.common.shootFrame++;
-                if (character.common.shootFrame == 9 * FrameAnimation.Speed.Shooting) {  // loop animation without first
-                    character.common.shootFrame = 2 * FrameAnimation.Speed.Shooting;
-                }
-            } else {
-                character.common.shootFrame = -1;
-            }
-
-            this.running(character);
-
-            if (character.shared.keysState.Up && allowedJump(character)) {
-                character.shared.velocityY = JUMP_VELOCITY;
-                character.common.onGround = false;
-            }
+    private void freeRunPhysics(Character character) {
+        if (character.common.walking = (character.shared.keysState.Left != character.shared.keysState.Right)) {
+            character.shared.walkDirection = (character.shared.keysState.Right) ? WalkDirection.Right : WalkDirection.Left;
         }
 
+        if (this.allowedWalkMovement(character)) {
+            if (character.shared.keysState.Left) {
+                character.shared.x -= Math.min(RUN_SPEED, closestHorizontalObstacle(From.Left, character));
+            }
+            if (character.shared.keysState.Right) {
+                character.shared.x += Math.min(RUN_SPEED, closestHorizontalObstacle(From.Right, character));
+            }
+        } else {
+            character.common.walking = false;
+        }
+
+        if (character.isGoingUpByVelocity()) {
+            if (character.common.jumpFrame < 5 * FrameAnimation.Speed.MidAir)
+                character.common.jumpFrame++;
+
+            double characterOffsetToCeiling = closestDistance(FloorIs.Above, character);
+            if (characterOffsetToCeiling > character.shared.velocityY) {
+                character.shared.y += character.shared.velocityY;
+            } else /*if (characterOffsetToCeiling > 0.0)*/ {
+                character.shared.y += characterOffsetToCeiling;
+                character.shared.velocityY = 0.0;
+            }
+
+            character.common.onGround = false;
+        } else {
+            double characterOffsetToGround = closestDistance(FloorIs.Below, character);
+            if (characterOffsetToGround > -character.shared.velocityY) {
+                character.shared.y += character.shared.velocityY;
+                character.common.onGround = false;
+            } else if (characterOffsetToGround > 0.0) {
+                character.shared.y -= characterOffsetToGround;
+                characterOffsetToGround = 0.0;
+            }
+
+            if (characterOffsetToGround == 0.0) {
+                character.common.onGround = true;
+            }
+            character.common.jumpFrame = 5 * FrameAnimation.Speed.MidAir;
+        }
+
+        character.shared.velocityY = (character.common.onGround) ? 0 : character.shared.velocityY - FALL_ACCELERATION;
+        character.common.timeInAir = (character.common.onGround) ? 0 : character.common.timeInAir + 1;
+
+        if (character.shared.leftClick) {
+            character.common.runFrame = -1;
+            character.common.basicFrame++;
+            character.common.basicFrame %= 9 * FrameAnimation.Speed.Basic;
+        } else {
+            character.common.basicFrame = -1;
+        }
+
+        if (character.shared.rightClick) {
+            character.common.shootFrame++;
+            if (character.common.shootFrame == 9 * FrameAnimation.Speed.Shooting) {  // loop animation without first
+                character.common.shootFrame = 2 * FrameAnimation.Speed.Shooting;
+            }
+        } else {
+            character.common.shootFrame = -1;
+        }
+
+        this.running(character);
+
+        if (character.shared.keysState.Up && allowedJump(character)) {
+            character.shared.velocityY = JUMP_VELOCITY;
+            character.common.onGround = false;
+        }
     }
 
     /**
@@ -258,7 +252,7 @@ public class PhysicSimulation {
      */
     private double closestDistance(FloorIs floorIs, gameplay.Character character) {
 
-        double minDistance = this.getMapHeight();  // largest possible value
+        double minDistance = currentMap.getHeight();  // largest possible value
 
         for (Floor floor : currentMap.getFloors()) {
             if ((floor.getLeft() <= character.getRightSideX()) && (character.getLeftSideX() <= floor.getRight())) {
@@ -280,7 +274,7 @@ public class PhysicSimulation {
 
     private double closestHorizontalObstacle(From from, gameplay.Character character) {
 
-        double minDistance = this.getMapWidth();  // largest possible value
+        double minDistance = currentMap.getWidth();  // largest possible value
 
         for (Floor floor : currentMap.getFloors()) {
             if (Validate.inside(floor.getBottom(), character.getFeetY() - Floor.HEIGHT, character.getHeadY())) {

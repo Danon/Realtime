@@ -12,7 +12,7 @@ public class Ladder {
     private final int bottom;
     private final int tiles;
 
-    int getCenter() {
+    public int getCenter() {
         return left + WIDTH / 2;
     }
 
@@ -24,7 +24,7 @@ public class Ladder {
         return tiles * 32;
     }
 
-    int getPeek() {
+    public int getPeek() {
         return bottom + tiles * 32;
     }
 }

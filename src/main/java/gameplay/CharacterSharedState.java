@@ -10,15 +10,15 @@ public class CharacterSharedState {
     private int characterId;
 
     public int hp;
-    double x;
-    double y;
-    double velocityX;
-    double velocityY;
-    WalkDirection walkDirection = WalkDirection.Right;
+    public double x;
+    public double y;
+    public double velocityX;
+    public double velocityY;
+    public WalkDirection walkDirection = WalkDirection.Right;
 
-    KeysState keysState = new KeysState();
-    boolean leftClick;
-    boolean rightClick;
+    public KeysState keysState = new KeysState();
+    public boolean leftClick;
+    public boolean rightClick;
 
     CharacterSharedState(int characterId) {
         this.characterId = characterId;

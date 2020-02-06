@@ -1,5 +1,7 @@
 package gameplay;
 
+import gameplay.physics.PhysicSimulation;
+
 public class Character {
     int characterId;
 
@@ -54,7 +56,7 @@ public class Character {
         return shared.velocityY < 0;
     }
 
-    boolean isGoingUpByVelocity() {
+    public boolean isGoingUpByVelocity() {
         return shared.velocityY > 0;
     }
 
@@ -70,11 +72,11 @@ public class Character {
         return shared.hp;
     }
 
-    double getFeetY() {
+    public double getFeetY() {
         return shared.y;
     }
 
-    double getHeadY() {
+    public double getHeadY() {
         return shared.y + this.getHeight();
     }
 
@@ -82,11 +84,11 @@ public class Character {
         return CharacterCommonState.HEIGHT;
     }
 
-    double getRightSideX() {
+    public double getRightSideX() {
         return shared.x + CharacterCommonState.WIDTH / 2;
     }
 
-    double getLeftSideX() {
+    public double getLeftSideX() {
         return shared.x - CharacterCommonState.WIDTH / 2;
     }
 

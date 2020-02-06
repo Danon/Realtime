@@ -33,7 +33,7 @@ public class Floor {
         return this.top;
     }
 
-    int getBottom() {
+    public int getBottom() {
         return this.top - Floor.HEIGHT;
     }
 
