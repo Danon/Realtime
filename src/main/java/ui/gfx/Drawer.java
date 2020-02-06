@@ -179,7 +179,7 @@ public class Drawer {
     }
 
     public void ladder(Ladder ladder) {
-        for (int i = 0; i < ladder.getHeightTiles(); i++) {
+        for (int i = 0; i < ladder.getTiles(); i++) {
             image("ladder.png", new Point(
                             ladder.getLeft() - 4,
                             windowHeight - ladder.getBottom() - i * 32 - 10 + 11),

@@ -63,7 +63,7 @@ public class GameMap implements Savable {
         for (Ladder ladder : this.getLadders()) {
             output.writeInt(ladder.getLeft());
             output.writeInt(ladder.getBottom());
-            output.writeInt(ladder.getHeightTiles());
+            output.writeInt(ladder.getTiles());
         }
     }
 }

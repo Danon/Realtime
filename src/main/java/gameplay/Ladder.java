@@ -1,19 +1,16 @@
 package gameplay;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class Ladder {
     private final static int WIDTH = 24;
 
-    private final int left, bottom, tiles;
-
-    public Ladder(int left, int bottom, int tiles) {
-        this.left = left;
-        this.bottom = bottom;
-        this.tiles = tiles;
-    }
-
-    public int getLeft() {
-        return left;
-    }
+    private final int left;
+    private final int bottom;
+    private final int tiles;
 
     int getCenter() {
         return left + WIDTH / 2;
@@ -23,19 +20,11 @@ public class Ladder {
         return left + WIDTH;
     }
 
-    public int getBottom() {
-        return bottom;
-    }
-
-    public int getHeightTiles() {
-        return tiles;
-    }
-
     public int getHeight() {
         return tiles * 32;
     }
 
-    public int getPeek() {
+    int getPeek() {
         return bottom + tiles * 32;
     }
 }
