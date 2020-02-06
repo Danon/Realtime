@@ -13,13 +13,13 @@ public class Accommodator {
     // In-Game
     private PlayerCharacter character;
 
+    public Accommodator() {
+        lobbyEntry = new LobbyEntry();
+    }
+
     public void setUser(UserAccount user) {
         this.user = user;
         this.lobbyEntry = new LobbyEntry(user.getId(), user.getUsername(), false, LobbyEntry.ROOMLESS);
-    }
-
-    public Accommodator() {
-        lobbyEntry = new LobbyEntry();
     }
 
     public void setPlayerCharacter(PlayerCharacter character) {

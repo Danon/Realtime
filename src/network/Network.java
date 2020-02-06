@@ -4,8 +4,13 @@ import app.Application;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import gameplay.Character;
-import gameplay.*;
-import ui.CharacterEndScore;
+import gameplay.CharacterCommonState;
+import gameplay.CharacterSharedState;
+import gameplay.LadderCollide;
+import gameplay.PlayerCharacter;
+import gameplay.WalkDirection;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import util.Password;
 
 import static app.Application.RunOptions;
@@ -50,9 +55,6 @@ public class Network {
         kryo.register(LadderCollide.class);
         kryo.register(WalkDirection.class);
 
-        kryo.register(CharacterEndScore[].class);
-        kryo.register(CharacterEndScore.class);
-
         kryo.register(PlayerCharacter.class);
         kryo.register(Character.class);
         kryo.register(Password.class);
@@ -64,13 +66,11 @@ public class Network {
     }
 
     public static class Command {
+        @NoArgsConstructor
         static public class WantsLogin {
             public String username;
             public Password password;
             public String clientVersion = Application.VERSION;
-
-            public WantsLogin() {
-            }
 
             WantsLogin(String username, Password password) {
                 this.username = username;
@@ -78,108 +78,61 @@ public class Network {
             }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class LoggedIn {
             public int userId;
             public String username;
-
-            public LoggedIn() {
-            }
-
-            public LoggedIn(int userId, String username) {
-                this.userId = userId;
-                this.username = username;
-            }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class LoginRejected {
-            public String reason;
-
-            public LoginRejected() {
-                this.reason = "";
-            }
-
-            public LoginRejected(String reason) {
-                this.reason = reason;
-            }
+            public String reason = "";
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class WantsRegister {
             public String username;
             public String plainPassword;
-
-            public WantsRegister() {
-            }
-
-            WantsRegister(String username, String plainPassword) {
-                this.username = username;
-                this.plainPassword = plainPassword;
-            }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class Registered {
             public String username;
-
-            public Registered() {
-            }
-
-            public Registered(String username) {
-                this.username = username;
-            }
         }
 
         static public class MatchAlreadyStarted {
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class JoinTeam {
             public int teamId;
-
-            public JoinTeam() {
-            }
-
-            JoinTeam(int teamId) {
-                this.teamId = teamId;
-            }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class ReadyForGame {
             public boolean state;
-
-            public ReadyForGame() {
-            }
-
-            ReadyForGame(boolean readyState) {
-                this.state = readyState;
-            }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class LobbyTeamChanged {
             public int userId;
             public int previousTeamId;
             public int currentTeamId;
             public boolean readyForGame;
-
-            public LobbyTeamChanged() {
-            }
-
-            public LobbyTeamChanged(int userId, int previousTeamId, int currentTeamId, boolean readyForGame) {
-                this.userId = userId;
-                this.previousTeamId = previousTeamId;
-                this.currentTeamId = currentTeamId;
-                this.readyForGame = readyForGame;
-            }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class LobbyWelcome {
             public LobbyEntry[] teams;
             public String[] chatHistory;
-
-            public LobbyWelcome() {
-            }
-
-            public LobbyWelcome(LobbyEntry[] teams, String[] chatHistory) {
-                this.teams = teams;
-                this.chatHistory = chatHistory;
-            }
         }
 
         static public class MatchStarted {
@@ -190,52 +143,35 @@ public class Network {
         static class MatchEnded {
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class UserLeft implements WorldMessage {
             public String username;
             public int userId;
             public int characterId;
-
-            public UserLeft() {
-            }
-
-            public UserLeft(String username, int id, int characterId) {
-                this.username = username;
-                this.userId = id;
-                this.characterId = characterId;
-            }
         }
 
+        @NoArgsConstructor
         static public class UpdateSharedState implements WorldMessage {
             public CharacterSharedState state;
-
-            public UpdateSharedState() {
-            }
 
             public UpdateSharedState(CharacterSharedState base) {
                 this.state = base.copy();
             }
         }
 
+        @NoArgsConstructor
+        @AllArgsConstructor
         static public class ChangePlayerControls implements WorldMessage {
             public KeysState keysState;
-            public boolean leftClick, rightClick;
-
-            public ChangePlayerControls() {
-            }
-
-            ChangePlayerControls(KeysState keysState, boolean left, boolean right) {
-                this.keysState = keysState.copy();
-                this.leftClick = left;
-                this.rightClick = right;
-            }
+            public boolean leftClick;
+            public boolean rightClick;
         }
 
+        @NoArgsConstructor
         static public class ChatMessage implements WorldMessage {
             public int senderId;
             public String text;
-
-            public ChatMessage() {
-            }
 
             ChatMessage(String chatText) {
                 this.text = chatText;

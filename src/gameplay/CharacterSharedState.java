@@ -1,8 +1,10 @@
 package gameplay;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import network.KeysState;
 
+@NoArgsConstructor
 public class CharacterSharedState {
     @Getter
     private int characterId;
@@ -14,7 +16,7 @@ public class CharacterSharedState {
     double velocityY;
     WalkDirection walkDirection = WalkDirection.Right;
 
-    public KeysState keysState = new KeysState();
+    KeysState keysState = new KeysState();
     boolean leftClick;
     boolean rightClick;
 
