@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.geometry.Angle;
 import lombok.EqualsAndHashCode;
 import ui.gfx.IntTransition;
 
