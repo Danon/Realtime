@@ -3,27 +3,32 @@ package ui;
 import gameplay.Character;
 import gameplay.ClientWorld;
 import gameplay.GameMap;
+import lombok.RequiredArgsConstructor;
+import ui.gfx.Renderer;
 import util.Size;
 import util.save.SaveManager;
 
-public class ClientUserInterface extends CustomUserInterface {
-    private final GameWindowFactory gameWindowFactory;
-    private final Chat chat = new Chat();
+import static ui.GameWindow.VIEW_HEIGHT;
+import static ui.GameWindow.VIEW_WIDTH;
 
-    public ClientUserInterface(IKeyStateNotifier keyStateNotifier, Size windowSize) {
-        gameWindowFactory = new GameWindowFactory(keyStateNotifier, windowSize);
-    }
+@RequiredArgsConstructor
+public class ClientUserInterface extends CustomUserInterface {
+    private final IKeyStateNotifier keyStateNotifier;
+    private final Size windowSize;
+    private final Chat chat = new Chat();
 
     public ClientWorld startGame(int characterId, Character[] characters) {
         GameMap map = SaveManager.Map.load("Standard");
 
         ClientWorld world = new ClientWorld(map, characterId, characters);
-
-        GameWindow window = gameWindowFactory.showGameWindow(world, this.chat);
-
-        world.addRenderObserver(window.getRenderer());
+        Renderer renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
+        renderer.attachWorld(world);
+        renderer.attachChat(chat);
+        GameWindow window = new GameWindow(keyStateNotifier, windowSize, world, chat, renderer);
+        world.addRenderObserver(renderer);
         world.addUpdateObserver(window);
 
+        window.showGameWindow();
         world.startLoop();
 
         return world;

@@ -3,6 +3,7 @@ package ui;
 import app.Application;
 import gameplay.ClientWorld;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import network.KeysState;
 import ui.gfx.Renderer;
 import util.Size;
@@ -15,28 +16,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+@RequiredArgsConstructor
 public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
-    public static final int VIEW_WIDTH = 800, VIEW_HEIGHT = 600;
+    static final int VIEW_WIDTH = 800, VIEW_HEIGHT = 510;
 
-    @Getter
-    private final Renderer renderer;
     private final IKeyStateNotifier keyStateNotifier;
     private final Size windowSize;
+    private final ClientWorld world;
+    private final Chat chat;
+    private final Renderer renderer;
+    private final KeysState keysState = new KeysState();
+    private final KeysState prevKeysState = new KeysState();
 
-    private ClientWorld world;
-    private Chat chat;
-
-    private KeysState keysState = new KeysState();
-    private KeysState prevKeysState = new KeysState();
     private boolean left, right, prevLeft, prevRight;
-
-    GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize, ClientWorld clientWorld, Chat chat, Renderer renderer) {
-        this.windowSize = windowSize;
-        this.keyStateNotifier = keyStateNotifier;
-        this.world = clientWorld;
-        this.chat = chat;
-        this.renderer = renderer;
-    }
 
     void showGameWindow() {
         this.setTitle("Realtime | Game playing...");
