@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 internal class LadderTest {
     @Test
-    fun shouldGetCenter() {
+    fun `should get center`() {
         // given
         val ladder = Ladder(120, 60, 3)
 
@@ -14,7 +14,7 @@ internal class LadderTest {
     }
 
     @Test
-    fun shouldGetRight() {
+    fun `should get right`() {
         // given
         val ladder = Ladder(120, 60, 3)
 
@@ -23,7 +23,7 @@ internal class LadderTest {
     }
 
     @Test
-    fun shouldGetHeight() {
+    fun `should get height`() {
         // given
         val ladder = Ladder(120, 60, 3)
 
@@ -32,7 +32,7 @@ internal class LadderTest {
     }
 
     @Test
-    fun shouldGetPeek() {
+    fun `should get peek`() {
         // given
         val ladder = Ladder(120, 60, 3)
 

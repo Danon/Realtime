@@ -10,7 +10,7 @@ internal class AngleTest {
     }
 
     @Test
-    fun shouldAdd() {
+    fun `should add angles`() {
         // when
         val angle = Angle(3.14).add(Angle(6.28))
 

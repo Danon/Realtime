@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 internal class FloorTest {
     @Test
-    fun shouldGetRight() {
+    fun `should get right`() {
         // given
         val floor = Floor(30, 50, 4)
 
@@ -17,7 +17,7 @@ internal class FloorTest {
     }
 
     @Test
-    fun shouldGetWidth() {
+    fun `should get width`() {
         // given
         val floor = Floor(30, 50, 4)
 
@@ -29,7 +29,7 @@ internal class FloorTest {
     }
 
     @Test
-    fun shouldGetBottom() {
+    fun `should get bottom`() {
         // given
         val floor = Floor(30, 50, 4)
 

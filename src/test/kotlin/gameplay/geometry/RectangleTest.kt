@@ -18,7 +18,7 @@ internal class RectangleTest {
     }
 
     @Test
-    fun shouldContain() {
+    fun `should contain point`() {
         // given
         val rectangle = Rectangle(-1.0, -2.0, 3.0, 4.0)
         val point = Point(1.0, 1.0)
@@ -31,7 +31,7 @@ internal class RectangleTest {
     }
 
     @Test
-    fun shouldNotContain() {
+    fun `should not contain point`() {
         // given
         val rectangle = Rectangle(-1.0, -2.0, 3.0, 4.0)
         val point = Point(1.0, 5.0)
