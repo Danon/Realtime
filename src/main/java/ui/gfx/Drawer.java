@@ -214,35 +214,35 @@ public class Drawer {
         int
                 x = position.getX(),
                 y = position.getY(),
-                w1 = 0, w2 = frame.width,
-                h1 = 0, h2 = frame.height;
+                w1 = 0, w2 = frame.getWidth(),
+                h1 = 0, h2 = frame.getHeight();
 
         if (flip == Flip.Horizontally || flip == Flip.Both) {
             w1 = w2;
             w2 = 0;
-            x -= frame.width;
-            x += frame.offsetX;
+            x -= frame.getWidth();
+            x += frame.getOffsetX();
         } else {
-            x -= frame.offsetX;
+            x -= frame.getOffsetX();
         }
         if (flip == Flip.Vertically || flip == Flip.Both) {
             h1 = h2;
             h2 = 0;
 
-            y -= frame.height;
-            y += frame.offsetY;
+            y -= frame.getHeight();
+            y += frame.getOffsetY();
         } else {
-            y -= frame.offsetY;
+            y -= frame.getOffsetY();
         }
 
-        y -= (drawFrom.y + 0.5) * frame.height;
-        x -= (drawFrom.x + 0.5) * frame.width;
+        y -= (drawFrom.y + 0.5) * frame.getHeight();
+        x -= (drawFrom.x + 0.5) * frame.getWidth();
 
         canvas.drawImage(img,
                 x + w1, y + h1,
                 x + w2, y + h2,
-                frame.x, frame.y,
-                frame.x + frame.width, frame.y + frame.height,
+                frame.getX(), frame.getY(),
+                frame.getX() + frame.getWidth(), frame.getY() + frame.getHeight(),
                 null);
         canvas.setColor(Color.black);
     }
