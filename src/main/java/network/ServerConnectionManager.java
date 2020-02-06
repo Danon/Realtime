@@ -7,6 +7,7 @@ import debug.decorator.DebugServerAccommodationConnection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static network.Network.Command;
 import static network.Network.Port;
@@ -80,16 +81,14 @@ public class ServerConnectionManager extends com.esotericsoftware.kryonet.Listen
         forEach(list -> list.disconnected(accommodator));
     }
 
-    private void forEach(ServerConnectionListenerIterator action) {
-        for (ServerConnectionListener listener : connectionListeners) {
-            action.iterate(listener);
-        }
+    private void forEach(Consumer<ServerConnectionListener> action) {
+        connectionListeners.forEach(action);
     }
 
-    public void forAllConnections(ConnectionIterable iterable) {
+    public void forAllConnections(Consumer<ServerAccommodationConnection> iterable) {
         // Send information with players to all players, with their charactersId.
         for (Connection connection : kryoServer.getConnections()) {
-            iterable.iterate((ServerAccommodationConnection) connection);
+            iterable.accept((ServerAccommodationConnection) connection);
         }
     }
 
