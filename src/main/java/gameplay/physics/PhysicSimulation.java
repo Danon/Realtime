@@ -26,6 +26,10 @@ public class PhysicSimulation {
         return currentMap;
     }
 
+    protected double getMapWidth() {
+        return currentMap.getWidth();
+    }
+
     enum FloorIs {
         Below, Above
     }
@@ -153,7 +157,7 @@ public class PhysicSimulation {
         }
     }
 
-    private void perform(Character character) {
+    protected void perform(Character character) {
         this.capCharacterPosition(character);
 
         Ladder ladder = this.detectLadder(character);  // detecting the ladder

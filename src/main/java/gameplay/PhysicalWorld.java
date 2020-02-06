@@ -10,14 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 abstract public class PhysicalWorld extends PhysicSimulation implements Runnable {
     private final static int TPS = 100;
-    private final static double MS_PER_UPDATE = 1000 / TPS;
+    private final static double MS_PER_UPDATE = 1000.0 / TPS;
 
     final protected Map<Integer, Character> characters = new ConcurrentHashMap<>();
-    private final Thread loopThread;
+    private final Thread loopThread = new Thread(this);
 
     PhysicalWorld(GameMap map) {
         super(map);
-        loopThread = new Thread(this, "LoopThread");
     }
 
     final public void startLoop() {
@@ -115,7 +114,7 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
 
     private void updateGameState() {
         for (Character character : characters.values()) {
-            this.step(character);
+            this.perform(character);
             if (character.common.basicFrame == 6 * FrameAnimation.Speed.Basic) {
                 Rectangle hitZone;
                 if (character.isTurnedRight()) {
@@ -144,6 +143,6 @@ abstract public class PhysicalWorld extends PhysicSimulation implements Runnable
     protected abstract void whenPossible();
 
     private double millisecondsPassed() {
-        return System.nanoTime() / 1000000;
+        return System.nanoTime() / 1000000.0;
     }
 }
