@@ -1,6 +1,6 @@
 package ui.gfx;
 
-import gameplay.Floor;
+import gameplay.scene.Floor;
 import gameplay.Ladder;
 import gameplay.Oval;
 import gameplay.Point;

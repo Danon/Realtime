@@ -3,7 +3,7 @@ package gameplay
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class LadderTest {
+internal class LadderTest {
     @Test
     fun shouldGetCenter() {
         // given

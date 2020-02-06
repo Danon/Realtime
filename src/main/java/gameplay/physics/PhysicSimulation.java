@@ -2,7 +2,7 @@ package gameplay.physics;
 
 import gameplay.Character;
 import gameplay.CharacterCommonState;
-import gameplay.Floor;
+import gameplay.scene.Floor;
 import gameplay.GameMap;
 import gameplay.Ladder;
 import gameplay.LadderCollide;
@@ -252,7 +252,7 @@ public class PhysicSimulation {
      * @param character Character that is checked for distance.
      * @return Distance from character's position to the closest floor below him or above him.
      * @see gameplay.Character
-     * @see gameplay.Floor
+     * @see Floor
      */
     private double closestDistance(FloorIs floorIs, gameplay.Character character) {
 

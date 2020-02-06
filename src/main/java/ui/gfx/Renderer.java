@@ -3,7 +3,7 @@ package ui.gfx;
 import app.Application;
 import gameplay.Character;
 import gameplay.ClientWorld;
-import gameplay.Floor;
+import gameplay.scene.Floor;
 import gameplay.GameMap;
 import gameplay.Ladder;
 import gameplay.Point;

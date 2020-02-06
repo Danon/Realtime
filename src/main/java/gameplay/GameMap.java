@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.scene.Floor;
 import lombok.Getter;
 import util.save.Savable;
 import util.save.SaveInput;
