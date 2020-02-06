@@ -1,6 +1,6 @@
 package gameplay;
 
-public class Rectangle extends Shape {
+public class Rectangle implements Shape {
     public double x, y;
     public double width, height;
 
@@ -29,20 +29,6 @@ public class Rectangle extends Shape {
 
     public int getY() {
         return (int) y;
-    }
-
-    public void shrink(double count) {
-        x += count;
-        y += count;
-        width -= count * 2;
-        height -= count * 2;
-    }
-
-    public void expand(double count) {
-        x -= count;
-        y -= count;
-        width += count * 2;
-        height += count * 2;
     }
 
     @Override

@@ -112,10 +112,6 @@ public class Point {
         );
     }
 
-    public boolean isInside(Shape s) {
-        return s.contains(this);
-    }
-
     public static class Transition {
         public static Point linear(Point a, Point b, double transitionValue) {
             return new Point(

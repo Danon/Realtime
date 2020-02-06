@@ -1,6 +1,6 @@
 package gameplay;
 
-public class Oval extends Shape {
+public class Oval implements Shape {
     public double x, y;
     private double radiusX, radiusY;
 
@@ -11,15 +11,15 @@ public class Oval extends Shape {
         this.radiusY = o.radiusY;
     }
 
+    public Oval(Point pos, int radius) {
+        this(pos, radius, radius);
+    }
+
     public Oval(Point pos, int radiusX, int radiusY) {
         this.x = pos.x;
         this.y = pos.y;
         this.radiusX = radiusX;
         this.radiusY = radiusY;
-    }
-
-    public Oval(Point pos, int radius) {
-        this(pos, radius, radius);
     }
 
     public int getX() {
@@ -39,7 +39,7 @@ public class Oval extends Shape {
     }
 
     @Override
-    boolean contains(Point p) {
+    public boolean contains(Point p) {
         return Math.pow(p.x - this.x, 2) / Math.pow(this.radiusX, 2) +
                 Math.pow(p.y - this.y, 2) / Math.pow(this.radiusY, 2) <= 1;
     }

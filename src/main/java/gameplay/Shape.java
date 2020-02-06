@@ -1,5 +1,5 @@
 package gameplay;
 
-abstract class Shape {
-    abstract boolean contains(Point p);
+interface Shape {
+    boolean contains(Point p);
 }
