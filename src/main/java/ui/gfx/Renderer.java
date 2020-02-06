@@ -139,7 +139,7 @@ public final class Renderer implements IRenderObserver {
                 viewSize.getHeight());
 
         if (characters.length > 0) {
-            draw.useCamera(playerPos.sub(viewSize.getWidth() / 2, viewSize.getHeight() / 2));
+            draw.useCamera(playerPos.sub(viewSize.getWidth() / 2.0, viewSize.getHeight() / 2.0));
         } else {
             draw.useCamera(new Point(0, 0));
         }

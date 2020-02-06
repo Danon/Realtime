@@ -2,19 +2,24 @@ package ui;
 
 import app.Application;
 import gameplay.ClientWorld;
+import lombok.Getter;
 import network.KeysState;
-import ui.gfx.IRenderObserver;
 import ui.gfx.Renderer;
 import util.Size;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
-    private static final int VIEW_WIDTH = 800, VIEW_HEIGHT = 600;
+    public static final int VIEW_WIDTH = 800, VIEW_HEIGHT = 600;
 
-    private final Renderer renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
+    @Getter
+    private final Renderer renderer;
     private final IKeyStateNotifier keyStateNotifier;
     private final Size windowSize;
 
@@ -25,13 +30,12 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     private KeysState prevKeysState = new KeysState();
     private boolean left, right, prevLeft, prevRight;
 
-    GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize, ClientWorld clientWorld, Chat chat) {
+    GameWindow(IKeyStateNotifier keyStateNotifier, Size windowSize, ClientWorld clientWorld, Chat chat, Renderer renderer) {
         this.windowSize = windowSize;
         this.keyStateNotifier = keyStateNotifier;
         this.world = clientWorld;
         this.chat = chat;
-        this.renderer.attachWorld(world);
-        this.renderer.attachChat(chat);
+        this.renderer = renderer;
     }
 
     void showGameWindow() {
@@ -46,10 +50,6 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
         this.addKeyListener(this);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
-    }
-
-    IRenderObserver getRenderObserver() {
-        return this.renderer;
     }
 
     private Graphics showAndGetWindowGraphics() {

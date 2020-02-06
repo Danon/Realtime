@@ -19,9 +19,9 @@ public class ClientUserInterface extends CustomUserInterface {
 
         ClientWorld world = new ClientWorld(map, characterId, characters);
 
-        GameWindow window = gameWindowFactory.use(world).use(this.chat).showGameWindow();
+        GameWindow window = gameWindowFactory.showGameWindow(world, this.chat);
 
-        world.addRenderObserver(window.getRenderObserver());
+        world.addRenderObserver(window.getRenderer());
         world.addUpdateObserver(window);
 
         world.startLoop();

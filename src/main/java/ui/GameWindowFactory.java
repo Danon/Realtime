@@ -1,31 +1,23 @@
 package ui;
 
 import gameplay.ClientWorld;
+import lombok.RequiredArgsConstructor;
+import ui.gfx.Renderer;
 import util.Size;
 
+import static ui.GameWindow.VIEW_HEIGHT;
+import static ui.GameWindow.VIEW_WIDTH;
+
+@RequiredArgsConstructor
 class GameWindowFactory {
     private final IKeyStateNotifier keyStateNotifier;
     private final Size windowSize;
-    private ClientWorld world;
-    private Chat chat;
 
-    GameWindowFactory(IKeyStateNotifier keyStateNotifier, Size windowSize) {
-        this.keyStateNotifier = keyStateNotifier;
-        this.windowSize = windowSize;
-    }
-
-    GameWindowFactory use(ClientWorld world) {
-        this.world = world;
-        return this;
-    }
-
-    GameWindowFactory use(Chat chat) {
-        this.chat = chat;
-        return this;
-    }
-
-    GameWindow showGameWindow() {
-        GameWindow gameWindow = new GameWindow(keyStateNotifier, windowSize, world, chat);
+    GameWindow showGameWindow(ClientWorld world, Chat chat) {
+        Renderer renderer = new Renderer(new Size(VIEW_WIDTH, VIEW_HEIGHT));
+        renderer.attachWorld(world);
+        renderer.attachChat(chat);
+        GameWindow gameWindow = new GameWindow(keyStateNotifier, windowSize, world, chat, renderer);
         gameWindow.showGameWindow();
         return gameWindow;
     }
