@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 @RequiredArgsConstructor
-public class FileIterator {
+public class ResourceIterator {
     private final String path;
 
     public void iterate(Consumer<String> consumer) {
@@ -24,7 +25,8 @@ public class FileIterator {
     }
 
     private void iterateAbsoluteFile(Consumer<String> consumer) {
-        File[] files = new File(path).listFiles();
+        URL images = getClass().getClassLoader().getResource("images");
+        File[] files = new File(images.getFile()).listFiles();
 
         if (files == null) {
             throw new RuntimeException("Cannot list files in /" + path);

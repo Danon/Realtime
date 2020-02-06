@@ -1,29 +1,26 @@
 package ui.gfx.resources;
 
+import lombok.SneakyThrows;
 import ui.gfx.resources.duality.FileHandler;
-import ui.gfx.resources.duality.FileIterator;
+import ui.gfx.resources.duality.ResourceIterator;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static javax.imageio.ImageIO.read;
+
 public class ResourceImages {
-    private final FileIterator iterator = new FileIterator("res/images");
     private final Map<String, BufferedImage> images = new HashMap<>();
 
     void load() {
-        iterator.iterate(name -> images.put(new File(name).getName(), loadImage(name)));
+        new ResourceIterator("images").iterate(name -> images.put(new File(name).getName(), loadImage(name)));
     }
 
+    @SneakyThrows
     private BufferedImage loadImage(String name) {
-        try {
-            return ImageIO.read(new FileHandler(name).getInputStream());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return read(new FileHandler(name).getInputStream());
     }
 
     BufferedImage getImageByName(String imageName) {

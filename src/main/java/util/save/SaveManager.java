@@ -20,7 +20,7 @@ final public class SaveManager {
     }
 
     public static class Map {
-        final static String pathName = "res/maps";
+        final static String pathName = "maps";
 
         public static boolean exists(String mapName) {
             return new File(pathName, mapName.toLowerCase()).exists();
@@ -42,7 +42,7 @@ final public class SaveManager {
     }
 
     public static class Accounts {
-        final static String pathName = "res/users";
+        final static String pathName = "users";
 
         public static boolean exists(String username) {
             return new File(pathName, username.toLowerCase()).exists();
