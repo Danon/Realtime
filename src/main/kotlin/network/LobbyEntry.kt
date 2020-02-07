@@ -6,8 +6,10 @@ class LobbyEntry(
         var isReadyForGame: Boolean,
         var chosenTeamId: Int) {
 
+    @Suppress("unused")
+    // Kryonet deserialization
     internal constructor() :
-            this(-1, null, false, 0)
+            this(0, null, false, -1)
 
     override fun toString(): String {
         return String.format("#%d %s (%s)", userId, username, if (isReadyForGame) "ready" else "waiting")

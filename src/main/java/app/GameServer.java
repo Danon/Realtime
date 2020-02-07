@@ -184,26 +184,20 @@ public class GameServer implements ServerConnectionListener {
             }
         }
 
-        Accommodator accommodator = new Accommodator();
         try {
-            accommodator.setUser(SaveManager.Accounts.load(loginRequest.username));
+            UserAccount user = SaveManager.Accounts.load(loginRequest.username);
 
-            if (accommodator.user == null) {
-                conn.sendTCP(new Command.LoginRejected("IO Error : reading account file."));
-                return;
-            }
             if (!Application.RunOptions.isUsed("-IgnorePassword")) {
-                if (!accommodator.user.getPassword().compare(loginRequest.password)) {
+                if (!user.getPassword().compare(loginRequest.password)) {
                     conn.sendTCP(new Command.LoginRejected("Wrong username or password."));
                     return;
                 }
             }
+
+            tryLoginAccommodator(conn, new Accommodator(user));
         } catch (UserNotFoundException e) {
             conn.sendTCP(new Command.LoginRejected("Your account doesn't exists"));
-            return;
         }
-
-        tryLoginAccommodator(conn, accommodator);
     }
 
     @Override

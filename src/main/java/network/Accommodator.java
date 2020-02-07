@@ -2,6 +2,8 @@ package network;
 
 import gameplay.CountedCharacters;
 import gameplay.PlayerCharacter;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -11,23 +13,13 @@ public class Accommodator {
     public LobbyEntry lobbyEntry;
 
     // In-Game
-    private PlayerCharacter character;
+    @Getter
+    @Setter
+    private PlayerCharacter playerCharacter;
 
-    public Accommodator() {
-        lobbyEntry = new LobbyEntry();
-    }
-
-    public void setUser(UserAccount user) {
+    public Accommodator(UserAccount user) {
         this.user = user;
         this.lobbyEntry = new LobbyEntry(user.getId(), user.getUsername(), false, LobbyEntry.ROOMLESS);
-    }
-
-    public void setPlayerCharacter(PlayerCharacter character) {
-        this.character = character;
-    }
-
-    public PlayerCharacter getPlayerCharacter() {
-        return this.character;
     }
 
     public static CountedCharacters countedCharacters(Set<Accommodator> populatedRoom) {
