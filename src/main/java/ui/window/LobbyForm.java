@@ -285,7 +285,7 @@ public class LobbyForm extends javax.swing.JFrame implements ILobbyObserver {
     @Override
     public void teamSet(LobbyEntry[] teammates) {
         SwingUtilities.invokeLater(() -> {
-            List<List<LobbyEntry>> teams = new ArrayList<List<LobbyEntry>>() {{
+            List<List<LobbyEntry>> teams = new ArrayList<>() {{
                 add(new ArrayList<>());
                 add(new ArrayList<>());
                 add(new ArrayList<>());
