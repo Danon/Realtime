@@ -2,7 +2,6 @@ package ui;
 
 import app.Application;
 import gameplay.ClientWorld;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import network.KeysState;
 import ui.gfx.Renderer;
@@ -17,8 +16,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 @RequiredArgsConstructor
-public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
+public class GameWindow implements IWorldUpdateObserver, KeyListener, MouseMotionListener, MouseListener {
     static final int VIEW_WIDTH = 800, VIEW_HEIGHT = 510;
+
+    private final JFrame jFrame = new JFrame();
 
     private final IKeyStateNotifier keyStateNotifier;
     private final Size windowSize;
@@ -31,17 +32,17 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
     private boolean left, right, prevLeft, prevRight;
 
     void showGameWindow() {
-        this.setTitle("Realtime | Game playing...");
-        this.setResizable(false);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setTitle("Realtime | Game playing...");
+        jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         Graphics graphics = showAndGetWindowGraphics();
-        renderer.setScalingTo(new Size(this.getWidth(), this.getHeight()));
+        renderer.setScalingTo(new Size(jFrame.getWidth(), jFrame.getHeight()));
         renderer.drawOn(graphics);
 
-        this.addKeyListener(this);
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
+        jFrame.addKeyListener(this);
+        jFrame.addMouseListener(this);
+        jFrame.addMouseMotionListener(this);
     }
 
     private Graphics showAndGetWindowGraphics() {
@@ -52,7 +53,7 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
         }
 
         if (type.equals("Window")) {
-            this.setSize(windowSize.getWidth(), windowSize.getHeight());
+            jFrame.setSize(windowSize.getWidth(), windowSize.getHeight());
             return useWindowed();
         }
 
@@ -63,21 +64,21 @@ public class GameWindow extends JFrame implements IWorldUpdateObserver, KeyListe
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
         if (gd.isFullScreenSupported()) {
-            this.setUndecorated(true);
-            gd.setFullScreenWindow(this);
+            jFrame.setUndecorated(true);
+            gd.setFullScreenWindow(jFrame);
         } else {
             System.err.println("Full screen not supported.");
         }
 
-        return this.getGraphics();
+        return jFrame.getGraphics();
     }
 
     private Graphics useWindowed() {
         JPanel viewport = new JPanel();
         viewport.setSize(new Dimension(VIEW_WIDTH, VIEW_HEIGHT));
-        this.getContentPane().add(viewport);
+        jFrame.getContentPane().add(viewport);
+        jFrame.setVisible(true);
 
-        this.setVisible(true);
         return viewport.getGraphics();
     }
 
