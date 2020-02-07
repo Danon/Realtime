@@ -149,7 +149,7 @@ public final class Renderer implements IRenderObserver {
         drawBackground(borders);
         draw.freeCamera();
 
-        tmpG.setColor(new Color(0, 0, 0, .575f));
+        tmpG.setColor(new Color(0, 0, 0, .2f));
         tmpG.setComposite(AlphaComposite.Clear);
         tmpG.fillRect(0, 0, tmp.getWidth(), tmp.getHeight());
         tmpG.setComposite(AlphaComposite.SrcOver);
