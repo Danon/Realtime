@@ -193,13 +193,13 @@ public final class Renderer implements IRenderObserver {
     private void drawCharacter(Character character) {
         draw.frame(
                 getCharacterFrame(character),
-                character.getPosition().invertY(viewSize.getHeight()),
+                character.getPosition(),
                 DrawFrom.RightBottom,
                 character.isTurnedRight() ? Flip.None : Flip.Horizontally
         );
 
         draw.text(String.format("%s %d", character.getDisplayName(), character.shared.hp),
-                character.getPosition().invertY(viewSize.getHeight()).sub(50, 60)
+                character.getPosition().sub(50, 60)
         );
 
         drawHealthBar(character);
@@ -208,7 +208,7 @@ public final class Renderer implements IRenderObserver {
     private void drawHealthBar(Character character) {
         canvas.setColor(Color.red);
 
-        Rectangle hpBar = new Rectangle(character.getPosition().invertY(viewSize.getHeight()).sub(20, 80), 50, 6);
+        Rectangle hpBar = new Rectangle(character.getPosition().sub(20, 80), 50, 6);
         draw.borders(hpBar);
 
         hpBar.width = (int) Math.round(hpBar.width * ((double) character.getHp() / 500.0));

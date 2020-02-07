@@ -39,10 +39,6 @@ public class Point {
         return min(max(y, minValue), maxValue);
     }
 
-    public Point invertY(int axis) {
-        return new Point(this.x, axis * 2 - this.y);
-    }
-
     public Point sub(double x, double y) {
         return new Point(this.x - x, this.y - y);
     }
