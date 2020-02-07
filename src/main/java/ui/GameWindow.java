@@ -75,7 +75,6 @@ public class GameWindow implements IWorldUpdateObserver, KeyListener, MouseMotio
 
     private Graphics useWindowed() {
         JPanel viewport = new JPanel();
-        viewport.setSize(new Dimension(VIEW_WIDTH, VIEW_HEIGHT));
         jFrame.getContentPane().add(viewport);
         jFrame.setVisible(true);
 

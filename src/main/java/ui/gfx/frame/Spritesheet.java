@@ -1,16 +1,15 @@
 package ui.gfx.frame;
 
+import lombok.Getter;
+
 public class Spritesheet {
+    @Getter
     private final String name;
     private final FrameAnimation[] animations;
 
     public Spritesheet(String name, FrameAnimation... animations) {
         this.name = name;
         this.animations = animations;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public FrameAnimation animation(String animationName) {
