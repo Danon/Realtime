@@ -3,11 +3,9 @@ package ui.gfx;
 import app.Application;
 import gameplay.Character;
 import gameplay.ClientWorld;
-import gameplay.GameMap;
 import gameplay.Point;
 import gameplay.geometry.Rectangle;
 import gameplay.scene.Floor;
-import gameplay.scene.Ladder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.Chat;
@@ -158,8 +156,8 @@ public final class Renderer implements IRenderObserver {
 
         tmpG.fill(invertedLightShape(playerPos.addY(60)));
 
-        drawFloors(world.getMap());
-        drawLadders(world.getMap());
+        world.getMap().getFloors().forEach(draw::floor);
+        world.getMap().getLadders().forEach(draw::ladder);
 
         for (gameplay.Character character : characters) {
             drawCharacter(character);
@@ -251,18 +249,6 @@ public final class Renderer implements IRenderObserver {
         }
 
         return new Pair<>(Animation.MIDAIR, character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5);
-    }
-
-    private void drawLadders(GameMap worldMap) {
-        for (Ladder ladder : worldMap.getLadders()) {
-            draw.ladder(ladder);
-        }
-    }
-
-    private void drawFloors(GameMap worldMap) {
-        for (Floor floor : worldMap.getFloors()) {
-            draw.floor(floor);
-        }
     }
 
     private void drawBackground(Rectangle borders) {
