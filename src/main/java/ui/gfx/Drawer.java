@@ -239,8 +239,8 @@ public class Drawer {
         x -= (drawFrom.x + 0.5) * frame.getWidth();
 
         canvas.drawImage(img,
-                x + w1, y + h1,
-                x + w2, y + h2,
+                x + w1, windowHeight - (y + h2 + h2),
+                x + w2, windowHeight - (y + h1 + h2),
                 frame.getX(), frame.getY(),
                 frame.getX() + frame.getWidth(), frame.getY() + frame.getHeight(),
                 null);
