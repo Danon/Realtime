@@ -39,8 +39,10 @@ public class GameServer implements ServerConnectionListener {
     GameServer(boolean automaticallyStartSinglePlayerGames) {
         this.singlePlayer = automaticallyStartSinglePlayerGames;
         this.world = new ServerWorld(SaveManager.Map.load("Standard"));
+        this.server = new ServerConnectionManager();
+    }
 
-        server = new ServerConnectionManager();
+    void start() {
         try {
             server.openSocket();
             server.addConnectionListener(this);

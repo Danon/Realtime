@@ -17,11 +17,11 @@ public class Application {
         System.out.println(RunOptions);
 
         if (RunOptions.isUsed("-DebugX")) {
-            new GameServer(false);
+            new GameServer(false).start();
             new GameClient().start();
             new GameClient().start();
         } else if (RunOptions.isUsed("-Debug")) {
-            new GameServer(true);
+            new GameServer(true).start();
             new DefaultLoginGameClient("Test", "test").start();
         } else {
             int option = showOptionDialog(null,
@@ -31,7 +31,7 @@ public class Application {
 
             switch (option) {
                 case YES_OPTION:
-                    new GameServer(true);
+                    new GameServer(true).start();
                     break;
 
                 case NO_OPTION:
