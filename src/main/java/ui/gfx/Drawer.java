@@ -217,7 +217,7 @@ public class Drawer {
                 w1 = 0, w2 = frame.getWidth(),
                 h1 = 0, h2 = frame.getHeight();
 
-        if (flip == Flip.Horizontally || flip == Flip.Both) {
+        if (flip == Flip.Horizontally) {
             w1 = w2;
             w2 = 0;
             x -= frame.getWidth();
@@ -225,16 +225,7 @@ public class Drawer {
         } else {
             x -= frame.getOffsetX();
         }
-        if (flip == Flip.Vertically || flip == Flip.Both) {
-            h1 = h2;
-            h2 = 0;
-
-            y -= frame.getHeight();
-            y += frame.getOffsetY();
-        } else {
-            y -= frame.getOffsetY();
-        }
-
+        y -= frame.getOffsetY();
         y -= (drawFrom.y + 0.5) * frame.getHeight();
         x -= (drawFrom.x + 0.5) * frame.getWidth();
 
@@ -260,15 +251,9 @@ public class Drawer {
         x -= (drawFrom.x + 0.5) * width;
         y -= (drawFrom.y + 0.5) * height;
 
-        switch (flip) {
-            case Horizontally:
-                x += width;
-                width = -width;
-                break;
-            case Vertically:
-                y += height;
-                height = -height;
-                break;
+        if (flip == Flip.Horizontally) {
+            x += width;
+            width = -width;
         }
         canvas.drawImage(img, x, y, width, height, null);
     }

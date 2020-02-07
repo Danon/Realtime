@@ -1,5 +1,5 @@
 package ui.gfx;
 
 public enum Flip {
-    None, Vertically, Horizontally, Both
+    None, Horizontally
 }
