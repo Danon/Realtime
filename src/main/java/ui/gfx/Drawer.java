@@ -143,16 +143,6 @@ public class Drawer {
         canvas.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
     }
 
-    public void borders(Oval oval) {
-        Oval o = serialized(new Oval(oval));
-        canvas.drawOval(o.getX() - o.getRadiusX(), o.getY() - o.getRadiusY(), o.getRadiusX() * 2, o.getRadiusY() * 2);
-    }
-
-    public void fill(Oval oval) {
-        Oval o = serialized(new Oval(oval));
-        canvas.fillOval(o.getX() - o.getRadiusX(), o.getY() - o.getRadiusY(), o.getRadiusX() * 2, o.getRadiusY() * 2);
-    }
-
     void floor(Floor floor) {
         if (floor.getTiles() == 0) {
             return;
@@ -211,9 +201,6 @@ public class Drawer {
         int y = windowHeight - position.getY();
         int w1 = 0;
         int w2 = frame.getWidth();
-
-        canvas.setColor(Color.BLACK);
-        canvas.drawOval(x - 3, y - 3, 6, 6);
 
         if (flip == Flip.Horizontally) {
             w1 = w2;

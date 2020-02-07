@@ -24,7 +24,7 @@ public class Options {
         return -1;
     }
 
-    public Option getOptionByName(String optionName) {
+    Option getOptionByName(String optionName) {
         int index = indexOfOption(optionName);
         if (index == -1) {
             throw new NoSuchOptionException(optionName);

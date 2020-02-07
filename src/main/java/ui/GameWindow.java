@@ -33,11 +33,11 @@ public class GameWindow implements IWorldUpdateObserver, KeyListener, MouseMotio
 
     void showGameWindow() {
         jFrame.setTitle("Realtime | Game playing...");
-        jFrame.setResizable(false);
+        jFrame.setResizable(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         Graphics graphics = showAndGetWindowGraphics();
-        renderer.setScalingTo(new Size(jFrame.getWidth(), jFrame.getHeight()));
+        renderer.createCanvas(new Size(jFrame.getWidth(), jFrame.getHeight()));
         renderer.drawOn(graphics);
 
         jFrame.addKeyListener(this);

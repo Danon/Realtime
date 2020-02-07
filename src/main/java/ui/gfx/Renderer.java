@@ -61,7 +61,7 @@ public final class Renderer implements IRenderObserver {
         zed = new MasterOfShadows(0, 0, viewSize.getWidth(), viewSize.getHeight() + Floor.HEIGHT);
     }
 
-    public void setScalingTo(Size size) {
+    public void createCanvas(Size size) {
         this.windowSize = size;
         this.displaySize = this.getDisplaySize();
 
@@ -257,7 +257,7 @@ public final class Renderer implements IRenderObserver {
                     new Point(
                             CAMERA_SIDE_MARGIN + i * 167,
                             viewSize.getHeight() - borders.height),
-                    DrawFrom.RightTop);
+                    DrawFrom.MiddleTop);
         }
     }
 
