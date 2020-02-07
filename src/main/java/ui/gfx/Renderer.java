@@ -194,7 +194,6 @@ public final class Renderer implements IRenderObserver {
         draw.frame(
                 getCharacterFrame(character),
                 character.getPosition(),
-                DrawFrom.RightBottom,
                 character.isTurnedRight() ? Flip.None : Flip.Horizontally
         );
 
@@ -258,7 +257,7 @@ public final class Renderer implements IRenderObserver {
                     new Point(
                             CAMERA_SIDE_MARGIN + i * 167,
                             viewSize.getHeight() - borders.height),
-                    DrawFrom.MiddleTop);
+                    DrawFrom.RightTop);
         }
     }
 

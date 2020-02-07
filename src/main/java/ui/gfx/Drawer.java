@@ -23,11 +23,6 @@ public class Drawer {
         this.canvas = canvas;
     }
 
-    public void useCamera(Camera camera) {
-        this.camera = camera;
-        this.includeCamera = true;
-    }
-
     void useCamera(Point a) {
         this.camera = new Camera(a.getX(), a.getY());
         this.includeCamera = true;
@@ -164,20 +159,20 @@ public class Drawer {
         }
 
         if (floor.getTiles() == 1) {
-            image("ground0.png", new Point(floor.getLeft(), windowHeight - floor.getTop()), DrawFrom.RightTop);
+            image("ground0.png", new Point(floor.getLeft(), windowHeight - floor.getTop()), DrawFrom.MiddleTop);
         } else {
-            image("ground1.png", new Point(floor.getLeft(), windowHeight - floor.getTop()), DrawFrom.RightTop);
+            image("ground1.png", new Point(floor.getLeft(), windowHeight - floor.getTop()), DrawFrom.MiddleTop);
             for (int i = 1; i < floor.getTiles() - 1; i++) {
                 image("ground2.png", new Point(
                                 floor.getLeft() + i * 32,
                                 windowHeight - floor.getTop()),
-                        DrawFrom.RightTop
+                        DrawFrom.MiddleTop
                 );
             }
             image("ground3.png", new Point(
                             floor.getLeft() + (floor.getTiles() - 1) * 32,
                             windowHeight - floor.getTop()),
-                    DrawFrom.RightTop
+                    DrawFrom.MiddleTop
             );
         }
     }
@@ -187,7 +182,7 @@ public class Drawer {
             image("ladder.png", new Point(
                             ladder.getLeft() - 4,
                             windowHeight - ladder.getBottom() - i * 32 - 10 + 11),
-                    DrawFrom.RightBottom
+                    DrawFrom.MiddleBottom
             );
         }
     }
@@ -201,21 +196,24 @@ public class Drawer {
         drawSimpleImage(Resources.getImageByName(name), new Point(position), drawFrom, Flip.None);
     }
 
-    public void frame(ui.gfx.frame.Frame frame, Point position, DrawFrom drawFrom, Flip flip) {
-        drawImageFrame(frame, new Point(position), drawFrom, flip);
+    public void frame(ui.gfx.frame.Frame frame, Point position, Flip flip) {
+        drawImageFrame(frame, new Point(position), flip);
     }
 
-    private void drawImageFrame(ui.gfx.frame.Frame frame, Point pos, DrawFrom drawFrom, Flip flip) {
+    private void drawImageFrame(ui.gfx.frame.Frame frame, Point pos, Flip flip) {
         if (canvas == null) {
             throw new UnsetCanvasException("No canvas has been specified.");
         }
         Point position = serialized(pos);
         BufferedImage img = Resources.getImageByName(frame.getName());
-        int
-                x = position.getX(),
-                y = position.getY(),
-                w1 = 0, w2 = frame.getWidth(),
-                h1 = 0, h2 = frame.getHeight();
+
+        int x = position.getX();
+        int y = windowHeight - position.getY();
+        int w1 = 0;
+        int w2 = frame.getWidth();
+
+        canvas.setColor(Color.BLACK);
+        canvas.drawOval(x - 3, y - 3, 6, 6);
 
         if (flip == Flip.Horizontally) {
             w1 = w2;
@@ -226,12 +224,10 @@ public class Drawer {
             x -= frame.getOffsetX();
         }
         y -= frame.getOffsetY();
-        y -= (drawFrom.y + 0.5) * frame.getHeight();
-        x -= (drawFrom.x + 0.5) * frame.getWidth();
 
         canvas.drawImage(img,
-                x + w1, windowHeight - (y + h2 + h2),
-                x + w2, windowHeight - (y + h1 + h2),
+                x + w1, y - frame.getHeight(),
+                x + w2, y,
                 frame.getX(), frame.getY(),
                 frame.getX() + frame.getWidth(), frame.getY() + frame.getHeight(),
                 null);
@@ -248,8 +244,8 @@ public class Drawer {
         int x = position.getX();
         int y = position.getY();
 
-        x -= (drawFrom.x + 0.5) * width;
-        y -= (drawFrom.y + 0.5) * height;
+        x -= drawFrom.x * width;
+        y -= drawFrom.y * height;
 
         if (flip == Flip.Horizontally) {
             x += width;
