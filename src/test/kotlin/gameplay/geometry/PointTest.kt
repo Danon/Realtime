@@ -20,7 +20,19 @@ internal class PointTest {
     }
 
     @Test
-    fun `should invert Y`() {
+    fun `should invert Y (negative)`() {
+        // given
+        val point = Point(0.0, -50.0)
+
+        // when
+        val inverted = point.invertY(20)
+
+        // then
+        assertEquals(90.0, inverted.y, 0.001)
+    }
+
+    @Test
+    fun `should invert Y (below)`() {
         // given
         val point = Point(0.0, 50.0)
 
@@ -28,7 +40,19 @@ internal class PointTest {
         val inverted = point.invertY(10)
 
         // then
-        assertEquals(-40.0, inverted.y, 0.001)
+        assertEquals(-30.0, inverted.y, 0.001)
+    }
+
+    @Test
+    fun `should invert Y (above)`() {
+        // given
+        val point = Point(0.0, 50.0)
+
+        // when
+        val inverted = point.invertY(60)
+
+        // then
+        assertEquals(70.0, inverted.y, 0.001)
     }
 
     @Test
