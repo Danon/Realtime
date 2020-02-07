@@ -2,6 +2,7 @@ package gameplay;
 
 import gameplay.scene.Floor;
 import gameplay.scene.Ladder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import util.save.Savable;
 import util.save.SaveInput;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class GameMap implements Savable {
     private final List<Floor> floors = new ArrayList<>();
     private final List<Ladder> ladders = new ArrayList<>();
@@ -18,12 +20,6 @@ public class GameMap implements Savable {
     private String name;
     private int width;
     private int height;
-
-    public GameMap(String name, int width, int height) {
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    }
 
     @Override
     public void restoreState(SaveInput input) throws java.io.IOException {
