@@ -185,7 +185,7 @@ public class GameServer implements ServerConnectionListener {
         }
 
         Accommodator accommodator = new Accommodator();
-        if (SaveManager.Accounts.exists(loginRequest.username)) {
+        try {
             accommodator.setUser(SaveManager.Accounts.load(loginRequest.username));
 
             if (accommodator.user == null) {
@@ -198,7 +198,7 @@ public class GameServer implements ServerConnectionListener {
                     return;
                 }
             }
-        } else {
+        } catch (UserNotFoundException e) {
             conn.sendTCP(new Command.LoginRejected("Your account doesn't exists"));
             return;
         }

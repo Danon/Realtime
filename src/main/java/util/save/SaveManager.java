@@ -1,8 +1,11 @@
 package util.save;
 
+import app.UserNotFoundException;
 import gameplay.GameMap;
+import lombok.SneakyThrows;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 final public class SaveManager {
     private static final CustomSaveManager manager = new CustomSaveManager();
@@ -11,6 +14,7 @@ final public class SaveManager {
         return manager.saveObject(folderName, filename, object);
     }
 
+    @SneakyThrows
     public static void load(String folderName, String fileName, Savable object) {
         manager.loadObject(folderName, fileName, object);
     }
@@ -26,6 +30,7 @@ final public class SaveManager {
             return new File(pathName).list();
         }
 
+        @SneakyThrows
         public static GameMap load(String mapName) {
             GameMap map = new GameMap(mapName, -1, -1);
             manager.loadObject(pathName, mapName, map);
@@ -50,8 +55,12 @@ final public class SaveManager {
 
         public static network.UserAccount load(String username) {
             network.UserAccount account = new network.UserAccount();
-            manager.loadObject(pathName, username, account);
-            return account;
+            try {
+                manager.loadObject(pathName, username, account);
+                return account;
+            } catch (FileNotFoundException e) {
+                throw new UserNotFoundException(username);
+            }
         }
     }
 }

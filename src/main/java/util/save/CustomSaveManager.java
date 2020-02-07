@@ -7,6 +7,7 @@ import util.Password;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -84,10 +85,10 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
     }
 
     @SneakyThrows
-    void loadObject(String folderName, String fileName, Savable savable) {
+    void loadObject(String folderName, String fileName, Savable savable) throws FileNotFoundException {
         FileHandler file = new FileHandler(folderName + "/" + fileName.toLowerCase());
         if (!file.exists()) {
-            throw new RuntimeException(String.format("No such file '%s' found", fileName));
+            throw new FileNotFoundException(String.format("No such file '%s' found", fileName));
         }
 
         try {
