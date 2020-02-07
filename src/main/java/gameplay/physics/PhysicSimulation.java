@@ -2,11 +2,11 @@ package gameplay.physics;
 
 import gameplay.Character;
 import gameplay.CharacterCommonState;
-import gameplay.scene.Floor;
 import gameplay.GameMap;
-import gameplay.scene.Ladder;
 import gameplay.LadderCollide;
 import gameplay.WalkDirection;
+import gameplay.scene.Floor;
+import gameplay.scene.Ladder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.gfx.frame.FrameAnimation;
@@ -30,13 +30,9 @@ public class PhysicSimulation {
         return currentMap.getWidth();
     }
 
-    enum FloorIs {
-        Below, Above
-    }
+    enum FloorIs {Below, Above}
 
-    enum From {
-        Left, Right
-    }
+    enum From {Left, Right}
 
     private Ladder detectLadder(Character character) {
         for (Ladder ladder : currentMap.getLadders()) {
@@ -49,7 +45,7 @@ public class PhysicSimulation {
     }
 
     private void capCharacterPosition(gameplay.Character character) {
-        character.shared.x = Math.min(Math.max(CharacterCommonState.WIDTH / 2, character.shared.x), currentMap.getWidth() - CharacterCommonState.WIDTH / 2);
+        character.shared.x = Math.min(Math.max(CharacterCommonState.WIDTH / 2.0, character.shared.x), currentMap.getWidth() - CharacterCommonState.WIDTH / 2.0);
         character.shared.y = Math.min(Math.max(0, character.shared.y), currentMap.getHeight() - character.getHeight());
     }
 
