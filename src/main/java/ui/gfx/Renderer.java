@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.Chat;
 import ui.gfx.blur.filter.BoxBlurFilter;
+import ui.gfx.frame.Animation;
+import ui.gfx.frame.Frame;
 import ui.gfx.frame.FrameAnimation;
 import ui.gfx.resources.Resources;
 import ui.gfx.shadows.MasterOfShadows;
@@ -215,40 +217,40 @@ public final class Renderer implements IRenderObserver {
         draw.fill(hpBar);
     }
 
-    private ui.gfx.frame.Frame getCharacterFrame(Character character) {
-        Pair<String, Integer> result = getFrameAnimationAndIteration(character);
+    private Frame getCharacterFrame(Character character) {
+        Pair<Animation, Integer> result = getFrameAnimationAndIteration(character);
 
         return Resources.spritesheet
                 .animation(result.getKey())
                 .getFrameIterate(result.getValue());
     }
 
-    private Pair<String, Integer> getFrameAnimationAndIteration(Character character) {
+    private Pair<Animation, Integer> getFrameAnimationAndIteration(Character character) {
 
         if (character.isOnTheGround()) {
             if (character.isWalking()) {
-                return new Pair<>("run", character.common.runFrame);
+                return new Pair<>(Animation.RUN, character.common.runFrame);
             }
             if (character.isBasicAttack()) {
-                return new Pair<>("basic", character.common.basicFrame);
+                return new Pair<>(Animation.BASIC, character.common.basicFrame);
             }
             if (character.isShooting()) {
-                return new Pair<>("shooting", character.common.shootFrame);
+                return new Pair<>(Animation.SHOOTING, character.common.shootFrame);
             }
-            return new Pair<>("idle", 0);
+            return new Pair<>(Animation.IDLE, 0);
         }
 
         if (character.isClimbing()) {
-            return new Pair<>("climbing", character.common.climbFrame);
+            return new Pair<>(Animation.CLIMBING, character.common.climbFrame);
         }
         if (character.isBasicAttack()) {
-            return new Pair<>("basic-air", character.common.basicFrame);
+            return new Pair<>(Animation.BASIC_AIR, character.common.basicFrame);
         }
         if (character.isShooting()) {
-            return new Pair<>("midair-gun", character.common.shootFrame);
+            return new Pair<>(Animation.MIDAIR_GUN, character.common.shootFrame);
         }
 
-        return new Pair<>("midair", character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5);
+        return new Pair<>(Animation.MIDAIR, character.isJumping() ? character.common.jumpFrame : FrameAnimation.Speed.MidAir * 5);
     }
 
     private void drawLadders(GameMap worldMap) {

@@ -1,23 +1,14 @@
 package ui.gfx.frame;
 
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+
+@RequiredArgsConstructor
 public class Spritesheet {
-    @Getter
-    private final String name;
-    private final FrameAnimation[] animations;
+    private final Map<Animation, FrameAnimation> animations;
 
-    public Spritesheet(String name, FrameAnimation... animations) {
-        this.name = name;
-        this.animations = animations;
-    }
-
-    public FrameAnimation animation(String animationName) {
-        for (FrameAnimation animation : animations) {
-            if (animation.getName().equals(animationName)) {
-                return animation;
-            }
-        }
-        return null;
+    public FrameAnimation animation(Animation animation) {
+        return animations.get(animation);
     }
 }
