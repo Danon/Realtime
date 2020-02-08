@@ -1,6 +1,6 @@
 package security
 
-import util.Bytes
+import util.StringBytes
 
 class Password(val hash: ByteArray) {
     constructor() : this(ByteArray(0))
@@ -16,6 +16,6 @@ class Password(val hash: ByteArray) {
     }
 
     override fun toString(): String {
-        return Bytes.toString(hash)
+        return StringBytes.toString(hash)
     }
 }
