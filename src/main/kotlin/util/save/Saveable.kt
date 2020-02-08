@@ -8,7 +8,4 @@ interface Saveable {
 
     @Throws(IOException::class)
     fun storeState(output: SaveOutput)
-
-    @Throws(IOException::class)
-    fun factory(input: SaveInput): SaveableFactory<out Saveable>
 }

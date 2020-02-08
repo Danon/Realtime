@@ -1,5 +1,8 @@
 package util.save
 
+import java.io.IOException
+
 interface SaveableFactory<T : Saveable> {
-    fun load(): T;
+    @Throws(IOException::class)
+    fun load(input: SaveInput): T
 }

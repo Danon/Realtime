@@ -32,9 +32,7 @@ final public class SaveManager {
 
         @SneakyThrows
         public static GameMap load(String mapName) {
-            GameMap map = new GameMap(mapName, -1, -1);
-            manager.loadObject(pathName, mapName, map);
-            return map;
+            return manager.loadObject2(pathName, mapName, GameMap.factory());
         }
     }
 

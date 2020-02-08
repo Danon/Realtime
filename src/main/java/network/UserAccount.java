@@ -46,10 +46,4 @@ public class UserAccount implements Saveable {
         output.writeString(username);
         output.writePassword(password);
     }
-
-    @NotNull
-    @Override
-    public SaveableFactory<UserAccount> factory(@NotNull SaveInput input) throws IOException {
-        return null;
-    }
 }

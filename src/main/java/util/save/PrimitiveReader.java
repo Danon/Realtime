@@ -1,7 +1,5 @@
 package util.save;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 
 public final class PrimitiveReader implements Saveable {
@@ -23,11 +21,5 @@ public final class PrimitiveReader implements Saveable {
     @Override
     public void storeState(SaveOutput output) throws IOException {
         output.writeInt(value);
-    }
-
-    @NotNull
-    @Override
-    public SaveableFactory<PrimitiveReader> factory(@NotNull SaveInput input) throws IOException {
-        return null;
     }
 }

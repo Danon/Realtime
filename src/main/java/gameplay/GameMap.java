@@ -11,18 +11,18 @@ import util.save.Saveable;
 import util.save.SaveableFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 public class GameMap implements Saveable {
-    private final List<Floor> floors = new ArrayList<>();
-    private final List<Ladder> ladders = new ArrayList<>();
 
     private String name;
     private int width;
     private int height;
+
+    private final List<Floor> floors;
+    private final List<Ladder> ladders;
 
     @Override
     public void restoreState(SaveInput input) throws java.io.IOException {
@@ -69,8 +69,7 @@ public class GameMap implements Saveable {
     }
 
     @NotNull
-    @Override
-    public SaveableFactory<GameMap> factory(@NotNull SaveInput input) throws IOException {
-        return null;
+    public static SaveableFactory<GameMap> factory() {
+        return new GameMapSaveableFactory();
     }
 }
