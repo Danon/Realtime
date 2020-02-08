@@ -54,12 +54,12 @@ final public class SaveManager {
         }
 
         public static boolean save(UserAccount account) {
-            return manager.saveObject2(pathName, account.getUsername(), UserAccount.factory(), account);
+            return manager.saveObject2(pathName, account.getUsername(), UserAccount.Factory, account);
         }
 
         public static UserAccount load(String username) {
             try {
-                return manager.loadObject(pathName, username, UserAccount.factory());
+                return manager.loadObject(pathName, username, UserAccount.Factory);
             } catch (FileNotFoundException e) {
                 throw new UserNotFoundException(username);
             }

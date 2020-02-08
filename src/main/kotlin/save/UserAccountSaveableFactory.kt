@@ -6,7 +6,7 @@ import util.save.SaveOutput
 import util.save.SaveableFactory
 import java.io.IOException
 
-class UserAccountSaveableFactory : SaveableFactory<UserAccount> {
+open class UserAccountSaveableFactory : SaveableFactory<UserAccount> {
     @Throws(IOException::class)
     override fun load(input: SaveInput): UserAccount {
         return UserAccount(
