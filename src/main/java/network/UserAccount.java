@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import util.Password;
+import security.Password;
 import util.save.Savable;
 import util.save.SaveInput;
 import util.save.SaveOutput;
@@ -23,7 +23,7 @@ public class UserAccount implements Savable {
     private Password password;
 
     public UserAccount(int id, String username, String plainPassword) {
-        this(id, username, new Password(plainPassword));
+        this(id, username, new Password(plainPassword, ""));
     }
 
     @Override

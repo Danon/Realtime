@@ -11,7 +11,7 @@ import gameplay.PlayerCharacter;
 import gameplay.WalkDirection;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import util.Password;
+import security.Password;
 
 import static app.Application.RunOptions;
 

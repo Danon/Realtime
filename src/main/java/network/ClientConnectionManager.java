@@ -6,7 +6,7 @@ import ui.IHostObserver;
 import ui.IHostOperator;
 import ui.IKeyStateNotifier;
 import ui.ILobbyOperator;
-import util.Password;
+import security.Password;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -74,7 +74,7 @@ public class ClientConnectionManager extends KryonetListener implements IHostOpe
 
     @Override
     public void loginToHost(String username, String plainPassword) {
-        kryoClient.sendTCP(new Command.WantsLogin(username, new Password(plainPassword)));
+        kryoClient.sendTCP(new Command.WantsLogin(username, new Password(plainPassword, "")));
     }
 
     @Override

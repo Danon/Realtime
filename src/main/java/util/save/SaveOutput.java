@@ -1,6 +1,6 @@
 package util.save;
 
-import util.Password;
+import security.Password;
 
 import java.io.IOException;
 

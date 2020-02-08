@@ -1,8 +1,8 @@
 package util.save;
 
 import lombok.SneakyThrows;
+import security.Password;
 import ui.gfx.resources.duality.FileHandler;
-import util.Password;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
