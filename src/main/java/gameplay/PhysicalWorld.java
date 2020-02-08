@@ -2,6 +2,7 @@ package gameplay;
 
 import gameplay.geometry.Rectangle;
 import gameplay.physics.PhysicSimulation;
+import gameplay.scene.GameMap;
 import network.KeysState;
 import network.Network.Command;
 import ui.gfx.frame.FrameAnimation;

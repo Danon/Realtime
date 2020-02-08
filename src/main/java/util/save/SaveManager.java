@@ -1,7 +1,7 @@
 package util.save;
 
 import app.UserNotFoundException;
-import gameplay.GameMap;
+import gameplay.scene.GameMap;
 import lombok.SneakyThrows;
 import network.UserAccount;
 
@@ -20,7 +20,7 @@ final public class SaveManager {
 
         @SneakyThrows
         public static GameMap load(String mapName) {
-            return manager.loadObject(pathName, mapName, GameMap.factory());
+            return manager.loadObject(pathName, mapName, GameMap.Factory);
         }
     }
 

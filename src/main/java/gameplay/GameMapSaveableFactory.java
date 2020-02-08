@@ -1,6 +1,7 @@
 package gameplay;
 
 import gameplay.scene.Floor;
+import gameplay.scene.GameMap;
 import gameplay.scene.Ladder;
 import org.jetbrains.annotations.NotNull;
 import util.save.SaveInput;

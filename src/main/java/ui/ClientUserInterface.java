@@ -2,7 +2,7 @@ package ui;
 
 import gameplay.Character;
 import gameplay.ClientWorld;
-import gameplay.GameMap;
+import gameplay.scene.GameMap;
 import lombok.RequiredArgsConstructor;
 import ui.gfx.Renderer;
 import util.Size;

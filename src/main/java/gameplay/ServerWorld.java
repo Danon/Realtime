@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.scene.GameMap;
 import network.Network.Command;
 import network.Network.WorldMessage;
 

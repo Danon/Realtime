@@ -2,10 +2,10 @@ package gameplay.physics;
 
 import gameplay.Character;
 import gameplay.CharacterCommonState;
-import gameplay.GameMap;
 import gameplay.LadderCollide;
 import gameplay.WalkDirection;
 import gameplay.scene.Floor;
+import gameplay.scene.GameMap;
 import gameplay.scene.Ladder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

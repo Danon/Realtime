@@ -1,5 +1,6 @@
 package gameplay;
 
+import gameplay.scene.GameMap;
 import network.KeysState;
 import ui.IWorldUpdateObserver;
 import ui.gfx.IRenderObserver;
