@@ -154,7 +154,7 @@ public final class Renderer implements IRenderObserver {
         tmpG.fillRect(0, 0, tmp.getWidth(), tmp.getHeight());
         tmpG.setComposite(AlphaComposite.SrcOver);
 
-        tmpG.fill(invertedLightShape(playerPos.addY(60)));
+       // tmpG.fill(invertedLightShape(playerPos.addY(60)));
 
         world.getMap().getFloors().forEach(draw::floor);
         world.getMap().getLadders().forEach(draw::ladder);
