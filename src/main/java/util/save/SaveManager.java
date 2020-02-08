@@ -11,10 +11,6 @@ import java.io.FileNotFoundException;
 final public class SaveManager {
     private static final CustomSaveManager manager = new CustomSaveManager();
 
-    public static boolean save(Saveable object, String folderName, String filename) {
-        return manager.saveObject(folderName, filename, object);
-    }
-
     public static class Map {
         final static String pathName = "maps";
 
@@ -33,7 +29,7 @@ final public class SaveManager {
             int load = load(10);
             PrimitiveReader reader = new PrimitiveReader();
             reader.setValue(load + 1);
-            SaveManager.save(reader, "settings", "userId");
+            manager.saveObject2("settings", "userId", new PrimitiveReader(), new Primitive(reader.getValue()));
             return reader.getValue();
         }
 
@@ -57,11 +53,11 @@ final public class SaveManager {
             return new File(pathName).list();
         }
 
-        public static boolean save(network.UserAccount account) {
-            return manager.saveObject(pathName, account.getUsername(), account);
+        public static boolean save(UserAccount account) {
+            return manager.saveObject2(pathName, account.getUsername(), UserAccount.factory(), account);
         }
 
-        public static network.UserAccount load(String username) {
+        public static UserAccount load(String username) {
             try {
                 return manager.loadObject(pathName, username, UserAccount.factory());
             } catch (FileNotFoundException e) {

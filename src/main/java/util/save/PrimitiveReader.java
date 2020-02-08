@@ -15,11 +15,6 @@ public final class PrimitiveReader implements Saveable, SaveableFactory<Primitiv
         return value;
     }
 
-    @Override
-    public void storeState(SaveOutput output) throws IOException {
-        output.writeInt(value);
-    }
-
     @NotNull
     @Override
     public Primitive load(@NotNull SaveInput input) throws IOException {

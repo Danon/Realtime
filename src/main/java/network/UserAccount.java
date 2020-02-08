@@ -1,21 +1,14 @@
 package network;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import save.UserAccountSaveableFactory;
 import security.Password;
-import util.save.SaveOutput;
 import util.save.Saveable;
-
-import java.io.IOException;
 
 @EqualsAndHashCode
 public class UserAccount implements Saveable {
-    @Getter
     private int id;
-    @Getter
     private String username;
-    @Getter
     private Password password;
 
     public UserAccount(int id, String username, String plainPassword) {
@@ -36,14 +29,19 @@ public class UserAccount implements Saveable {
         return String.format("#%d %s", id, username);
     }
 
-    @Override
-    public void storeState(SaveOutput output) throws IOException {
-        output.writeInt(id);
-        output.writeString(username);
-        output.writePassword(password);
-    }
-
     public static UserAccountSaveableFactory factory() {
         return new UserAccountSaveableFactory();
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public Password getPassword() {
+        return this.password;
     }
 }

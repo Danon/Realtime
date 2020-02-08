@@ -63,7 +63,7 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
         return new Password(bytes);
     }
 
-    boolean saveObject(String folderName, String fileName, Saveable item) {
+    <T extends Saveable> boolean saveObject2(String folderName, String fileName, SaveableFactory<T> factory, T item) {
         File file = new File(folderName, fileName.toLowerCase());
         if (!file.getParentFile().exists()) {
             if (!file.getParentFile().mkdirs()) {
@@ -73,7 +73,7 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
 
         try {
             outStream = new DataOutputStream(new FileOutputStream(file));
-            item.storeState(this);
+            factory.save(this, item);
             outStream.close();
             return true;
         } catch (IOException couldNotSave) {
