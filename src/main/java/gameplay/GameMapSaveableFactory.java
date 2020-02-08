@@ -4,6 +4,7 @@ import gameplay.scene.Floor;
 import gameplay.scene.Ladder;
 import org.jetbrains.annotations.NotNull;
 import util.save.SaveInput;
+import util.save.SaveOutput;
 import util.save.SaveableFactory;
 
 import java.io.IOException;
@@ -36,5 +37,26 @@ public class GameMapSaveableFactory implements SaveableFactory<GameMap> {
                     input.readInt()));
         }
         return new GameMap(name, width, height, floors, ladders);
+    }
+
+    @Override
+    public void save(@NotNull SaveOutput output, @NotNull GameMap saveable) throws IOException {
+        output.writeString(saveable.getName());
+        output.writeInt(saveable.getWidth());
+        output.writeInt(saveable.getHeight());
+
+        output.writeInt(saveable.getFloors().size());
+        for (Floor floor : saveable.getFloors()) {
+            output.writeInt(floor.getLeft());
+            output.writeInt(floor.getTop());
+            output.writeInt(floor.getTiles());
+        }
+
+        output.writeInt(saveable.getLadders().size());
+        for (Ladder ladder : saveable.getLadders()) {
+            output.writeInt(ladder.getLeft());
+            output.writeInt(ladder.getBottom());
+            output.writeInt(ladder.getTiles());
+        }
     }
 }

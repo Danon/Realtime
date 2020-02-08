@@ -23,24 +23,7 @@ public class GameMap implements Saveable {
     private final List<Ladder> ladders;
 
     @Override
-    public void storeState(SaveOutput output) throws java.io.IOException {
-        output.writeString(this.getName());
-        output.writeInt(this.getWidth());
-        output.writeInt(this.getHeight());
-
-        output.writeInt(this.getFloors().size());
-        for (Floor floor : this.getFloors()) {
-            output.writeInt(floor.getLeft());
-            output.writeInt(floor.getTop());
-            output.writeInt(floor.getTiles());
-        }
-
-        output.writeInt(this.getLadders().size());
-        for (Ladder ladder : this.getLadders()) {
-            output.writeInt(ladder.getLeft());
-            output.writeInt(ladder.getBottom());
-            output.writeInt(ladder.getTiles());
-        }
+    public void storeState(SaveOutput output) {
     }
 
     @NotNull

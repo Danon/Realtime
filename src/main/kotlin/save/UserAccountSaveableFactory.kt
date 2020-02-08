@@ -2,6 +2,7 @@ package save
 
 import network.UserAccount
 import util.save.SaveInput
+import util.save.SaveOutput
 import util.save.SaveableFactory
 import java.io.IOException
 
@@ -14,10 +15,10 @@ class UserAccountSaveableFactory : SaveableFactory<UserAccount> {
                 input.readPassword())
     }
 
-//    @Throws(IOException::class)
-//    override fun storeState(output: SaveOutput) {
-//        output.writeInt(id)
-//        output.writeString(username)
-//        output.writePassword(password)
-//    }
+    @Throws(IOException::class)
+    override fun save(output: SaveOutput, saveable: UserAccount) {
+        output.writeInt(saveable.id)
+        output.writeString(saveable.username)
+        output.writePassword(saveable.password)
+    }
 }

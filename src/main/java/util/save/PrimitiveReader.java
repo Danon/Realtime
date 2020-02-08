@@ -25,4 +25,10 @@ public final class PrimitiveReader implements Saveable, SaveableFactory<Primitiv
     public Primitive load(@NotNull SaveInput input) throws IOException {
         return new Primitive(value = input.readInt());
     }
+
+    @NotNull
+    @Override
+    public void save(@NotNull SaveOutput output, @NotNull Primitive saveable) throws IOException {
+        output.writeInt(saveable.getValue());
+    }
 }
