@@ -22,10 +22,10 @@ internal class FloorTest {
         val floor = Floor(30, 50, 4)
 
         // when
-        val right = floor.width
+        val width = floor.width
 
         // then
-        assertEquals(128, right)
+        assertEquals(128, width)
     }
 
     @Test
@@ -34,9 +34,9 @@ internal class FloorTest {
         val floor = Floor(30, 50, 4)
 
         // when
-        val right = floor.bottom
+        val bottom = floor.bottom
 
         // then
-        assertEquals(18, right)
+        assertEquals(18, bottom)
     }
 }
