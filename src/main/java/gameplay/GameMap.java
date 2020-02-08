@@ -4,10 +4,13 @@ import gameplay.scene.Floor;
 import gameplay.scene.Ladder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import util.save.Savable;
 import util.save.SaveInput;
 import util.save.SaveOutput;
+import util.save.SaveableFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,5 +66,11 @@ public class GameMap implements Savable {
             output.writeInt(ladder.getBottom());
             output.writeInt(ladder.getTiles());
         }
+    }
+
+    @NotNull
+    @Override
+    public SaveableFactory factory(@NotNull SaveInput input) throws IOException {
+        return null;
     }
 }
