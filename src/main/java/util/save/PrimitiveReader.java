@@ -16,11 +16,6 @@ public final class PrimitiveReader implements Saveable, SaveableFactory<Primitiv
     }
 
     @Override
-    public void restoreState(SaveInput input) throws IOException {
-        value = input.readInt();
-    }
-
-    @Override
     public void storeState(SaveOutput output) throws IOException {
         output.writeInt(value);
     }

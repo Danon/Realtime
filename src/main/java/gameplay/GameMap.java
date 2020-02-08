@@ -5,7 +5,6 @@ import gameplay.scene.Ladder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import util.save.SaveInput;
 import util.save.SaveOutput;
 import util.save.Saveable;
 import util.save.SaveableFactory;
@@ -22,29 +21,6 @@ public class GameMap implements Saveable {
 
     private final List<Floor> floors;
     private final List<Ladder> ladders;
-
-    @Override
-    public void restoreState(SaveInput input) throws java.io.IOException {
-        this.name = input.readString();
-        this.width = input.readInt();
-        this.height = input.readInt();
-
-        int floorsCount = input.readInt();
-        for (int i = 0; i < floorsCount; i++) {
-            floors.add(new Floor(
-                    input.readInt(),
-                    input.readInt(),
-                    input.readInt()));
-        }
-
-        int laddersCount = input.readInt();
-        for (int i = 0; i < laddersCount; i++) {
-            ladders.add(new Ladder(
-                    input.readInt(),
-                    input.readInt(),
-                    input.readInt()));
-        }
-    }
 
     @Override
     public void storeState(SaveOutput output) throws java.io.IOException {

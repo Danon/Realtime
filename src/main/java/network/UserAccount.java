@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import save.UserAccountSaveableFactory;
 import security.Password;
-import util.save.SaveInput;
 import util.save.SaveOutput;
 import util.save.Saveable;
 
@@ -35,13 +34,6 @@ public class UserAccount implements Saveable {
     @Override
     public String toString() {
         return String.format("#%d %s", id, username);
-    }
-
-    @Override
-    public void restoreState(SaveInput input) throws IOException {
-        id = input.readInt();
-        username = input.readString();
-        password = input.readPassword();
     }
 
     @Override
