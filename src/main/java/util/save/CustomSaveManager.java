@@ -87,7 +87,7 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
     }
 
     @SneakyThrows
-    <T extends Saveable> T loadObject2(String folderName, String fileName, SaveableFactory<T> savable) throws FileNotFoundException {
+    <T extends Saveable> T loadObject(String folderName, String fileName, SaveableFactory<T> savable) throws FileNotFoundException {
         FileHandler file = new FileHandler(folderName + "/" + fileName.toLowerCase());
         if (!file.exists()) {
             throw new FileNotFoundException(String.format("No such file '%s' found", fileName));
@@ -96,22 +96,6 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
         try {
             inpStream = new DataInputStream(file.getInputStream());
             return savable.load(this);
-        } finally {
-            inpStream.close();
-        }
-    }
-
-    @Deprecated
-    @SneakyThrows
-    void loadObject(String folderName, String fileName, Saveable savable) throws FileNotFoundException {
-        FileHandler file = new FileHandler(folderName + "/" + fileName.toLowerCase());
-        if (!file.exists()) {
-            throw new FileNotFoundException(String.format("No such file '%s' found", fileName));
-        }
-
-        try {
-            inpStream = new DataInputStream(file.getInputStream());
-            savable.restoreState(this);
         } finally {
             inpStream.close();
         }

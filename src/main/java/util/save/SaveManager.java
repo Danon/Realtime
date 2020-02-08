@@ -24,7 +24,7 @@ final public class SaveManager {
 
         @SneakyThrows
         public static GameMap load(String mapName) {
-            return manager.loadObject2(pathName, mapName, GameMap.factory());
+            return manager.loadObject(pathName, mapName, GameMap.factory());
         }
     }
 
@@ -39,7 +39,7 @@ final public class SaveManager {
 
         private static int load(int startingValue) {
             try {
-                return manager.loadObject2("settings", "userId", new PrimitiveReader()).getValue();
+                return manager.loadObject("settings", "userId", new PrimitiveReader()).getValue();
             } catch (FileNotFoundException e) {
                 return startingValue;
             }
@@ -63,7 +63,7 @@ final public class SaveManager {
 
         public static network.UserAccount load(String username) {
             try {
-                return manager.loadObject2(pathName, username, UserAccount.factory());
+                return manager.loadObject(pathName, username, UserAccount.factory());
             } catch (FileNotFoundException e) {
                 throw new UserNotFoundException(username);
             }
