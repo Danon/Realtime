@@ -210,7 +210,7 @@ public final class Renderer implements IRenderObserver {
         Rectangle hpBar = new Rectangle(character.getPosition().sub(20, 80), 50, 6);
         draw.borders(hpBar);
 
-        hpBar.width = (int) Math.round(hpBar.width * ((double) character.getHp() / 500.0));
+        hpBar.setWidth((int) Math.round(hpBar.getWidth() * ((double) character.getHp() / 500.0)));
         draw.fill(hpBar);
     }
 
@@ -251,12 +251,12 @@ public final class Renderer implements IRenderObserver {
     }
 
     private void drawBackground(Rectangle borders) {
-        for (int i = 0; i <= Math.ceil(borders.width / 167); i++) {
+        for (int i = 0; i <= Math.ceil(borders.getWidth() / 167); i++) {
             draw.image(
                     "background.png",
                     new Point(
                             CAMERA_SIDE_MARGIN + i * 167,
-                            viewSize.getHeight() - borders.height),
+                            viewSize.getHeight() - borders.getHeight()),
                     DrawFrom.MiddleTop);
         }
     }

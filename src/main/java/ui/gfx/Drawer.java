@@ -1,7 +1,6 @@
 package ui.gfx;
 
 import gameplay.Point;
-import gameplay.geometry.Oval;
 import gameplay.geometry.Rectangle;
 import gameplay.scene.Floor;
 import gameplay.scene.Ladder;
@@ -67,38 +66,20 @@ public class Drawer {
     }
 
     private Rectangle serialized(Rectangle r) {
-        double x = r.x;
-        double y = r.y;
+        double x = r.getX();
+        double y = r.getY();
 
         if (includeCamera) {
-            x = r.x - camera.getX();
-            y = r.y + camera.getY();
+            x = r.getX() - camera.getX();
+            y = r.getY() + camera.getY();
         }
 
-        return new Rectangle(x, y, r.width, r.height);
-    }
-
-    private Oval serialized(Oval o) {
-        return new Oval(serializeOvalCenter(o), o.getRadiusX(), o.getRadiusY());
-    }
-
-    private Point serializeOvalCenter(Oval oval) {
-        if (includeCamera) {
-            return new Point(
-                    oval.getX() - camera.getX(),
-                    oval.getY() + camera.getY());
-        }
-        return oval.getCenter();
+        return new Rectangle(x, y, r.getWidth(), r.getHeight());
     }
 
     public void text(String text, Point position) {
         Point pos = serialized(position);
         canvas.drawString(text, pos.getX(), pos.getY());
-    }
-
-    public void textFormat(String formatText, Point position, Object... args) {
-        Point pos = serialized(position);
-        canvas.drawString(String.format(formatText, args), pos.getX(), pos.getY());
     }
 
     void line(Point a, Point b) {
@@ -134,13 +115,13 @@ public class Drawer {
     }
 
     void borders(Rectangle r) {
-        Rectangle rect = serialized(new Rectangle(r.x, r.y, r.width, r.height));
-        canvas.drawRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        Rectangle rect = serialized(new Rectangle(r));
+        canvas.drawRect(rect.getIntX(), rect.getIntY(), (int) rect.getWidth(), (int) rect.getHeight());
     }
 
     void fill(Rectangle r) {
-        Rectangle rect = serialized(new Rectangle(r.x, r.y, r.width, r.height));
-        canvas.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        Rectangle rect = serialized(new Rectangle(r));
+        canvas.fillRect(rect.getIntX(), rect.getIntY(), (int) rect.getWidth(), (int) rect.getHeight());
     }
 
     void floor(Floor floor) {

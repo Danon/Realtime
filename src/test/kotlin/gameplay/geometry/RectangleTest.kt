@@ -11,10 +11,10 @@ internal class RectangleTest {
         val rectangle = Rectangle(1.25, 2.25, 4.25, 5.25)
 
         // then
-        assertEquals(1, rectangle.getX())
-        assertEquals(2, rectangle.getY())
-        assertEquals(4, rectangle.getWidth())
-        assertEquals(5, rectangle.getHeight())
+        assertEquals(1.25, rectangle.x, 0.00001)
+        assertEquals(2.25, rectangle.y, 0.00001)
+        assertEquals(4.25, rectangle.width, 0.00001)
+        assertEquals(5.25, rectangle.height, 0.00001)
     }
 
     @Test
