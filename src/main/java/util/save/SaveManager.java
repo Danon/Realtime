@@ -15,15 +15,6 @@ final public class SaveManager {
         return manager.saveObject(folderName, filename, object);
     }
 
-    @SneakyThrows
-    public static void load(String folderName, String fileName, Saveable object) {
-        manager.loadObject(folderName, fileName, object);
-    }
-
-    public static boolean exists(String folderName, String filename) {
-        return new File(folderName, filename.toLowerCase()).exists();
-    }
-
     public static class Map {
         final static String pathName = "maps";
 
@@ -34,6 +25,24 @@ final public class SaveManager {
         @SneakyThrows
         public static GameMap load(String mapName) {
             return manager.loadObject2(pathName, mapName, GameMap.factory());
+        }
+    }
+
+    public static class UserAutoIncrement {
+        public static int autoInc() {
+            int load = load(10);
+            PrimitiveReader reader = new PrimitiveReader();
+            reader.setValue(load + 1);
+            SaveManager.save(reader, "settings", "userId");
+            return reader.getValue();
+        }
+
+        private static int load(int startingValue) {
+            try {
+                return manager.loadObject2("settings", "userId", new PrimitiveReader()).getValue();
+            } catch (FileNotFoundException e) {
+                return startingValue;
+            }
         }
     }
 

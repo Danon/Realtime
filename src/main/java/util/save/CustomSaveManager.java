@@ -65,8 +65,10 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
 
     boolean saveObject(String folderName, String fileName, Saveable item) {
         File file = new File(folderName, fileName.toLowerCase());
-        if (!file.getParentFile().mkdirs()) {
-            return false;
+        if (!file.getParentFile().exists()) {
+            if (!file.getParentFile().mkdirs()) {
+                return false;
+            }
         }
 
         try {

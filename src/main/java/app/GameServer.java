@@ -14,8 +14,8 @@ import network.ServerConnectionManager;
 import network.UserAccount;
 import ui.PrintStreamJFrame;
 import util.Validate;
-import util.save.PrimitiveReader;
 import util.save.SaveManager;
+import util.save.SaveManager.UserAutoIncrement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -221,15 +221,7 @@ public class GameServer implements ServerConnectionListener {
             return;
         }
 
-        PrimitiveReader reader = new PrimitiveReader();
-        if (SaveManager.exists("settings", "userId")) {
-            SaveManager.load("settings", "userId", reader);
-            reader.setValue(reader.getValue() + 1);
-        } else {
-            reader.setValue(10);
-        }
-        UserAccount user = new UserAccount(reader.getValue(), command.username, command.plainPassword);
-        SaveManager.save(reader, "settings", "userId");
+        UserAccount user = new UserAccount(UserAutoIncrement.autoInc(), command.username, command.plainPassword);
 
         if (SaveManager.Accounts.save(user)) {
             conn.sendTCP(new Command.Registered(user.getUsername()));
