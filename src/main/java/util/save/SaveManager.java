@@ -3,6 +3,7 @@ package util.save;
 import app.UserNotFoundException;
 import gameplay.GameMap;
 import lombok.SneakyThrows;
+import network.UserAccount;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,10 +53,8 @@ final public class SaveManager {
         }
 
         public static network.UserAccount load(String username) {
-            network.UserAccount account = new network.UserAccount();
             try {
-                manager.loadObject(pathName, username, account);
-                return account;
+                return manager.loadObject2(pathName, username, UserAccount.factory());
             } catch (FileNotFoundException e) {
                 throw new UserNotFoundException(username);
             }
