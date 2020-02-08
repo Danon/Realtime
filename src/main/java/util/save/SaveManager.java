@@ -10,12 +10,12 @@ import java.io.FileNotFoundException;
 final public class SaveManager {
     private static final CustomSaveManager manager = new CustomSaveManager();
 
-    public static boolean save(Savable object, String folderName, String filename) {
+    public static boolean save(Saveable object, String folderName, String filename) {
         return manager.saveObject(folderName, filename, object);
     }
 
     @SneakyThrows
-    public static void load(String folderName, String fileName, Savable object) {
+    public static void load(String folderName, String fileName, Saveable object) {
         manager.loadObject(folderName, fileName, object);
     }
 

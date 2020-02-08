@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-public final class PrimitiveReader implements Savable {
+public final class PrimitiveReader implements Saveable {
     private int value;
 
     public void setValue(int value) {

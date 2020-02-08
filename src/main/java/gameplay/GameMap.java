@@ -5,9 +5,9 @@ import gameplay.scene.Ladder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import util.save.Savable;
 import util.save.SaveInput;
 import util.save.SaveOutput;
+import util.save.Saveable;
 import util.save.SaveableFactory;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class GameMap implements Savable {
+public class GameMap implements Saveable {
     private final List<Floor> floors = new ArrayList<>();
     private final List<Ladder> ladders = new ArrayList<>();
 

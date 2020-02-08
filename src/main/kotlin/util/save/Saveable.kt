@@ -2,7 +2,7 @@ package util.save
 
 import java.io.IOException
 
-interface Savable {
+interface Saveable {
     @Throws(IOException::class)
     fun restoreState(input: SaveInput)
 
@@ -10,5 +10,5 @@ interface Savable {
     fun storeState(output: SaveOutput)
 
     @Throws(IOException::class)
-    fun factory(input: SaveInput): SaveableFactory
+    fun factory(input: SaveInput): SaveableFactory<Saveable>
 }

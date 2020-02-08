@@ -63,7 +63,7 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
         return new Password(bytes);
     }
 
-    boolean saveObject(String folderName, String fileName, Savable item) {
+    boolean saveObject(String folderName, String fileName, Saveable item) {
         File file = new File(folderName, fileName.toLowerCase());
         if (!file.getParentFile().mkdirs()) {
             return false;
@@ -85,7 +85,7 @@ public class CustomSaveManager implements SaveInput, SaveOutput {
     }
 
     @SneakyThrows
-    void loadObject(String folderName, String fileName, Savable savable) throws FileNotFoundException {
+    void loadObject(String folderName, String fileName, Saveable savable) throws FileNotFoundException {
         FileHandler file = new FileHandler(folderName + "/" + fileName.toLowerCase());
         if (!file.exists()) {
             throw new FileNotFoundException(String.format("No such file '%s' found", fileName));

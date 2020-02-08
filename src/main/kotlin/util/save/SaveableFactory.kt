@@ -1,4 +1,5 @@
 package util.save
 
-interface SaveableFactory {
+interface SaveableFactory<T : Saveable> {
+    fun load(): T;
 }
