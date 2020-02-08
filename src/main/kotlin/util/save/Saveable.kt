@@ -10,5 +10,5 @@ interface Saveable {
     fun storeState(output: SaveOutput)
 
     @Throws(IOException::class)
-    fun factory(input: SaveInput): SaveableFactory<Saveable>
+    fun factory(input: SaveInput): SaveableFactory<out Saveable>
 }

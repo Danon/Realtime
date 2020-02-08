@@ -49,7 +49,7 @@ public class UserAccount implements Saveable {
 
     @NotNull
     @Override
-    public SaveableFactory factory(@NotNull SaveInput input) throws IOException {
+    public SaveableFactory<UserAccount> factory(@NotNull SaveInput input) throws IOException {
         return null;
     }
 }

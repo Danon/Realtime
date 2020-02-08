@@ -70,7 +70,7 @@ public class GameMap implements Saveable {
 
     @NotNull
     @Override
-    public SaveableFactory factory(@NotNull SaveInput input) throws IOException {
+    public SaveableFactory<GameMap> factory(@NotNull SaveInput input) throws IOException {
         return null;
     }
 }
