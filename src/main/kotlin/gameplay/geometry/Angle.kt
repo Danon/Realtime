@@ -7,8 +7,4 @@ class Angle(val value: Double) {
     fun add(a: Angle): Angle {
         return Angle(value + a.value)
     }
-
-    override fun toString(): String {
-        return "Angle: " + String.format("%.2f", degreeValue) + " degrees"
-    }
 }
