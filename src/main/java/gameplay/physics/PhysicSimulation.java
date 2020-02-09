@@ -20,14 +20,10 @@ public class PhysicSimulation {
     private final static double FALL_ACCELERATION = 0.07;    // + (7px/s) per second
 
     @Getter
-    private final GameMap currentMap;
-
-    public GameMap getMap() {
-        return currentMap;
-    }
+    private final GameMap map;
 
     protected double getMapWidth() {
-        return currentMap.getWidth();
+        return map.getWidth();
     }
 
     enum FloorIs {Below, Above}
@@ -35,7 +31,7 @@ public class PhysicSimulation {
     enum From {Left, Right}
 
     private Ladder detectLadder(Character character) {
-        for (Ladder ladder : currentMap.getLadders()) {
+        for (Ladder ladder : map.getLadders()) {
             if (Validate.between(character.getX(), ladder.getLeft(), ladder.getRight()))
                 if (Validate.between(character.getY(), ladder.getBottom(), ladder.getPeek())) {
                     return ladder;
@@ -45,8 +41,8 @@ public class PhysicSimulation {
     }
 
     private void capCharacterPosition(gameplay.Character character) {
-        character.shared.x = Math.min(Math.max(CharacterCommonState.WIDTH / 2.0, character.shared.x), currentMap.getWidth() - CharacterCommonState.WIDTH / 2.0);
-        character.shared.y = Math.min(Math.max(0, character.shared.y), currentMap.getHeight() - character.getHeight());
+        character.shared.x = Math.min(Math.max(CharacterCommonState.WIDTH / 2.0, character.shared.x), map.getWidth() - CharacterCommonState.WIDTH / 2.0);
+        character.shared.y = Math.min(Math.max(0, character.shared.y), map.getHeight() - character.getHeight());
     }
 
     private void setLadderFor(gameplay.Character character, Ladder ladder) {
@@ -251,21 +247,21 @@ public class PhysicSimulation {
      * @see Floor
      */
     private double closestDistance(FloorIs floorIs, gameplay.Character character) {
+        double minDistance = map.getHeight();  // largest possible value
 
-        double minDistance = currentMap.getHeight();  // largest possible value
-
-        for (Floor floor : currentMap.getFloors()) {
+        for (Floor floor : map.getFloors()) {
             if ((floor.getLeft() <= character.getRightSideX()) && (character.getLeftSideX() <= floor.getRight())) {
                 double off = (floorIs == FloorIs.Below)
                         ? character.getY() - floor.getTop()
                         : floor.getBottom() - character.getHeadY();
 
+                if (off == 0.0) {
+                    return 0;
+                }
                 if (off > 0.0) {
                     if (off < minDistance) {
                         minDistance = off;
                     }
-                } else if (off == 0.0) {
-                    return 0;
                 }
             }
         }
@@ -274,9 +270,9 @@ public class PhysicSimulation {
 
     private double closestHorizontalObstacle(From from, gameplay.Character character) {
 
-        double minDistance = currentMap.getWidth();  // largest possible value
+        double minDistance = map.getWidth();  // largest possible value
 
-        for (Floor floor : currentMap.getFloors()) {
+        for (Floor floor : map.getFloors()) {
             if (Validate.inside(floor.getBottom(), character.getFeetY() - Floor.HEIGHT, character.getHeadY())) {
                 double dist = (from == From.Right)
                         ? floor.getLeft() - character.getRightSideX()
