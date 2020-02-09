@@ -4,13 +4,17 @@ import gameplay.Character;
 import gameplay.CharacterCommonState;
 import gameplay.LadderCollide;
 import gameplay.WalkDirection;
-import gameplay.scene.Floor;
 import gameplay.scene.GameMap;
 import gameplay.scene.Ladder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.gfx.frame.FrameAnimation;
 import util.Validate;
+
+import static gameplay.physics.GameMapHelper.FloorIs.Above;
+import static gameplay.physics.GameMapHelper.FloorIs.Below;
+import static gameplay.physics.GameMapHelper.From.Left;
+import static gameplay.physics.GameMapHelper.From.Right;
 
 @RequiredArgsConstructor
 public class PhysicSimulation {
@@ -25,10 +29,6 @@ public class PhysicSimulation {
     protected double getMapWidth() {
         return map.getWidth();
     }
-
-    enum FloorIs {Below, Above}
-
-    enum From {Left, Right}
 
     private Ladder detectLadder(Character character) {
         for (Ladder ladder : map.getLadders()) {
@@ -172,10 +172,10 @@ public class PhysicSimulation {
 
         if (this.allowedWalkMovement(character)) {
             if (character.shared.keysState.Left) {
-                character.shared.x -= Math.min(RUN_SPEED, closestHorizontalObstacle(From.Left, character));
+                character.shared.x -= Math.min(RUN_SPEED, new GameMapHelper(map).closestHorizontalObstacle(Left, character));
             }
             if (character.shared.keysState.Right) {
-                character.shared.x += Math.min(RUN_SPEED, closestHorizontalObstacle(From.Right, character));
+                character.shared.x += Math.min(RUN_SPEED, new GameMapHelper(map).closestHorizontalObstacle(Right, character));
             }
         } else {
             character.common.walking = false;
@@ -185,7 +185,7 @@ public class PhysicSimulation {
             if (character.common.jumpFrame < 5 * FrameAnimation.Speed.MidAir)
                 character.common.jumpFrame++;
 
-            double characterOffsetToCeiling = closestDistance(FloorIs.Above, character);
+            double characterOffsetToCeiling = new GameMapHelper(map).closestDistance(Above, character);
             if (characterOffsetToCeiling > character.shared.velocityY) {
                 character.shared.y += character.shared.velocityY;
             } else /*if (characterOffsetToCeiling > 0.0)*/ {
@@ -195,7 +195,7 @@ public class PhysicSimulation {
 
             character.common.onGround = false;
         } else {
-            double characterOffsetToGround = closestDistance(FloorIs.Below, character);
+            double characterOffsetToGround = new GameMapHelper(map).closestDistance(Below, character);
             if (characterOffsetToGround > -character.shared.velocityY) {
                 character.shared.y += character.shared.velocityY;
                 character.common.onGround = false;
@@ -236,57 +236,6 @@ public class PhysicSimulation {
             character.shared.velocityY = JUMP_VELOCITY;
             character.common.onGround = false;
         }
-    }
-
-    /**
-     * Returns start distance from character's position to the closest floor below him or above him.
-     *
-     * @param character Character that is checked for distance.
-     * @return Distance from character's position to the closest floor below him or above him.
-     * @see gameplay.Character
-     * @see Floor
-     */
-    private double closestDistance(FloorIs floorIs, gameplay.Character character) {
-        double minDistance = map.getHeight();  // largest possible value
-
-        for (Floor floor : map.getFloors()) {
-            if ((floor.getLeft() <= character.getRightSideX()) && (character.getLeftSideX() <= floor.getRight())) {
-                double off = (floorIs == FloorIs.Below)
-                        ? character.getY() - floor.getTop()
-                        : floor.getBottom() - character.getHeadY();
-
-                if (off == 0.0) {
-                    return 0;
-                }
-                if (off > 0.0) {
-                    if (off < minDistance) {
-                        minDistance = off;
-                    }
-                }
-            }
-        }
-        return minDistance;
-    }
-
-    private double closestHorizontalObstacle(From from, gameplay.Character character) {
-
-        double minDistance = map.getWidth();  // largest possible value
-
-        for (Floor floor : map.getFloors()) {
-            if (Validate.inside(floor.getBottom(), character.getFeetY() - Floor.HEIGHT, character.getHeadY())) {
-                double dist = (from == From.Right)
-                        ? floor.getLeft() - character.getRightSideX()
-                        : character.getLeftSideX() - floor.getRight();
-
-                if (dist == 0) {
-                    return 0;
-                }
-                if (dist > 0) { // only change distance if Floor is in the right direction (negative values are opposite direction)
-                    minDistance = Math.min(minDistance, dist);
-                }
-            }
-        }
-        return minDistance;
     }
 
     private boolean attacking(gameplay.Character character) {
