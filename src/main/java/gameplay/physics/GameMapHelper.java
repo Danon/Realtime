@@ -8,21 +8,13 @@ import util.Validate;
 @RequiredArgsConstructor
 public class GameMapHelper {
     private final GameMap map;
+    private final gameplay.Character character;
 
     enum FloorIs {Below, Above}
 
     enum From {Left, Right}
 
-
-    /**
-     * Returns start distance from character's position to the closest floor below him or above him.
-     *
-     * @param character Character that is checked for distance.
-     * @return Distance from character's position to the closest floor below him or above him.
-     * @see gameplay.Character
-     * @see Floor
-     */
-    double closestDistance(FloorIs floorIs, gameplay.Character character) {
+    double closestDistance(FloorIs floorIs) {
         double minDistance = map.getHeight();  // largest possible value
 
         for (Floor floor : map.getFloors()) {
@@ -44,7 +36,7 @@ public class GameMapHelper {
         return minDistance;
     }
 
-    double closestHorizontalObstacle(From from, gameplay.Character character) {
+    double closestHorizontalObstacle(From from) {
 
         double minDistance = map.getWidth();  // largest possible value
 

@@ -1,7 +1,7 @@
 package gameplay;
 
 public class CharacterCommonState {
-    public final static int WIDTH = 23;
+    public final static int WIDTH = 22;
     public final static int HEIGHT = 35;
 
     public boolean walking = false;

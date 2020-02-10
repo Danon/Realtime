@@ -172,10 +172,10 @@ public class PhysicSimulation {
 
         if (this.allowedWalkMovement(character)) {
             if (character.shared.keysState.Left) {
-                character.shared.x -= Math.min(RUN_SPEED, new GameMapHelper(map).closestHorizontalObstacle(Left, character));
+                character.shared.x -= Math.min(RUN_SPEED, new GameMapHelper(map, character).closestHorizontalObstacle(Left));
             }
             if (character.shared.keysState.Right) {
-                character.shared.x += Math.min(RUN_SPEED, new GameMapHelper(map).closestHorizontalObstacle(Right, character));
+                character.shared.x += Math.min(RUN_SPEED, new GameMapHelper(map, character).closestHorizontalObstacle(Right));
             }
         } else {
             character.common.walking = false;
@@ -185,17 +185,18 @@ public class PhysicSimulation {
             if (character.common.jumpFrame < 5 * FrameAnimation.Speed.MidAir)
                 character.common.jumpFrame++;
 
-            double characterOffsetToCeiling = new GameMapHelper(map).closestDistance(Above, character);
+            double characterOffsetToCeiling = new GameMapHelper(map, character).closestDistance(Above);
             if (characterOffsetToCeiling > character.shared.velocityY) {
                 character.shared.y += character.shared.velocityY;
-            } else /*if (characterOffsetToCeiling > 0.0)*/ {
+            } else {
+                assert characterOffsetToCeiling > 0.0;
                 character.shared.y += characterOffsetToCeiling;
                 character.shared.velocityY = 0.0;
             }
 
             character.common.onGround = false;
         } else {
-            double characterOffsetToGround = new GameMapHelper(map).closestDistance(Below, character);
+            double characterOffsetToGround = new GameMapHelper(map, character).closestDistance(Below);
             if (characterOffsetToGround > -character.shared.velocityY) {
                 character.shared.y += character.shared.velocityY;
                 character.common.onGround = false;
