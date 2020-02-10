@@ -172,10 +172,10 @@ public class PhysicSimulation {
 
         if (this.allowedWalkMovement(character)) {
             if (character.shared.keysState.Left) {
-                character.shared.x -= Math.min(RUN_SPEED, new GameMapHelper(map, character).closestHorizontalObstacle(Left));
+                character.shared.x -= Math.min(RUN_SPEED, new GameMapHelper(map, character).closest(Left));
             }
             if (character.shared.keysState.Right) {
-                character.shared.x += Math.min(RUN_SPEED, new GameMapHelper(map, character).closestHorizontalObstacle(Right));
+                character.shared.x += Math.min(RUN_SPEED, new GameMapHelper(map, character).closest(Right));
             }
         } else {
             character.common.walking = false;
@@ -185,7 +185,7 @@ public class PhysicSimulation {
             if (character.common.jumpFrame < 5 * FrameAnimation.Speed.MidAir)
                 character.common.jumpFrame++;
 
-            double characterOffsetToCeiling = new GameMapHelper(map, character).closestDistance(Above);
+            double characterOffsetToCeiling = new GameMapHelper(map, character).closest(Above);
             if (characterOffsetToCeiling > character.shared.velocityY) {
                 character.shared.y += character.shared.velocityY;
             } else {
@@ -196,7 +196,7 @@ public class PhysicSimulation {
 
             character.common.onGround = false;
         } else {
-            double characterOffsetToGround = new GameMapHelper(map, character).closestDistance(Below);
+            double characterOffsetToGround = new GameMapHelper(map, character).closest(Below);
             if (characterOffsetToGround > -character.shared.velocityY) {
                 character.shared.y += character.shared.velocityY;
                 character.common.onGround = false;

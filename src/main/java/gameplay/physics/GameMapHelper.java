@@ -14,7 +14,7 @@ public class GameMapHelper {
 
     enum From {Left, Right}
 
-    double closestDistance(FloorIs floorIs) {
+    double closest(FloorIs floorIs) {
         double minDistance = map.getHeight();  // largest possible value
 
         for (Floor floor : map.getFloors()) {
@@ -27,16 +27,14 @@ public class GameMapHelper {
                     return 0;
                 }
                 if (off > 0.0) {
-                    if (off < minDistance) {
-                        minDistance = off;
-                    }
+                    minDistance = Math.min(minDistance, off);
                 }
             }
         }
         return minDistance;
     }
 
-    double closestHorizontalObstacle(From from) {
+    double closest(From from) {
 
         double minDistance = map.getWidth();  // largest possible value
 
