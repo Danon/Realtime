@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import ui.gfx.frame.FrameAnimation;
 import util.Validate;
 
-import static gameplay.physics.GameMapHelper.FloorIs.Above;
-import static gameplay.physics.GameMapHelper.FloorIs.Below;
+import static gameplay.physics.GameMapHelper.From.Above;
+import static gameplay.physics.GameMapHelper.From.Below;
 import static gameplay.physics.GameMapHelper.From.Left;
 import static gameplay.physics.GameMapHelper.From.Right;
 

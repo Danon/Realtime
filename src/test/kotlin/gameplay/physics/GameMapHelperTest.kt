@@ -1,8 +1,8 @@
 package gameplay.physics
 
 import gameplay.Character
-import gameplay.physics.GameMapHelper.FloorIs.Above
-import gameplay.physics.GameMapHelper.FloorIs.Below
+import gameplay.physics.GameMapHelper.From.Above
+import gameplay.physics.GameMapHelper.From.Below
 import gameplay.physics.GameMapHelper.From.Left
 import gameplay.physics.GameMapHelper.From.Right
 import gameplay.scene.Floor

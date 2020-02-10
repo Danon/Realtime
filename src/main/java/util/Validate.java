@@ -12,11 +12,6 @@ public class Validate {
         return (min <= value) && (value <= max);
     }
 
-    public static boolean inside(double value, double min, double max) {
-        if (min > max) throw new RuntimeException("Bottom cap cannot be higher than the max cap.");
-        return (min < value) && (value < max);
-    }
-
     public static class Specific {
         private static final Pattern ptnValidUsername = Pattern.compile("[a-zA-Z0-9_]{3,64}");
 
