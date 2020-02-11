@@ -9,7 +9,6 @@ import gameplay.scene.Ladder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ui.gfx.frame.FrameAnimation;
-import util.Validate;
 
 import static gameplay.physics.GameMapHelper.From.Above;
 import static gameplay.physics.GameMapHelper.From.Below;
@@ -28,16 +27,6 @@ public class PhysicSimulation {
 
     protected double getMapWidth() {
         return map.getWidth();
-    }
-
-    private Ladder detectLadder(Character character) {
-        for (Ladder ladder : map.getLadders()) {
-            if (Validate.between(character.getX(), ladder.getLeft(), ladder.getRight()))
-                if (Validate.between(character.getY(), ladder.getBottom(), ladder.getPeek())) {
-                    return ladder;
-                }
-        }
-        return null;
     }
 
     private void capCharacterPosition(gameplay.Character character) {
@@ -152,7 +141,7 @@ public class PhysicSimulation {
     protected void perform(Character character) {
         this.capCharacterPosition(character);
 
-        Ladder ladder = this.detectLadder(character);  // detecting the ladder
+        Ladder ladder = new GameMapLadderHelper(map).detectLadder(character);  // detecting the ladder
 
         this.setLadderFor(character, ladder);
         this.setClimbVariables(character, ladder);
